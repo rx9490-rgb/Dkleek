@@ -1,0 +1,1266 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>دخلك. — ابدأ تجارتك براس مال 37 ريال</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<style>
+:root{
+  --bg:#04080f;
+  --bg2:#060c17;
+  --card:#0b1120;
+  --card2:#080f1e;
+  --primary:#3b82f6;
+  --green:#25D366;
+  --gold:#f59e0b;
+  --red:#ef4444;
+  --fs:1rem;
+  --glass:rgba(255,255,255,.04);
+  --border:rgba(255,255,255,.07);
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-font-smoothing:antialiased}
+html{scroll-behavior:smooth;overflow-x:hidden}
+body{font-family:'Cairo',sans-serif;background:var(--bg);color:#fff;overflow-x:hidden;font-size:var(--fs)}
+.con{max-width:1100px;margin:0 auto;padding:0 20px}
+.sec{padding:80px 0}
+
+/* ── Buttons ── */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:13px 26px;border-radius:14px;font-family:'Cairo',sans-serif;font-weight:700;font-size:.9rem;cursor:pointer;border:none;text-decoration:none;transition:.25s}
+.btn-green{background:linear-gradient(135deg,#25D366,#1db954);color:#fff;box-shadow:0 4px 24px rgba(37,211,102,.3)}
+.btn-green:hover{transform:translateY(-2px);box-shadow:0 8px 32px rgba(37,211,102,.45)}
+.btn-blue{background:linear-gradient(135deg,#3b82f6,#6366f1);color:#fff;box-shadow:0 4px 24px rgba(59,130,246,.3)}
+.btn-blue:hover{transform:translateY(-2px);box-shadow:0 8px 32px rgba(59,130,246,.45)}
+.btn-outline{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:rgba(255,255,255,.8);backdrop-filter:blur(10px)}
+.btn-outline:hover{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.2)}
+
+/* ── Scroll reveal ── */
+.rv{opacity:0;transform:translateY(18px);transition:opacity .4s ease,transform .4s ease;will-change:transform,opacity}
+.rv.left{transform:translateX(-18px)}
+.rv.right{transform:translateX(18px)}
+.rv.scale{transform:scale(.96)}
+.rv.on{opacity:1!important;transform:none!important;will-change:auto}
+
+/* ── Announcement bar ── */
+#ann-bar{display:none;text-align:center;padding:10px 16px;font-size:.82rem;font-weight:700;
+  background:linear-gradient(90deg,#f59e0b,#f97316);color:#fff;position:relative;z-index:200}
+
+/* ── Nav ── */
+nav{position:fixed;top:0;inset-inline:0;z-index:100;height:68px;
+  background:rgba(4,8,15,.85);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
+  border-bottom:1px solid rgba(255,255,255,.06)}
+.nav-inner{height:68px;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:0 20px}
+.logo{font-size:1.5rem;font-weight:900;color:#fff;cursor:default;user-select:none;letter-spacing:-.02em}
+.logo span{background:linear-gradient(135deg,var(--green),#4ade80);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.nav-links{display:flex;gap:26px;font-size:.82rem;font-weight:600;color:#6b7280}
+.nav-links a{color:inherit;text-decoration:none;transition:.2s;position:relative}
+.nav-links a:hover{color:#fff}
+.nav-links a::after{content:'';position:absolute;bottom:-2px;left:0;right:0;height:1.5px;background:var(--green);transform:scaleX(0);transition:.2s}
+.nav-links a:hover::after{transform:scaleX(1)}
+.nav-right{display:flex;align-items:center;gap:8px;flex-shrink:0}
+#nav-user{display:none;align-items:center;gap:8px}
+#nav-uname{font-size:.8rem;font-weight:700;color:#d1d5db}
+.wa-pill{display:flex;align-items:center;gap:6px;background:linear-gradient(135deg,var(--green),#1db954);color:#fff;
+  font-weight:700;padding:8px 16px;border-radius:22px;font-size:.78rem;text-decoration:none;
+  transition:.2s;white-space:nowrap;box-shadow:0 3px 14px rgba(37,211,102,.3)}
+.wa-pill:hover{transform:translateY(-1px);box-shadow:0 6px 22px rgba(37,211,102,.4)}
+@media(max-width:640px){.nav-links,.hide-sm{display:none!important}.logo{font-size:1.2rem}}
+
+/* ── Modal ── */
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:9000;
+  display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:.25s;padding:16px;
+  backdrop-filter:blur(4px)}
+.modal-bg.show{opacity:1;pointer-events:all}
+.modal-box{background:linear-gradient(145deg,#0d1628,#0b1120);border-radius:24px;padding:30px;width:100%;max-width:390px;
+  border:1px solid rgba(255,255,255,.1);position:relative;box-shadow:0 40px 80px rgba(0,0,0,.6)}
+.modal-close{position:absolute;top:14px;left:14px;background:rgba(255,255,255,.06);border:none;color:rgba(255,255,255,.5);
+  width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-size:1rem;cursor:pointer;transition:.2s}
+.modal-close:hover{background:rgba(255,255,255,.12);color:#fff}
+.tab-row{display:flex;background:rgba(255,255,255,.05);border-radius:12px;padding:4px;margin-bottom:22px}
+.tab-btn{flex:1;padding:9px 0;border:none;background:transparent;color:rgba(255,255,255,.4);
+  font-family:'Cairo',sans-serif;font-weight:700;font-size:.84rem;border-radius:9px;cursor:pointer;transition:.2s}
+.tab-btn.act{background:linear-gradient(135deg,var(--primary),#6366f1);color:#fff;box-shadow:0 2px 10px rgba(59,130,246,.3)}
+.fi{display:flex;flex-direction:column;gap:5px;margin-bottom:12px}
+.fi label{font-size:.76rem;font-weight:700;color:rgba(255,255,255,.4)}
+.fi input,.fi select{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.09);
+  border-radius:10px;padding:11px 13px;color:#fff;font-family:'Cairo',sans-serif;font-size:.85rem;width:100%;transition:.2s}
+.fi input:focus,.fi select:focus{outline:none;border-color:var(--primary);background:rgba(59,130,246,.05)}
+.fi select option{background:#0d1628;color:#fff}
+.err-msg{color:#f87171;font-size:.74rem;text-align:center;display:none;margin-top:4px}
+
+/* ── Welcome overlay ── */
+#wov{position:fixed;inset:0;z-index:10000;background:linear-gradient(135deg,#04080f,#06111f);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  transition:.6s;opacity:0;pointer-events:none;text-align:center;padding:24px}
+#wov.show{opacity:1;pointer-events:all}
+.wov-bar{width:0;height:4px;background:linear-gradient(90deg,var(--green),var(--primary));
+  border-radius:4px;transition:width 2.8s ease;margin:18px auto 0}
+
+/* ── Hero ── */
+#hero{min-height:100vh;padding:100px 0 70px;position:relative;overflow:hidden}
+#hero::before{content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 90% 70% at 50% -10%,rgba(59,130,246,.1) 0%,transparent 65%),
+             radial-gradient(ellipse 60% 50% at 80% 60%,rgba(37,211,102,.07) 0%,transparent 60%),
+             var(--bg);pointer-events:none}
+.hero-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;position:relative;z-index:1}
+@media(max-width:768px){.hero-grid{grid-template-columns:1fr}}
+.badge{display:inline-flex;align-items:center;gap:7px;padding:8px 18px;border-radius:99px;
+  font-size:.78rem;font-weight:700;background:rgba(37,211,102,.08);border:1px solid rgba(37,211,102,.2);
+  color:#4ade80;margin-bottom:20px;backdrop-filter:blur(10px)}
+.hero-title{font-size:clamp(2.1rem,5.5vw,3.6rem);font-weight:900;line-height:1.2;margin-bottom:18px;letter-spacing:-.02em}
+.hero-title .hl{background:linear-gradient(135deg,var(--green),#4ade80);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;position:relative}
+.hero-sub{font-size:clamp(.9rem,2vw,1.05rem);color:rgba(255,255,255,.5);font-weight:500;
+  line-height:1.9;margin-bottom:30px}
+.hero-ctas{display:flex;gap:12px;flex-wrap:wrap}
+.capital-chips{display:flex;gap:10px;margin-top:24px;flex-wrap:wrap}
+.chip{display:flex;align-items:center;gap:9px;border-radius:14px;padding:11px 16px;backdrop-filter:blur(10px)}
+.chip-g{background:rgba(37,211,102,.07);border:1px solid rgba(37,211,102,.18)}
+.chip-b{background:rgba(59,130,246,.07);border:1px solid rgba(59,130,246,.18)}
+
+/* Hero visual */
+.hero-visual{display:flex;align-items:center;justify-content:center}
+.hv-card{background:linear-gradient(145deg,rgba(255,255,255,.06),rgba(255,255,255,.02));
+  border:1px solid rgba(255,255,255,.1);border-radius:28px;padding:28px;
+  width:100%;max-width:380px;position:relative;backdrop-filter:blur(20px);
+  box-shadow:0 40px 80px rgba(0,0,0,.4),inset 0 1px 0 rgba(255,255,255,.06)}
+.hv-glow{position:absolute;width:200px;height:200px;border-radius:50%;
+  background:radial-gradient(circle,rgba(37,211,102,.15),transparent 70%);
+  top:-60px;right:-60px;pointer-events:none}
+.hv-pkg{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);
+  border-radius:18px;padding:16px 18px;margin-bottom:12px;position:relative;overflow:hidden;transition:.2s}
+.hv-pkg:hover{border-color:rgba(255,255,255,.14);background:rgba(255,255,255,.06)}
+.pkg-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.pkg-wa{display:flex;align-items:center;gap:5px;color:#fff;
+  padding:8px 12px;border-radius:10px;font-size:.75rem;font-weight:700;text-decoration:none;
+  transition:.2s;margin-top:8px;justify-content:center}
+.pkg-wa:hover{transform:scale(1.03);filter:brightness(1.1)}
+.hv-stat{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:14px}
+.stat-box{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);
+  border-radius:12px;padding:12px 8px;text-align:center;transition:.2s}
+.stat-box:hover{background:rgba(255,255,255,.07)}
+.stat-num{font-weight:900;font-size:1.2rem;color:#fff}
+.stat-lbl{font-size:.63rem;font-weight:600;color:rgba(255,255,255,.35);margin-top:2px}
+
+/* ── Stats bar ── */
+.stats-bar{background:linear-gradient(90deg,rgba(255,255,255,.025),rgba(255,255,255,.015),rgba(255,255,255,.025));
+  border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:32px 0}
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+@media(max-width:640px){.stats-grid{grid-template-columns:repeat(2,1fr)}}
+.stat-item{text-align:center;padding:10px;position:relative}
+.stat-item:not(:last-child)::after{content:'';position:absolute;top:10%;bottom:10%;left:0;width:1px;background:var(--border)}
+.stat-big{font-weight:900;font-size:clamp(1.5rem,4vw,2.4rem);margin-bottom:5px}
+.stat-text{font-size:.74rem;font-weight:600;color:rgba(255,255,255,.35)}
+
+/* ── Section header ── */
+.sec-tag{display:inline-flex;align-items:center;gap:7px;padding:6px 18px;border-radius:99px;
+  font-size:.76rem;font-weight:700;color:#9ca3af;background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.08);margin-bottom:14px}
+.sec-title{font-weight:900;font-size:clamp(1.7rem,3.5vw,2.7rem);margin-bottom:10px;letter-spacing:-.02em}
+.sec-sub{color:rgba(255,255,255,.4);font-weight:500;font-size:.88rem}
+
+/* ── Packages ── */
+.pkg-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;max-width:880px;margin:0 auto}
+@media(max-width:640px){.pkg-grid{grid-template-columns:1fr}}
+.pkg-card{background:linear-gradient(160deg,var(--card),var(--card2));border-radius:26px;overflow:hidden;
+  display:flex;flex-direction:column;position:relative;transition:.3s;
+  box-shadow:0 20px 60px rgba(0,0,0,.3)}
+.pkg-card:hover{transform:translateY(-6px);box-shadow:0 30px 80px rgba(0,0,0,.45)}
+.pkg-top{height:5px}
+.pkg-body{padding:26px;display:flex;flex-direction:column;flex:1;position:relative;z-index:1}
+.pkg-glow{position:absolute;width:220px;height:220px;border-radius:50%;top:-80px;right:-60px;pointer-events:none}
+.pkg-badge{display:inline-flex;align-items:center;padding:5px 14px;border-radius:99px;
+  font-size:.7rem;font-weight:700;align-self:flex-start;margin-bottom:14px}
+.pkg-title{font-size:1.4rem;font-weight:900;margin-bottom:7px;letter-spacing:-.02em}
+.pkg-desc{font-size:.8rem;color:rgba(255,255,255,.4);font-weight:500;line-height:1.7;margin-bottom:18px}
+.price-box{border-radius:16px;padding:18px;text-align:center;margin-bottom:18px}
+.price-main{font-size:2.6rem;font-weight:900;line-height:1;letter-spacing:-.03em}
+.price-period{font-size:.78rem;color:rgba(255,255,255,.38);margin-top:5px;font-weight:600}
+.price-capital{display:flex;align-items:center;justify-content:center;gap:8px;
+  margin-top:12px;background:rgba(255,255,255,.05);border-radius:10px;padding:9px 14px}
+.cap-txt{font-size:.76rem;font-weight:700;color:rgba(255,255,255,.6)}
+.cap-val{font-size:1.05rem;font-weight:900;color:#fff}
+.feat-list{display:flex;flex-direction:column;gap:10px;margin-bottom:20px;flex:1}
+.feat-item{display:flex;align-items:center;gap:9px;font-size:.83rem;font-weight:600;color:rgba(255,255,255,.75)}
+.inq-btn{display:flex;justify-content:center;align-items:center;gap:8px;
+  color:#fff;padding:14px;border-radius:14px;font-weight:800;text-decoration:none;
+  font-size:.92rem;transition:.25s;font-family:'Cairo',sans-serif}
+.inq-btn:hover{transform:translateY(-2px);filter:brightness(1.1)}
+.popular-badge{position:absolute;top:18px;left:18px;z-index:2;
+  background:linear-gradient(135deg,var(--gold),#f97316);color:#fff;padding:4px 12px;border-radius:99px;
+  font-size:.68rem;font-weight:800;box-shadow:0 3px 14px rgba(245,158,11,.4)}
+
+/* ── Services ── */
+.svc-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+@media(max-width:480px){.svc-grid{grid-template-columns:1fr}}
+.svc-card{background:linear-gradient(145deg,var(--card),var(--card2));border:1px solid var(--border);border-radius:18px;
+  padding:16px 18px;display:flex;align-items:center;gap:14px;transition:.25s;text-decoration:none;
+  box-shadow:0 4px 20px rgba(0,0,0,.2)}
+.svc-card:hover{border-color:rgba(59,130,246,.25);background:linear-gradient(145deg,#0f1c30,#0b1425);
+  transform:translateY(-2px);box-shadow:0 8px 30px rgba(0,0,0,.35)}
+.svc-icon{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;
+  font-size:1rem;flex-shrink:0}
+.svc-title{font-weight:800;font-size:.86rem;margin-bottom:2px;color:#fff}
+.svc-desc{font-size:.73rem;color:rgba(255,255,255,.35);font-weight:500;line-height:1.4;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.svc-arrow{color:var(--green);font-size:.75rem;flex-shrink:0}
+
+/* ── How it works ── */
+.steps-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+@media(max-width:768px){.steps-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:480px){.steps-grid{grid-template-columns:1fr}}
+.step-card{background:linear-gradient(160deg,var(--card),var(--card2));border:1px solid var(--border);border-radius:22px;
+  padding:24px;text-align:center;position:relative;transition:.25s;
+  box-shadow:0 4px 20px rgba(0,0,0,.2)}
+.step-card:hover{border-color:rgba(99,102,241,.25);transform:translateY(-3px);box-shadow:0 12px 40px rgba(0,0,0,.35)}
+.step-num{width:46px;height:46px;border-radius:50%;background:linear-gradient(135deg,var(--primary),#7c3aed);
+  display:flex;align-items:center;justify-content:center;font-weight:900;font-size:1.1rem;margin:0 auto 14px;
+  box-shadow:0 4px 16px rgba(59,130,246,.35)}
+.step-ico{font-size:1.5rem;margin-bottom:10px}
+.step-title{font-weight:800;font-size:.9rem;margin-bottom:7px}
+.step-desc{font-size:.75rem;color:rgba(255,255,255,.38);font-weight:500;line-height:1.65}
+
+/* ── Comments ── */
+.comments-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:32px}
+@media(max-width:768px){.comments-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:480px){.comments-grid{grid-template-columns:1fr}}
+.comment-card{background:linear-gradient(160deg,var(--card),var(--card2));border:1px solid var(--border);border-radius:20px;
+  padding:20px;display:flex;flex-direction:column;gap:10px;transition:.25s;
+  box-shadow:0 4px 20px rgba(0,0,0,.2)}
+.comment-card:hover{border-color:rgba(37,211,102,.2);transform:translateY(-2px)}
+.comment-header{display:flex;align-items:center;gap:10px}
+.comment-avatar{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-weight:800;font-size:.92rem;flex-shrink:0}
+.comment-name{font-weight:800;font-size:.87rem;color:#fff}
+.comment-city{font-size:.7rem;color:rgba(255,255,255,.35);font-weight:600}
+.comment-stars{color:var(--gold);font-size:.77rem;margin-top:1px}
+.comment-text{font-size:.81rem;color:rgba(255,255,255,.6);font-weight:500;line-height:1.75;flex:1}
+.comment-date{font-size:.68rem;color:rgba(255,255,255,.2);font-weight:600}
+
+/* Comment form */
+.comment-form{background:linear-gradient(160deg,var(--card2),rgba(6,10,20,.8));
+  border:1px solid rgba(255,255,255,.08);border-radius:24px;padding:28px;
+  box-shadow:0 20px 60px rgba(0,0,0,.3)}
+.comment-form h3{font-weight:800;font-size:1rem;margin-bottom:20px}
+.cform-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+@media(max-width:480px){.cform-grid{grid-template-columns:1fr}}
+.cfi input,.cfi select,.cfi textarea{
+  background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);
+  border-radius:12px;padding:12px 14px;color:#fff;font-family:'Cairo',sans-serif;font-size:.84rem;width:100%;transition:.2s}
+.cfi input:focus,.cfi select:focus,.cfi textarea:focus{outline:none;border-color:var(--green);background:rgba(37,211,102,.04)}
+.cfi select option{background:#0d1628}
+.cfi textarea{resize:none;min-height:90px}
+.cfi label{display:block;font-size:.74rem;font-weight:700;color:rgba(255,255,255,.38);margin-bottom:5px}
+
+/* ── Support ── */
+.support-card{background:linear-gradient(135deg,rgba(37,211,102,.08),rgba(37,211,102,.02));
+  border:1px solid rgba(37,211,102,.18);border-radius:26px;padding:44px 36px;text-align:center;max-width:640px;margin:0 auto;
+  box-shadow:0 20px 60px rgba(0,0,0,.3)}
+
+/* ── CTA section ── */
+.cta-section{background:linear-gradient(135deg,rgba(59,130,246,.08),rgba(37,211,102,.05));
+  border:1px solid rgba(255,255,255,.08);border-radius:30px;padding:64px 36px;text-align:center;max-width:800px;margin:0 auto;
+  box-shadow:0 30px 80px rgba(0,0,0,.4)}
+
+/* ── Footer ── */
+footer{background:linear-gradient(180deg,var(--bg2),#020509);border-top:1px solid var(--border);padding:44px 0 28px}
+.footer-inner{display:grid;grid-template-columns:1fr auto;gap:32px;align-items:start;margin-bottom:28px}
+@media(max-width:640px){.footer-inner{grid-template-columns:1fr}}
+.footer-socials{display:flex;gap:8px;margin-top:14px}
+.soc-btn{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  background:rgba(255,255,255,.05);color:rgba(255,255,255,.3);text-decoration:none;
+  font-size:.87rem;transition:.2s;border:1px solid var(--border)}
+.soc-btn:hover{background:var(--green);color:#fff;border-color:var(--green);transform:translateY(-2px)}
+.footer-copy{font-size:.73rem;color:rgba(255,255,255,.18);font-weight:600;text-align:center;padding-top:18px;
+  border-top:1px solid rgba(255,255,255,.05)}
+
+/* ── Floating WA btn ── */
+#wa-float{position:fixed;bottom:24px;left:24px;z-index:500;
+  width:58px;height:58px;border-radius:50%;background:linear-gradient(135deg,#25D366,#1db954);
+  display:flex;align-items:center;justify-content:center;
+  color:#fff;font-size:1.6rem;text-decoration:none;
+  box-shadow:0 6px 28px rgba(37,211,102,.55);
+  animation:wapulse 2.5s ease-in-out infinite}
+@keyframes wapulse{0%,100%{box-shadow:0 6px 28px rgba(37,211,102,.55)}50%{box-shadow:0 6px 44px rgba(37,211,102,.8),0 0 0 14px rgba(37,211,102,.08)}}
+
+/* ── Toast ── */
+#toast{position:fixed;bottom:96px;left:50%;transform:translateX(-50%);
+  background:linear-gradient(135deg,#0f1e30,#0b1628);color:#fff;padding:11px 24px;border-radius:99px;
+  font-size:.82rem;font-weight:700;z-index:10000;opacity:0;transition:.3s;pointer-events:none;white-space:nowrap;
+  border:1px solid rgba(255,255,255,.1);box-shadow:0 8px 32px rgba(0,0,0,.4)}
+#toast.show{opacity:1}
+
+/* ── Admin tab ── */
+#admin-tab{position:fixed;left:0;top:50%;transform:translateY(-50%);z-index:500;
+  background:rgba(147,51,234,.85);backdrop-filter:blur(8px);
+  padding:10px 6px;border-radius:0 10px 10px 0;cursor:pointer;
+  writing-mode:vertical-rl;font-size:.65rem;font-weight:800;letter-spacing:.1em;
+  display:none;color:#fff;border:1px solid rgba(147,51,234,.3);border-left:none}
+#admin-panel{position:fixed;left:-310px;top:50%;transform:translateY(-50%);z-index:600;
+  width:290px;background:#0d1628;border-radius:0 20px 20px 0;
+  border:1px solid rgba(255,255,255,.08);border-left:none;padding:20px 16px;
+  transition:.35s;max-height:90vh;overflow-y:auto}
+#admin-panel.open{left:0}
+.adm-title{font-weight:800;font-size:.88rem;margin-bottom:14px;color:#a78bfa}
+.adm-row{margin-bottom:12px}
+.adm-row label{display:block;font-size:.7rem;font-weight:700;color:rgba(255,255,255,.4);margin-bottom:4px}
+.adm-row input{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:8px;
+  padding:8px 10px;color:#fff;font-family:'Cairo',sans-serif;font-size:.8rem;width:100%}
+.adm-btn{padding:7px 12px;border:none;border-radius:8px;font-family:'Cairo',sans-serif;
+  font-size:.76rem;font-weight:700;cursor:pointer;transition:.2s}
+.adm-close{position:absolute;top:10px;left:10px;background:none;border:none;color:rgba(255,255,255,.4);cursor:pointer;font-size:1rem}
+
+/* ── Divider ── */
+.glow-divider{height:1px;background:linear-gradient(90deg,transparent,rgba(59,130,246,.25),rgba(37,211,102,.25),transparent);margin:0;border:none}
+
+/* ── Particle bg decoration ── */
+.blob{position:absolute;border-radius:50%;pointer-events:none;filter:blur(80px);opacity:.6}
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════
+     ADMIN PANEL
+══════════════════════════════════════════════ -->
+<div id="admin-tab" onclick="toggleAdmin()">⚙ أدمن</div>
+<div id="admin-panel">
+  <button class="adm-close" onclick="closeAdmin()"><i class="fas fa-times"></i></button>
+  <div class="adm-title">👑 لوحة الأدمن</div>
+  <div class="adm-row">
+    <label>تفعيل وضع التعديل</label>
+    <button id="edit-btn" class="adm-btn" style="background:rgba(59,130,246,.2);color:#60a5fa;width:100%" onclick="toggleEdit()">تفعيل وضع التعديل</button>
+  </div>
+  <div class="adm-row">
+    <label>حجم الخط</label>
+    <div style="display:flex;gap:5px">
+      <button class="adm-btn" style="flex:1;background:rgba(255,255,255,.06);color:#d1d5db" onclick="setFont('sm')">صغير</button>
+      <button class="adm-btn" style="flex:1;background:rgba(255,255,255,.06);color:#d1d5db" onclick="setFont('md')">متوسط</button>
+      <button class="adm-btn" style="flex:1;background:rgba(255,255,255,.06);color:#d1d5db" onclick="setFont('lg')">كبير</button>
+    </div>
+  </div>
+  <div class="adm-row">
+    <label>إعلان عاجل</label>
+    <input id="ann-input" type="text" placeholder="نص الإعلان..." style="margin-bottom:5px"/>
+    <div style="display:flex;gap:5px">
+      <button class="adm-btn" style="flex:1;background:rgba(245,158,11,.2);color:#fbbf24" onclick="pubAnn()">نشر</button>
+      <button class="adm-btn" style="flex:1;background:rgba(239,68,68,.1);color:#f87171" onclick="delAnn()">حذف</button>
+    </div>
+  </div>
+  <div class="adm-row">
+    <label>سعر باقة بدون متجر (ر.س)</label>
+    <input id="adm-np" type="number" value="99"/>
+  </div>
+  <div class="adm-row">
+    <label>سعر باقة المتجر (ر.س)</label>
+    <input id="adm-sp" type="number" value="129"/>
+  </div>
+  <button class="adm-btn" style="background:rgba(59,130,246,.25);color:#60a5fa;width:100%;margin-bottom:12px" onclick="updPrices()">تحديث الأسعار</button>
+  <div class="adm-row">
+    <label>المستخدمون المسجلون</label>
+    <div id="users-list" style="max-height:140px;overflow-y:auto;display:flex;flex-direction:column;gap:4px"></div>
+  </div>
+  <button class="adm-btn" style="background:rgba(239,68,68,.15);color:#f87171;width:100%;margin-top:4px" onclick="adminOut()">تسجيل خروج الأدمن</button>
+</div>
+
+<!-- ANNOUNCEMENT BAR -->
+<div id="ann-bar"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner con">
+    <div class="logo">دخلك<span>.</span></div>
+    <div class="nav-links hide-sm">
+      <a href="#packages">الباقات</a>
+      <a href="#services">الخدمات</a>
+      <a href="#how">كيف يعمل</a>
+      <a href="#reviews">آراء العملاء</a>
+    </div>
+    <div class="nav-right">
+      <div id="nav-user">
+        <span id="nav-uname"></span>
+        <button onclick="doLogout()" style="background:rgba(239,68,68,.15);border:none;color:#f87171;padding:7px 13px;border-radius:10px;font-family:'Cairo',sans-serif;font-size:.76rem;font-weight:700;cursor:pointer">خروج</button>
+      </div>
+      <div id="nav-auth" style="display:flex;gap:6px">
+        <button onclick="openM('login')" class="btn btn-outline" style="padding:7px 16px;font-size:.78rem">دخول</button>
+        <button onclick="openM('reg')" class="btn btn-blue" style="padding:7px 16px;font-size:.78rem">تسجيل</button>
+      </div>
+      <a href="https://wa.me/966531277423?text=مرحباً" target="_blank" class="wa-pill hide-sm">
+        <i class="fab fa-whatsapp"></i> واتساب
+      </a>
+    </div>
+  </div>
+</nav>
+
+<!-- AUTH MODAL -->
+<div id="auth-modal" class="modal-bg" onclick="outsideClose(event)">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeM()"><i class="fas fa-times"></i></button>
+    <div class="tab-row">
+      <button id="t-login" class="tab-btn act" onclick="switchTab('login')">تسجيل الدخول</button>
+      <button id="t-reg" class="tab-btn" onclick="switchTab('reg')">حساب جديد</button>
+    </div>
+    <div id="f-login">
+      <div class="fi"><label>البريد الإلكتروني</label><input id="l-email" type="email" placeholder="email@example.com"/></div>
+      <div class="fi"><label>كلمة المرور</label><input id="l-pass" type="password" placeholder="••••••"/></div>
+      <div id="l-err" class="err-msg"></div>
+      <button onclick="doLogin()" class="btn btn-blue" style="width:100%;margin-top:12px;padding:13px">دخول <i class="fas fa-arrow-left"></i></button>
+    </div>
+    <div id="f-reg" style="display:none">
+      <div class="fi"><label>الاسم الكامل</label><input id="r-name" type="text" placeholder="محمد أحمد"/></div>
+      <div class="fi"><label>البريد الإلكتروني</label><input id="r-email" type="email" placeholder="email@example.com"/></div>
+      <div class="fi"><label>المدينة / المنطقة</label>
+        <select id="r-city">
+          <option value="">اختر مدينتك</option>
+          <option>الرياض</option><option>جدة</option><option>مكة المكرمة</option>
+          <option>المدينة المنورة</option><option>الدمام</option><option>الخبر</option>
+          <option>الطائف</option><option>بريدة</option><option>تبوك</option>
+          <option>أبها</option><option>خميس مشيط</option><option>القصيم</option>
+          <option>نجران</option><option>جيزان</option><option>حائل</option><option>أخرى</option>
+        </select>
+      </div>
+      <div class="fi"><label>كلمة المرور (6 أحرف+)</label><input id="r-pass" type="password" placeholder="••••••"/></div>
+      <div id="r-err" class="err-msg"></div>
+      <button onclick="doReg()" class="btn btn-green" style="width:100%;margin-top:12px;padding:13px"><i class="fab fa-whatsapp"></i> إنشاء الحساب مجاناً</button>
+    </div>
+  </div>
+</div>
+
+<!-- WELCOME OVERLAY -->
+<div id="wov">
+  <div style="width:80px;height:80px;border-radius:50%;background:rgba(37,211,102,.15);border:2px solid rgba(37,211,102,.3);display:flex;align-items:center;justify-content:center;margin-bottom:16px;font-size:2.4rem">🎊</div>
+  <div id="wname" style="font-size:1.7rem;font-weight:900;margin-bottom:8px"></div>
+  <div style="color:rgba(255,255,255,.5);font-size:.9rem;font-weight:600;margin-bottom:28px">أهلاً بك في عائلة دخلك!</div>
+  <div style="display:flex;gap:16px;margin-bottom:8px;flex-wrap:wrap;justify-content:center">
+    <div style="text-align:center;background:rgba(37,211,102,.08);border:1px solid rgba(37,211,102,.2);border-radius:18px;padding:18px 28px">
+      <div style="font-size:1.9rem;font-weight:900;color:var(--green)">37 ر.س</div>
+      <div style="font-size:.75rem;color:rgba(255,255,255,.45);font-weight:600">أقل رأس مال</div>
+    </div>
+    <div style="text-align:center;background:rgba(59,130,246,.08);border:1px solid rgba(59,130,246,.2);border-radius:18px;padding:18px 28px">
+      <div style="font-size:1.9rem;font-weight:900;color:var(--primary)">99 ر.س</div>
+      <div style="font-size:.75rem;color:rgba(255,255,255,.45);font-weight:600">اشتراك الباقة</div>
+    </div>
+  </div>
+  <div class="wov-bar" id="wbar" style="width:240px;max-width:90vw"></div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     HERO
+══════════════════════════════════════════════ -->
+<section id="hero">
+  <!-- decorative blobs -->
+  <div class="blob" style="width:600px;height:600px;background:rgba(59,130,246,.07);top:-200px;right:-150px"></div>
+  <div class="blob" style="width:400px;height:400px;background:rgba(37,211,102,.06);bottom:-100px;left:-100px"></div>
+
+  <div class="con" style="position:relative;z-index:1">
+    <div class="hero-grid">
+      <!-- Left: text -->
+      <div>
+        <div class="badge rv">
+          <i class="fas fa-bolt" style="color:var(--green)"></i>
+          منصة التجارة الرقمية السعودية
+        </div>
+
+        <h1 class="hero-title rv">
+          ابدأ تجارتك<br/>
+          براس مال<br/>
+          <span class="hl">37 ريال فقط 🚀</span>
+        </h1>
+
+        <p class="hero-sub rv">
+          نبني لك مشروعك من الصفر — منتجات جاهزة،<br/>
+          تصاميم احترافية، ودعم فني يومي على واتساب.
+        </p>
+
+        <div class="hero-ctas rv">
+          <a href="https://wa.me/966531277423?text=مرحباً،%20أريد%20الاستفسار%20عن%20الباقات"
+             target="_blank" class="btn btn-green" style="font-size:.95rem;padding:15px 30px">
+            <i class="fab fa-whatsapp" style="font-size:1.1rem"></i> استفسر الآن مجاناً
+          </a>
+          <a href="#packages" class="btn btn-outline" style="padding:15px 26px">عرض الباقات</a>
+        </div>
+
+        <div class="capital-chips rv" style="transition-delay:.15s">
+          <div class="chip chip-g">
+            <i class="fas fa-coins" style="color:var(--green);font-size:.95rem"></i>
+            <div>
+              <div style="font-size:.66rem;color:rgba(255,255,255,.4);font-weight:600">الباقة الأولى</div>
+              <div style="font-size:.92rem;font-weight:900;color:var(--green)">رأس مال 37 ريال</div>
+            </div>
+          </div>
+          <div class="chip chip-b">
+            <i class="fas fa-store" style="color:var(--primary);font-size:.95rem"></i>
+            <div>
+              <div style="font-size:.66rem;color:rgba(255,255,255,.4);font-weight:600">الباقة الثانية</div>
+              <div style="font-size:.92rem;font-weight:900;color:var(--primary)">رأس مال 129 ريال</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: visual card -->
+      <div class="hero-visual rv right" style="transition-delay:.2s">
+        <div class="hv-card">
+          <div class="hv-glow"></div>
+          <div style="font-size:.72rem;font-weight:700;color:rgba(255,255,255,.35);margin-bottom:16px;text-align:center;text-transform:uppercase;letter-spacing:.08em">
+            خطط الاشتراك
+          </div>
+
+          <div class="hv-pkg" style="border-color:rgba(37,211,102,.2)">
+            <div class="pkg-row">
+              <span style="font-weight:800;font-size:.9rem;color:var(--green)">بدون متجر</span>
+              <span style="font-size:1.5rem;font-weight:900">99<small style="font-size:.7rem;font-weight:700"> ر.س</small></span>
+            </div>
+            <div style="font-size:.7rem;color:rgba(255,255,255,.35);font-weight:600;margin-bottom:9px">
+              🪙 رأس مال ابتداءً من <strong style="color:var(--green)">37 ريال</strong>
+            </div>
+            <a href="https://wa.me/966531277423?text=أريد%20الاستفسار%20عن%20باقة%20بدون%20متجر"
+               target="_blank" class="pkg-wa" style="background:linear-gradient(135deg,var(--green),#1db954)">
+              <i class="fab fa-whatsapp"></i> استفسر عن هذه الباقة
+            </a>
+          </div>
+
+          <div class="hv-pkg" style="border-color:rgba(59,130,246,.2)">
+            <div style="position:absolute;top:9px;left:9px;background:linear-gradient(135deg,var(--gold),#f97316);
+              color:#fff;padding:2px 9px;border-radius:99px;font-size:.6rem;font-weight:800;box-shadow:0 2px 8px rgba(245,158,11,.35)">⭐ الأكثر طلباً</div>
+            <div class="pkg-row" style="padding-top:18px">
+              <span style="font-weight:800;font-size:.9rem;color:#60a5fa">مع متجر</span>
+              <span style="font-size:1.5rem;font-weight:900">129<small style="font-size:.7rem;font-weight:700"> ر.س</small></span>
+            </div>
+            <div style="font-size:.7rem;color:rgba(255,255,255,.35);font-weight:600;margin-bottom:9px">
+              🪙 رأس مال ابتداءً من <strong style="color:#60a5fa">129 ريال</strong>
+            </div>
+            <a href="https://wa.me/966531277423?text=أريد%20الاستفسار%20عن%20باقة%20المتجر%20الإلكتروني"
+               target="_blank" class="pkg-wa" style="background:linear-gradient(135deg,var(--primary),#6366f1)">
+              <i class="fab fa-whatsapp"></i> استفسر عن هذه الباقة
+            </a>
+          </div>
+
+          <div class="hv-stat">
+            <div class="stat-box">
+              <div class="stat-num" style="color:var(--green)">500+</div>
+              <div class="stat-lbl">عميل</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-num" style="color:var(--gold)">98%</div>
+              <div class="stat-lbl">رضا</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-num" style="color:var(--primary)">24/7</div>
+              <div class="stat-lbl">دعم</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="glow-divider"/>
+
+<!-- STATS BAR -->
+<div class="stats-bar">
+  <div class="con">
+    <div class="stats-grid">
+      <div class="rv scale stat-item" style="transition-delay:0s">
+        <div class="stat-big" style="background:linear-gradient(135deg,var(--green),#4ade80);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">+500</div>
+        <div class="stat-text">عميل سعيد في المملكة</div>
+      </div>
+      <div class="rv scale stat-item" style="transition-delay:.08s">
+        <div class="stat-big" style="background:linear-gradient(135deg,var(--primary),#818cf8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">37 ر.س</div>
+        <div class="stat-text">أقل رأس مال للبدء</div>
+      </div>
+      <div class="rv scale stat-item" style="transition-delay:.16s">
+        <div class="stat-big" style="background:linear-gradient(135deg,var(--gold),#f97316);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">98%</div>
+        <div class="stat-text">نسبة رضا العملاء</div>
+      </div>
+      <div class="rv scale stat-item" style="transition-delay:.24s">
+        <div class="stat-big" style="color:#fff">24/7</div>
+        <div class="stat-text">دعم فني على واتساب</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="glow-divider"/>
+
+<!-- PACKAGES -->
+<section id="packages" class="sec" style="background:var(--bg2);position:relative;overflow:hidden">
+  <div class="blob" style="width:400px;height:400px;background:rgba(99,102,241,.05);top:-100px;left:50%;transform:translateX(-50%)"></div>
+  <div class="con" style="position:relative;z-index:1">
+    <div class="rv" style="text-align:center;margin-bottom:44px">
+      <div class="sec-tag">💎 خطط الاشتراك</div>
+      <h2 class="sec-title">اختر الباقة المناسبة لك</h2>
+      <p class="sec-sub">تواصل معنا أولاً قبل الاشتراك — نساعدك تختار الأنسب لك 💬</p>
+    </div>
+
+    <div class="pkg-grid">
+      <!-- Package 1 -->
+      <div class="rv left pkg-card" style="border:1px solid rgba(37,211,102,.2)">
+        <div class="pkg-top" style="background:linear-gradient(90deg,#25D366,#4ade80,#25D366)"></div>
+        <div class="pkg-glow" style="background:radial-gradient(circle,rgba(37,211,102,.1),transparent 70%)"></div>
+        <div class="pkg-body">
+          <div class="pkg-badge" style="background:rgba(37,211,102,.1);border:1px solid rgba(37,211,102,.2);color:#4ade80">
+            📱 الباقة الأولى
+          </div>
+          <h3 class="pkg-title">بدون متجر</h3>
+          <p class="pkg-desc">تبيع عبر واتساب وإنستغرام — نجهز لك المنتجات، التصاميم، والمحتوى كاملاً.</p>
+
+          <div class="price-box" style="background:rgba(37,211,102,.06);border:1px solid rgba(37,211,102,.15)">
+            <div class="price-main" style="background:linear-gradient(135deg,#25D366,#4ade80);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">
+              <span id="pnd">99</span><span style="font-size:.9rem;font-weight:700"> ر.س / شهر</span>
+            </div>
+            <div class="price-period">شامل الدعم الفني الكامل</div>
+            <div class="price-capital" style="border:1px solid rgba(37,211,102,.12)">
+              <span style="font-size:.95rem">🪙</span>
+              <div>
+                <div class="cap-txt">رأس المال الأدنى للبدء</div>
+                <div style="display:flex;align-items:baseline;gap:4px">
+                  <span class="cap-val" style="color:var(--green);font-size:1.35rem">37</span>
+                  <span style="font-size:.74rem;font-weight:700;color:rgba(255,255,255,.55)">ريال سعودي فقط 🔥</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <ul class="feat-list">
+            <li class="feat-item"><i class="fas fa-circle-check" style="color:#4ade80;font-size:.88rem;flex-shrink:0"></i>تبيع عبر واتساب وإنستغرام بدون متجر</li>
+            <li class="feat-item"><i class="fas fa-circle-check" style="color:#4ade80;font-size:.88rem;flex-shrink:0"></i>منتجات ذات طلب عالي جاهزة</li>
+            <li class="feat-item"><i class="fas fa-circle-check" style="color:#4ade80;font-size:.88rem;flex-shrink:0"></i>تصاميم احترافية لكل منتج</li>
+            <li class="feat-item"><i class="fas fa-circle-check" style="color:#4ade80;font-size:.88rem;flex-shrink:0"></i>مرونة كاملة في أوقاتك</li>
+            <li class="feat-item"><i class="fas fa-circle-check" style="color:#4ade80;font-size:.88rem;flex-shrink:0"></i>دعم فني يومي 24/7</li>
+            <li class="feat-item"><i class="fas fa-circle-check" style="color:#4ade80;font-size:.88rem;flex-shrink:0"></i>تدريب كامل على البيع</li>
+          </ul>
+
+          <a href="https://wa.me/966531277423?text=أريد%20الاستفسار%20عن%20باقة%20بدون%20متجر%20(99%20ر.س)%20رأس%20مال%2037%20ريال"
+             target="_blank" class="inq-btn" style="background:linear-gradient(135deg,#25D366,#1db954);box-shadow:0 4px 20px rgba(37,211,102,.3)">
+            <i class="fab fa-whatsapp" style="font-size:1.1rem"></i> استفسر عن هذه الباقة
+          </a>
+        </div>
+      </div>
+
+      <!-- Package 2 -->
+      <div class="rv right pkg-card" style="border:1px solid rgba(59,130,246,.25);transition-delay:.1s">
+        <div class="popular-badge">⭐ الأكثر طلباً</div>
+        <div class="pkg-top" style="background:linear-gradient(90deg,#3b82f6,#818cf8,#6366f1)"></div>
+        <div class="pkg-glow" style="background:radial-gradient(circle,rgba(59,130,246,.12),transparent 70%)"></div>
+        <div class="pkg-body" style="padding-top:18px">
+          <div class="pkg-badge" style="background:rgba(59,130,246,.1);border:1px solid rgba(59,130,246,.2);color:#60a5fa;margin-top:16px">
+            🛒 الباقة الثانية
+          </div>
+          <h3 class="pkg-title">متجر إلكتروني</h3>
+          <p class="pkg-desc">نبني لك متجرك الاحترافي كاملاً — تصميم، منتجات، دفع إلكتروني، وتدريب.</p>
+
+          <div class="price-box" style="background:rgba(59,130,246,.06);border:1px solid rgba(59,130,246,.15)">
+            <div class="price-main" style="background:linear-gradient(135deg,#3b82f6,#818cf8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">
+              <span id="psd">129</span><span style="font-size:.9rem;font-weight:700"> ر.س / شهر</span>
+            </div>
+            <div class="price-period">شامل الدعم الفني الكامل</div>
+            <div class="price-capital" style="border:1px solid rgba(59,130,246,.12)">
+              <span style="font-size:.95rem">🪙</span>
+              <div>
+                <div class="cap-txt">رأس المال الأدنى للبدء</div>
+                <div style="display:flex;align-items:baseline;gap:4px">
+                  <span class="cap-val" style="color:#60a5fa;font-size:1.35rem">129</span>
+                  <span style="font-size:.74rem;font-weight:700;color:rgba(255,255,255,.55)">ريال سعودي فقط 🔥</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <ul class="feat-list">
+            <li class="feat-item"><i class="fas fa-circle-check" style="color:#60a5fa;font-size:.88rem;flex-shrink:0"></i>متجر إلكتروني جاهز خلال يومين</li>
+            <li class="feat-item"><i class="fas fa-circle-check" style="color:#60a5fa;font-size:.88rem;flex-shrink:0"></i>منتجات ذات طلب عالي مجربة</li>
+            <li class="feat-item"><i class="fas fa-circle-check" style="color:#60a5fa;font-size:.88rem;flex-shrink:0"></i>نظام دفع إلكتروني متكامل</li>
+            <li class="feat-item"><i class="fas fa-circle-check" style="color:#60a5fa;font-size:.88rem;flex-shrink:0"></i>تدريب على إدارة الطلبات</li>
+            <li class="feat-item"><i class="fas fa-circle-check" style="color:#60a5fa;font-size:.88rem;flex-shrink:0"></i>دعم فني مستمر 24/7</li>
+            <li class="feat-item"><i class="fas fa-circle-check" style="color:#60a5fa;font-size:.88rem;flex-shrink:0"></i>تصميم احترافي للمتجر</li>
+          </ul>
+
+          <a href="https://wa.me/966531277423?text=أريد%20الاستفسار%20عن%20باقة%20المتجر%20الإلكتروني%20(129%20ر.س)%20رأس%20مال%20129%20ريال"
+             target="_blank" class="inq-btn" style="background:linear-gradient(135deg,#3b82f6,#6366f1);box-shadow:0 4px 20px rgba(59,130,246,.3)">
+            <i class="fab fa-whatsapp" style="font-size:1.1rem"></i> استفسر عن هذه الباقة
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="rv" style="margin-top:26px;max-width:520px;margin-left:auto;margin-right:auto">
+      <div style="display:flex;align-items:center;justify-content:center;gap:10px;
+        padding:15px 20px;border-radius:16px;
+        background:rgba(245,158,11,.06);border:1px solid rgba(245,158,11,.18)">
+        <i class="fas fa-comment-dots" style="color:var(--gold);font-size:1rem;flex-shrink:0"></i>
+        <p style="font-size:.83rem;font-weight:700;color:rgba(255,255,255,.65)">
+          تواصل معنا قبل الاشتراك لنختار لك الباقة الأنسب بالمجان 💬
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="glow-divider"/>
+
+<!-- SERVICES -->
+<section id="services" class="sec" style="background:var(--bg)">
+  <div class="con">
+    <div class="rv" style="text-align:center;margin-bottom:40px">
+      <div class="sec-tag">✨ خدماتنا</div>
+      <h2 class="sec-title">ليش دخلك؟</h2>
+      <p class="sec-sub">كل ما تحتاجه جاهز — انت فقط تبيع وتكسب</p>
+    </div>
+
+    <div class="svc-grid">
+      <a href="https://wa.me/966531277423?text=استفسر%20عن%20خدمة%20إنشاء%20المتجر" target="_blank" class="rv svc-card">
+        <div class="svc-icon" style="background:rgba(59,130,246,.12);color:#3b82f6"><i class="fas fa-store"></i></div>
+        <div class="svc-body">
+          <div class="svc-title">متجر إلكتروني جاهز</div>
+          <div class="svc-desc">نبنيه من الصفر بتصميم احترافي</div>
+        </div>
+        <i class="fab fa-whatsapp svc-arrow"></i>
+      </a>
+      <a href="https://wa.me/966531277423?text=استفسر%20عن%20المنتجات%20المتاحة" target="_blank" class="rv svc-card">
+        <div class="svc-icon" style="background:rgba(37,211,102,.1);color:#25D366"><i class="fas fa-boxes-stacked"></i></div>
+        <div class="svc-body">
+          <div class="svc-title">منتجات ذات طلب عالي</div>
+          <div class="svc-desc">نختارها لك من السوق السعودي</div>
+        </div>
+        <i class="fab fa-whatsapp svc-arrow"></i>
+      </a>
+      <a href="https://wa.me/966531277423?text=استفسر%20عن%20خدمة%20التصاميم" target="_blank" class="rv svc-card">
+        <div class="svc-icon" style="background:rgba(245,158,11,.1);color:#f59e0b"><i class="fas fa-palette"></i></div>
+        <div class="svc-body">
+          <div class="svc-title">تصاميم احترافية</div>
+          <div class="svc-desc">جاهزة للنشر على السوشيال ميديا</div>
+        </div>
+        <i class="fab fa-whatsapp svc-arrow"></i>
+      </a>
+      <a href="https://wa.me/966531277423?text=مرحباً،%20أحتاج%20مساعدة" target="_blank" class="rv svc-card">
+        <div class="svc-icon" style="background:rgba(139,92,246,.12);color:#8b5cf6"><i class="fas fa-headset"></i></div>
+        <div class="svc-body">
+          <div class="svc-title">دعم فني 24 / 7</div>
+          <div class="svc-desc">واتساب في أي وقت حتى العطل</div>
+        </div>
+        <i class="fab fa-whatsapp svc-arrow"></i>
+      </a>
+      <a href="https://wa.me/966531277423?text=استفسر%20عن%20التدريب%20المجاني" target="_blank" class="rv svc-card">
+        <div class="svc-icon" style="background:rgba(239,68,68,.1);color:#ef4444"><i class="fas fa-graduation-cap"></i></div>
+        <div class="svc-body">
+          <div class="svc-title">تدريب مجاني شامل</div>
+          <div class="svc-desc">بيع رقمي وإدارة طلبات وتسويق</div>
+        </div>
+        <i class="fab fa-whatsapp svc-arrow"></i>
+      </a>
+      <a href="https://wa.me/966531277423?text=استفسر%20عن%20نظام%20الدفع%20الإلكتروني" target="_blank" class="rv svc-card">
+        <div class="svc-icon" style="background:rgba(20,184,166,.1);color:#14b8a6"><i class="fas fa-credit-card"></i></div>
+        <div class="svc-body">
+          <div class="svc-title">دفع إلكتروني متكامل</div>
+          <div class="svc-desc">مدى، فيزا، أبل باي وأكثر</div>
+        </div>
+        <i class="fab fa-whatsapp svc-arrow"></i>
+      </a>
+    </div>
+
+    <div class="rv" style="text-align:center;margin-top:28px">
+      <a href="https://wa.me/966531277423?text=مرحباً،%20أريد%20معرفة%20الخدمات%20بالتفصيل"
+         target="_blank" class="btn btn-green" style="padding:13px 30px;font-size:.9rem">
+        <i class="fab fa-whatsapp"></i> استفسر عن أي خدمة عبر واتساب
+      </a>
+    </div>
+  </div>
+</section>
+
+<hr class="glow-divider"/>
+
+<!-- HOW IT WORKS -->
+<section id="how" class="sec" style="background:var(--bg2)">
+  <div class="con">
+    <div class="rv" style="text-align:center;margin-bottom:40px">
+      <div class="sec-tag">🗺 خطوات البدء</div>
+      <h2 class="sec-title">كيف تبدأ؟</h2>
+      <p class="sec-sub">4 خطوات بسيطة وتبدأ دخلك</p>
+    </div>
+    <div class="steps-grid">
+      <div class="rv scale step-card" style="transition-delay:0s">
+        <div class="step-ico">📲</div>
+        <div class="step-num">١</div>
+        <div class="step-title">تواصل معنا</div>
+        <div class="step-desc">راسلنا على واتساب واختر الباقة الأنسب لك بدون أي التزام</div>
+        <a href="https://wa.me/966531277423?text=مرحباً،%20أريد%20البدء" target="_blank"
+           style="display:flex;align-items:center;justify-content:center;gap:5px;margin-top:14px;
+             background:linear-gradient(135deg,var(--green),#1db954);color:#fff;padding:9px 16px;border-radius:10px;
+             font-size:.76rem;font-weight:700;text-decoration:none;box-shadow:0 3px 12px rgba(37,211,102,.3)">
+          <i class="fab fa-whatsapp"></i> راسلنا
+        </a>
+      </div>
+      <div class="rv scale step-card" style="transition-delay:.1s">
+        <div class="step-ico">💳</div>
+        <div class="step-num">٢</div>
+        <div class="step-title">اشترك بالباقة</div>
+        <div class="step-desc">ادفع قيمة الاشتراك الشهري واحجز مكانك في دخلك</div>
+        <a href="https://wa.me/966531277423?text=أريد%20الاشتراك%20في%20دخلك" target="_blank"
+           style="display:flex;align-items:center;justify-content:center;gap:5px;margin-top:14px;
+             background:linear-gradient(135deg,var(--green),#1db954);color:#fff;padding:9px 16px;border-radius:10px;
+             font-size:.76rem;font-weight:700;text-decoration:none;box-shadow:0 3px 12px rgba(37,211,102,.3)">
+          <i class="fab fa-whatsapp"></i> اشترك
+        </a>
+      </div>
+      <div class="rv scale step-card" style="transition-delay:.2s">
+        <div class="step-ico">🛠️</div>
+        <div class="step-num">٣</div>
+        <div class="step-title">نجهز كل شيء</div>
+        <div class="step-desc">نبني متجرك ونجهز المنتجات والتصاميم خلال يومين فقط</div>
+        <a href="https://wa.me/966531277423?text=متى%20يصير%20متجري%20جاهز؟" target="_blank"
+           style="display:flex;align-items:center;justify-content:center;gap:5px;margin-top:14px;
+             background:linear-gradient(135deg,var(--green),#1db954);color:#fff;padding:9px 16px;border-radius:10px;
+             font-size:.76rem;font-weight:700;text-decoration:none;box-shadow:0 3px 12px rgba(37,211,102,.3)">
+          <i class="fab fa-whatsapp"></i> استفسر
+        </a>
+      </div>
+      <div class="rv scale step-card" style="transition-delay:.3s">
+        <div class="step-ico">💰</div>
+        <div class="step-num">٤</div>
+        <div class="step-title">ابدأ الكسب</div>
+        <div class="step-desc">انطلق وابدأ تحقق دخلك الأول — نحن معك في كل خطوة</div>
+        <a href="https://wa.me/966531277423?text=أريد%20أبدأ%20الكسب%20مع%20دخلك" target="_blank"
+           style="display:flex;align-items:center;justify-content:center;gap:5px;margin-top:14px;
+             background:linear-gradient(135deg,var(--green),#1db954);color:#fff;padding:9px 16px;border-radius:10px;
+             font-size:.76rem;font-weight:700;text-decoration:none;box-shadow:0 3px 12px rgba(37,211,102,.3)">
+          <i class="fab fa-whatsapp"></i> ابدأ
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="glow-divider"/>
+
+<!-- REVIEWS -->
+<section id="reviews" class="sec" style="background:var(--bg)">
+  <div class="con">
+    <div class="rv" style="text-align:center;margin-bottom:40px">
+      <div class="sec-tag">💬 آراء العملاء</div>
+      <h2 class="sec-title">ماذا يقول عملاؤنا؟</h2>
+      <p class="sec-sub">تجارب حقيقية من أشخاص فعلاً بدأوا مع دخلك</p>
+    </div>
+
+    <div id="comments-list" class="comments-grid"></div>
+
+    <div class="rv comment-form" style="margin-top:8px">
+      <h3><i class="fas fa-pen" style="color:var(--green);margin-left:8px"></i>شاركنا تجربتك</h3>
+      <div class="cform-grid">
+        <div class="cfi">
+          <label>اسمك</label>
+          <input id="c-name" type="text" placeholder="محمد أحمد"/>
+        </div>
+        <div class="cfi">
+          <label>مدينتك</label>
+          <select id="c-city">
+            <option value="">اختر مدينتك</option>
+            <option>الرياض</option><option>جدة</option><option>مكة المكرمة</option>
+            <option>المدينة المنورة</option><option>الدمام</option><option>الخبر</option>
+            <option>الطائف</option><option>بريدة</option><option>تبوك</option>
+            <option>أبها</option><option>خميس مشيط</option><option>القصيم</option>
+            <option>نجران</option><option>جيزان</option><option>حائل</option><option>أخرى</option>
+          </select>
+        </div>
+      </div>
+      <div class="cfi" style="margin-bottom:16px">
+        <label>تعليقك</label>
+        <textarea id="c-text" placeholder="شاركنا تجربتك مع دخلك..."></textarea>
+      </div>
+      <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+        <button onclick="submitComment()" class="btn btn-green" style="flex:1;min-width:180px;padding:13px">
+          <i class="fas fa-paper-plane"></i> نشر التعليق
+        </button>
+        <a href="https://wa.me/966531277423?text=لدي%20تعليق%20أو%20استفسار" target="_blank"
+           class="btn" style="flex:1;min-width:180px;padding:13px;background:rgba(37,211,102,.08);
+             border:1px solid rgba(37,211,102,.2);color:var(--green)">
+          <i class="fab fa-whatsapp"></i> تواصل عبر واتساب
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="glow-divider"/>
+
+<!-- SUPPORT -->
+<section class="sec" style="background:var(--bg2)">
+  <div class="con">
+    <div class="rv support-card">
+      <div style="width:78px;height:78px;border-radius:50%;background:rgba(37,211,102,.12);
+        display:flex;align-items:center;justify-content:center;margin:0 auto 22px;
+        font-size:1.9rem;border:2px solid rgba(37,211,102,.22);box-shadow:0 0 40px rgba(37,211,102,.15)">
+        <i class="fab fa-whatsapp" style="color:var(--green)"></i>
+      </div>
+      <h2 style="font-weight:900;font-size:clamp(1.5rem,3vw,2.2rem);margin-bottom:12px;letter-spacing:-.02em">نحن هنا لك دائماً</h2>
+      <p style="color:rgba(255,255,255,.45);font-size:.9rem;font-weight:500;line-height:1.9;margin-bottom:28px;max-width:420px;margin-left:auto;margin-right:auto">
+        فريق دعم متخصص يجاوبك على واتساب — 24 ساعة، 7 أيام في الأسبوع. سواء لديك سؤال أو مشكلة أو استفسار.
+      </p>
+      <a href="https://wa.me/966531277423?text=مرحباً،%20لدي%20استفسار%20عن%20دخلك"
+         target="_blank" class="btn btn-green" style="font-size:1rem;padding:16px 40px">
+        <i class="fab fa-whatsapp" style="font-size:1.2rem"></i> راسلنا على واتساب الآن
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- CTA SECTION -->
+<section class="sec" style="background:var(--bg);position:relative;overflow:hidden">
+  <div class="blob" style="width:500px;height:500px;background:rgba(59,130,246,.06);top:-100px;right:-100px"></div>
+  <div class="blob" style="width:400px;height:400px;background:rgba(37,211,102,.05);bottom:-100px;left:-100px"></div>
+  <div class="con" style="position:relative;z-index:1">
+    <div class="rv cta-section">
+      <div style="font-size:2.6rem;margin-bottom:16px;filter:drop-shadow(0 0 20px rgba(255,255,255,.2))">🚀</div>
+      <h2 style="font-weight:900;font-size:clamp(1.7rem,4.5vw,3rem);margin-bottom:14px;line-height:1.25;letter-spacing:-.03em">
+        ابدأ مشروعك اليوم<br/>براس مال <span style="background:linear-gradient(135deg,var(--green),#4ade80);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">37 ريال فقط</span>
+      </h2>
+      <p style="color:rgba(255,255,255,.45);font-size:.92rem;font-weight:500;line-height:1.9;margin-bottom:32px;max-width:500px;margin-left:auto;margin-right:auto">
+        لا تنتظر الوقت المناسب — الوقت المناسب هو الآن. انضم لأكثر من 500 شخص بدأوا دخلهم معنا.
+      </p>
+      <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap">
+        <a href="https://wa.me/966531277423?text=مرحباً،%20أريد%20أبدأ%20مع%20دخلك%20براس%20مال%2037%20ريال"
+           target="_blank" class="btn btn-green" style="font-size:1rem;padding:16px 34px">
+          <i class="fab fa-whatsapp" style="font-size:1.15rem"></i> ابدأ براس مال 37 ريال
+        </a>
+        <button onclick="openM('reg')" class="btn btn-outline" style="padding:16px 28px;font-size:.95rem">
+          <i class="fas fa-user-plus"></i> سجّل حساب مجاني
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="con">
+    <div class="footer-inner">
+      <div>
+        <div style="font-size:1.6rem;font-weight:900;margin-bottom:8px;letter-spacing:-.02em">دخلك<span style="background:linear-gradient(135deg,var(--green),#4ade80);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">.</span></div>
+        <p style="font-size:.78rem;color:rgba(255,255,255,.3);font-weight:500;line-height:1.8;max-width:280px">
+          منصة التجارة الرقمية السعودية — ابدأ مشروعك الرقمي براس مال 37 ريال فقط.
+        </p>
+        <div class="footer-socials">
+          <a href="https://wa.me/966531277423" target="_blank" class="soc-btn" title="واتساب"><i class="fab fa-whatsapp"></i></a>
+          <a href="#" class="soc-btn" title="إنستغرام"><i class="fab fa-instagram"></i></a>
+          <a href="#" class="soc-btn" title="تويتر X"><i class="fab fa-x-twitter"></i></a>
+          <a href="#" class="soc-btn" title="سناب"><i class="fab fa-snapchat"></i></a>
+          <a href="#" class="soc-btn" title="تيك توك"><i class="fab fa-tiktok"></i></a>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px;font-size:.8rem;font-weight:600;color:rgba(255,255,255,.35)">
+        <a href="#packages" style="color:inherit;text-decoration:none;transition:.2s" onmouseover="this.style.color='#fff'" onmouseout="this.style.color=''">الباقات</a>
+        <a href="#services" style="color:inherit;text-decoration:none;transition:.2s" onmouseover="this.style.color='#fff'" onmouseout="this.style.color=''">الخدمات</a>
+        <a href="#how" style="color:inherit;text-decoration:none;transition:.2s" onmouseover="this.style.color='#fff'" onmouseout="this.style.color=''">كيف يعمل</a>
+        <a href="#reviews" style="color:inherit;text-decoration:none;transition:.2s" onmouseover="this.style.color='#fff'" onmouseout="this.style.color=''">آراء العملاء</a>
+        <a href="https://wa.me/966531277423" target="_blank" style="color:var(--green);text-decoration:none">تواصل معنا</a>
+      </div>
+    </div>
+    <div class="footer-copy">
+      © 2026 دخلك. — جميع الحقوق محفوظة &nbsp;|&nbsp; للاستفسار: واتساب 966531277423+
+    </div>
+  </div>
+</footer>
+
+<!-- FLOATING WA BUTTON + TOAST -->
+<a href="https://wa.me/966531277423?text=مرحباً" target="_blank" id="wa-float" title="راسلنا على واتساب">
+  <i class="fab fa-whatsapp"></i>
+</a>
+<div id="toast"></div>
+
+<!-- JAVASCRIPT -->
+<script>
+const WA   = 'https://wa.me/966531277423';
+const ADME = 'admin@dakhlak.sa';
+const ADMP = 'Admin2025';
+
+const getS  = ()=>{ try{return JSON.parse(localStorage.getItem('dk_s'))||null}catch{return null} };
+const setS  = v => localStorage.setItem('dk_s', JSON.stringify(v));
+const getU  = ()=>{ try{return JSON.parse(localStorage.getItem('dk_u'))||{}}catch{return{}} };
+const setU  = v => localStorage.setItem('dk_u', JSON.stringify(v));
+const getC  = ()=>{ try{return JSON.parse(localStorage.getItem('dk_c'))||{}}catch{return{}} };
+const setC  = v => localStorage.setItem('dk_c', JSON.stringify(v));
+const getCm = ()=>{ try{return JSON.parse(localStorage.getItem('dk_cm'))||[]}catch{return[]} };
+const setCm = v => localStorage.setItem('dk_cm', JSON.stringify(v));
+
+const SEED_COMMENTS = [
+  {name:'أحمد العتيبي',city:'الرياض',text:'والله تجربة ممتازة! بدأت ببيع المنتجات على واتساب وحققت أول دخل في الأسبوع الثاني. الدعم الفني سريع جداً.',stars:5,date:'منذ 3 أيام',color:'#3b82f6'},
+  {name:'سارة الشمري',city:'جدة',text:'كنت خايفة أجرب بس الحمد لله الخطوة كانت صح. رأس المال 37 ريال فقط والأرباح طلعت أكثر مما توقعت.',stars:5,date:'منذ أسبوع',color:'#8b5cf6'},
+  {name:'محمد القحطاني',city:'الدمام',text:'المتجر الإلكتروني صار جاهز في يومين بالضبط. التصاميم احترافية والمنتجات كلها ذات طلب عالي. شكراً دخلك.',stars:5,date:'منذ 12 يوم',color:'#10b981'},
+  {name:'نورة الدوسري',city:'الطائف',text:'خدمة الدعم 24 ساعة شيء مميز. دائماً في الجوال ويجاوبوني فوراً. أنصح كل من يبغى يبدأ مشروعه الرقمي.',stars:5,date:'منذ 18 يوم',color:'#f59e0b'},
+  {name:'فيصل الحربي',city:'أبها',text:'جربت منصات ثانية لكن دخلك الأفضل بفرق. الدعم، المنتجات، والتصاميم كلها على مستوى عالٍ.',stars:5,date:'منذ شهر',color:'#ef4444'},
+  {name:'هند المالكي',city:'القصيم',text:'أنا ما عندي خبرة في التجارة الإلكترونية لكن الفريق درّبني على كل شيء. الآن أدير متجري بكل ثقة.',stars:5,date:'منذ شهر',color:'#14b8a6'},
+];
+
+function renderComments(){
+  const user_cms = getCm();
+  const all = [...SEED_COMMENTS, ...user_cms];
+  const el = document.getElementById('comments-list');
+  if(!el) return;
+  const colors = ['#3b82f6','#8b5cf6','#10b981','#f59e0b','#ef4444','#14b8a6','#f43f5e','#6366f1'];
+  el.innerHTML = all.map((c,i)=>{
+    const col = c.color || colors[i % colors.length];
+    const stars = '★'.repeat(c.stars||5)+'☆'.repeat(5-(c.stars||5));
+    const initial = c.name?.[0] || '?';
+    return `<div class="rv comment-card" style="transition-delay:${(i%3)*0.08}s">
+      <div class="comment-header">
+        <div class="comment-avatar" style="background:${col}20;color:${col};border:1px solid ${col}30">${initial}</div>
+        <div>
+          <div class="comment-name">${c.name}</div>
+          <div class="comment-city"><i class="fas fa-location-dot" style="font-size:.6rem;margin-left:3px"></i>${c.city||''}</div>
+          <div class="comment-stars">${stars}</div>
+        </div>
+      </div>
+      <div class="comment-text">"${c.text}"</div>
+      <div class="comment-date">${c.date||'مؤخراً'}</div>
+    </div>`;
+  }).join('');
+  el.querySelectorAll('.rv').forEach(el=>revObserver.observe(el));
+  setTimeout(()=>el.querySelectorAll('.rv').forEach(el=>{
+    const r=el.getBoundingClientRect();
+    if(r.top<window.innerHeight&&r.bottom>0)el.classList.add('on');
+  }),80);
+}
+
+function submitComment(){
+  const name = document.getElementById('c-name').value.trim();
+  const city = document.getElementById('c-city').value;
+  const text = document.getElementById('c-text').value.trim();
+  if(!name||!text) return showToast('يرجى كتابة اسمك وتعليقك');
+  const cms = getCm();
+  cms.unshift({name,city:city||'غير محدد',text,stars:5,date:'الآن'});
+  setCm(cms);
+  document.getElementById('c-name').value='';
+  document.getElementById('c-city').value='';
+  document.getElementById('c-text').value='';
+  renderComments();
+  showToast('شكراً! تم نشر تعليقك ✅');
+}
+
+function applyConf(){
+  const c=getC();
+  if(c.fs) document.documentElement.style.setProperty('--fs',c.fs);
+  if(c.sp) document.getElementById('psd').textContent=c.sp;
+  if(c.np) document.getElementById('pnd').textContent=c.np;
+}
+
+function applySession(){
+  const s=getS();
+  const nu=document.getElementById('nav-user');
+  const na=document.getElementById('nav-auth');
+  const at=document.getElementById('admin-tab');
+  if(s){
+    document.getElementById('nav-uname').textContent=s.name;
+    nu.style.display='flex'; na.style.display='none';
+    if(isRealAdmin(s)) at.style.display='block';
+    else at.style.display='none';
+  } else {
+    nu.style.display='none'; na.style.display='flex';
+    at.style.display='none';
+    document.getElementById('admin-panel').classList.remove('open');
+  }
+}
+
+function loadAnn(){
+  const c=getC();
+  if(c.ann){
+    document.getElementById('ann-bar').textContent='📢 '+c.ann;
+    document.getElementById('ann-bar').style.display='block';
+    if(document.getElementById('ann-input'))
+      document.getElementById('ann-input').value=c.ann;
+  }
+}
+
+let revObserver;
+function showAll(){ document.querySelectorAll('.rv').forEach(el=>el.classList.add('on')); }
+function checkVisible(){
+  document.querySelectorAll('.rv').forEach(el=>{
+    const r=el.getBoundingClientRect();
+    if(r.top<window.innerHeight+60&&r.bottom>-60) el.classList.add('on');
+  });
+}
+function revealInit(){
+  checkVisible();
+  setTimeout(checkVisible,120);
+  setTimeout(showAll,900);
+  if(!('IntersectionObserver' in window)){ showAll(); return; }
+  revObserver = new IntersectionObserver(entries=>{
+    entries.forEach(e=>{if(e.isIntersecting) e.target.classList.add('on');});
+  },{threshold:0,rootMargin:'0px 0px 60px 0px'});
+  document.querySelectorAll('.rv').forEach(el=>revObserver.observe(el));
+}
+
+function openM(t){
+  document.getElementById('auth-modal').classList.add('show');
+  switchTab(t||'login');
+}
+function closeM(){document.getElementById('auth-modal').classList.remove('show');}
+function outsideClose(e){if(e.target===document.getElementById('auth-modal'))closeM();}
+function switchTab(t){
+  const il=t==='login';
+  document.getElementById('f-login').style.display=il?'block':'none';
+  document.getElementById('f-reg').style.display=il?'none':'block';
+  document.getElementById('t-login').classList.toggle('act',il);
+  document.getElementById('t-reg').classList.toggle('act',!il);
+}
+
+function doReg(){
+  const name  = document.getElementById('r-name').value.trim();
+  const email = document.getElementById('r-email').value.trim().toLowerCase();
+  const city  = document.getElementById('r-city').value;
+  const pass  = document.getElementById('r-pass').value;
+  const err   = document.getElementById('r-err');
+  if(!name||!email||!pass) return showErr(err,'يرجى تعبئة جميع الحقول');
+  if(!city) return showErr(err,'يرجى اختيار مدينتك');
+  if(pass.length<6) return showErr(err,'كلمة المرور يجب أن تكون 6 أحرف+');
+  const us=getU();
+  if(us[email]||email===ADME) return showErr(err,'البريد الإلكتروني مستخدم من قبل');
+  us[email]={name,email,city,pass,created:Date.now()};
+  setU(us);
+  setS({name,email,city,isAdmin:false});
+  closeM();
+  showWelcome(name);
+}
+
+function doLogin(){
+  const email = document.getElementById('l-email').value.trim().toLowerCase();
+  const pass  = document.getElementById('l-pass').value;
+  const err   = document.getElementById('l-err');
+  if(!email||!pass) return showErr(err,'يرجى تعبئة جميع الحقول');
+  if(email===ADME&&pass===ADMP){
+    setS({name:'الأدمن',email,isAdmin:true});
+    closeM(); applySession(); showToast('أهلاً أيها الأدمن 👑');
+    return;
+  }
+  const us=getU();
+  if(!us[email]||us[email].pass!==pass) return showErr(err,'البريد أو كلمة المرور غير صحيحة');
+  setS({name:us[email].name,email,isAdmin:false});
+  closeM(); applySession(); showToast('أهلاً بك، '+us[email].name+' 👋');
+}
+
+function doLogout(){localStorage.removeItem('dk_s');applySession();showToast('تم تسجيل الخروج');}
+function showErr(el,msg){el.textContent=msg;el.style.display='block';setTimeout(()=>el.style.display='none',3200);}
+
+function showWelcome(name){
+  const ov=document.getElementById('wov');
+  document.getElementById('wname').textContent='مرحباً، '+name+' 🎊';
+  ov.classList.add('show');
+  setTimeout(()=>{
+    const bar=document.getElementById('wbar');
+    if(bar) bar.style.width='90%';
+  },100);
+  setTimeout(()=>{
+    ov.style.transition='opacity .6s ease';
+    ov.style.opacity='0';
+    setTimeout(()=>{
+      ov.classList.remove('show');
+      ov.style.opacity='';
+      ov.style.transition='';
+      applySession();
+    },600);
+  },3000);
+}
+
+function isRealAdmin(s){ return s&&s.isAdmin===true&&s.email===ADME; }
+function toggleAdmin(){
+  const s=getS();
+  if(!isRealAdmin(s)){showToast('غير مصرح 🚫');return;}
+  document.getElementById('admin-panel').classList.toggle('open');
+  loadUsers();
+}
+function closeAdmin(){document.getElementById('admin-panel').classList.remove('open');}
+function adminOut(){
+  localStorage.removeItem('dk_s');
+  document.getElementById('admin-panel').classList.remove('open');
+  applySession();
+  showToast('تم تسجيل خروج الأدمن');
+}
+
+let editOn=false;
+function toggleEdit(){
+  editOn=!editOn;
+  document.querySelectorAll('h1,h2,h3,p,li').forEach(el=>{
+    el.contentEditable=editOn;
+    el.style.outline=editOn?'1px dashed rgba(59,130,246,.4)':'none';
+    el.style.borderRadius=editOn?'4px':'';
+  });
+  document.getElementById('edit-btn').textContent=editOn?'إيقاف التعديل':'تفعيل وضع التعديل';
+  showToast(editOn?'وضع التعديل مفعّل — انقر على أي نص':'تم إيقاف التعديل');
+}
+
+function setFont(s){
+  const m={sm:'.9rem',md:'1rem',lg:'1.12rem'};
+  document.documentElement.style.setProperty('--fs',m[s]);
+  const c=getC(); c.fs=m[s]; setC(c);
+  showToast('تم تغيير حجم الخط');
+}
+
+function pubAnn(){
+  const t=document.getElementById('ann-input').value.trim();
+  if(!t) return;
+  document.getElementById('ann-bar').textContent='📢 '+t;
+  document.getElementById('ann-bar').style.display='block';
+  const c=getC(); c.ann=t; setC(c);
+  showToast('تم نشر الإعلان ✅');
+}
+function delAnn(){
+  document.getElementById('ann-bar').style.display='none';
+  document.getElementById('ann-input').value='';
+  const c=getC(); delete c.ann; setC(c);
+  showToast('تم حذف الإعلان');
+}
+
+function updPrices(){
+  const sp=document.getElementById('adm-sp').value;
+  const np=document.getElementById('adm-np').value;
+  document.getElementById('psd').textContent=sp;
+  document.getElementById('pnd').textContent=np;
+  const c=getC(); c.sp=sp; c.np=np; setC(c);
+  showToast('تم تحديث الأسعار ✅');
+}
+
+function loadUsers(){
+  const us=getU(), k=Object.keys(us);
+  const el=document.getElementById('users-list');
+  if(!k.length){el.innerHTML='<div style="color:#4b5563;font-size:.72rem;padding:4px">لا يوجد مستخدمون بعد</div>';return;}
+  el.innerHTML=k.map(e=>`
+    <div style="display:flex;align-items:center;gap:6px;padding:5px 7px;border-radius:7px;background:rgba(255,255,255,.04)">
+      <div style="width:22px;height:22px;border-radius:50%;background:rgba(147,51,234,.25);
+        color:#a855f7;display:flex;align-items:center;justify-content:center;font-size:.6rem;font-weight:800;flex-shrink:0">
+        ${us[e].name?.[0]||'?'}
+      </div>
+      <div style="overflow:hidden">
+        <div style="font-weight:700;font-size:.7rem;color:rgba(255,255,255,.72);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${us[e].name}</div>
+        <div style="font-size:.6rem;color:#4b5563;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${us[e].city||''} · ${e}</div>
+      </div>
+    </div>`).join('');
+}
+
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2400);
+}
+
+document.addEventListener('click',e=>{
+  const a=e.target.closest('a[href^="#"]');
+  if(a){
+    const target=document.querySelector(a.getAttribute('href'));
+    if(target){
+      e.preventDefault();
+      target.scrollIntoView({behavior:'smooth',block:'start'});
+    }
+  }
+});
+
+window.addEventListener('DOMContentLoaded',()=>{
+  applyConf();
+  applySession();
+  loadAnn();
+  revealInit();
+  renderComments();
+});
+</script>
+</body>
+</html>
