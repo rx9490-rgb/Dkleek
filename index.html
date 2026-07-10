@@ -1,0 +1,1016 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>دخلك. — ابدأ تجارتك براس مال 37 ريال</title>
+<meta name="description" content="ابدأ تجارتك الرقمية في السعودية براس مال 37 ريال فقط. متجر إلكتروني جاهز خلال يومين، منتجات ذات طلب عالي، ودعم فني 24/7 على واتساب."/>
+<meta property="og:title" content="دخلك. — ابدأ تجارتك براس مال 37 ريال"/>
+<meta property="og:description" content="ابدأ تجارتك الرقمية في السعودية براس مال 37 ريال فقط."/>
+<meta property="og:type" content="website"/>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-font-smoothing:antialiased}
+:root{--bg:#080b12;--bg2:#0d1117;--card:#0f1520;--green:#22c55e;--green2:#16a34a;--border:rgba(255,255,255,.07);--text:rgba(255,255,255,.55)}
+html{scroll-behavior:smooth;overflow-x:hidden}
+body{font-family:'Cairo',sans-serif;background:var(--bg);color:#fff;overflow-x:hidden}
+a{text-decoration:none}
+.con{max-width:1100px;margin:0 auto;padding:0 20px}
+
+/* ── Scroll reveal ── */
+.rv{opacity:0;transform:translateY(20px);transition:opacity .45s ease,transform .45s ease}
+.rv.on{opacity:1;transform:none}
+
+/* ── NAV ── */
+nav{position:fixed;top:0;inset-inline:0;z-index:200;height:64px;
+  background:rgba(8,11,18,.9);backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border)}
+.nav-inner{height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 20px}
+.logo-nav{font-size:1.45rem;font-weight:900;color:var(--green);letter-spacing:-.02em;cursor:default}
+.nav-mid a{font-size:.85rem;font-weight:700;color:rgba(255,255,255,.6);transition:.2s}
+.nav-mid a:hover{color:#fff}
+.btn-start{background:var(--green);color:#fff;font-family:'Cairo',sans-serif;font-weight:800;
+  font-size:.82rem;padding:9px 22px;border-radius:99px;border:none;cursor:pointer;transition:.2s}
+.btn-start:hover{background:var(--green2);transform:translateY(-1px)}
+
+/* ── LOGIN PAGE ── */
+#login-page{display:none;min-height:100vh;background:var(--bg);padding:0 20px;
+  flex-direction:column;align-items:center;justify-content:center}
+#login-page.show{display:flex}
+.login-back{position:absolute;top:24px;right:24px;font-size:.82rem;font-weight:700;
+  color:rgba(255,255,255,.4);transition:.2s;cursor:pointer;display:flex;align-items:center;gap:6px}
+.login-back:hover{color:#fff}
+.login-logo{font-size:2.2rem;font-weight:900;color:var(--green);letter-spacing:-.03em;margin-bottom:10px}
+.login-heading{font-size:1.8rem;font-weight:900;margin-bottom:6px;text-align:center;letter-spacing:-.02em}
+.login-sub{color:var(--text);font-size:.85rem;font-weight:500;text-align:center;margin-bottom:28px}
+.login-box{background:var(--card);border:1px solid var(--border);border-radius:20px;
+  padding:28px 24px;width:100%;max-width:400px}
+.fi{display:flex;flex-direction:column;gap:5px;margin-bottom:14px}
+.fi label{font-size:.76rem;font-weight:700;color:rgba(255,255,255,.4);text-align:right}
+.fi input{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);
+  border-radius:12px;padding:13px 16px;color:#fff;font-family:'Cairo',sans-serif;
+  font-size:.9rem;width:100%;transition:.2s;text-align:right}
+.fi input::placeholder{color:rgba(255,255,255,.2)}
+.fi input:focus{outline:none;border-color:var(--green);background:rgba(34,197,94,.04)}
+.btn-login{width:100%;background:var(--green);color:#fff;font-family:'Cairo',sans-serif;
+  font-weight:800;font-size:1rem;padding:14px;border-radius:14px;border:none;cursor:pointer;
+  transition:.2s;margin-top:4px}
+.btn-login:hover{background:var(--green2);transform:translateY(-1px)}
+.err-msg{color:#f87171;font-size:.74rem;text-align:center;display:none;margin-top:6px}
+.login-switch{font-size:.83rem;font-weight:600;color:rgba(255,255,255,.4);
+  text-align:center;margin-top:18px}
+.login-switch a{color:var(--green);cursor:pointer;font-weight:700}
+.tab-row{display:flex;background:rgba(255,255,255,.04);border-radius:12px;padding:4px;margin-bottom:20px}
+.tab-btn{flex:1;padding:9px 0;border:none;background:transparent;color:rgba(255,255,255,.4);
+  font-family:'Cairo',sans-serif;font-weight:700;font-size:.84rem;border-radius:9px;cursor:pointer;transition:.2s}
+.tab-btn.act{background:var(--green);color:#fff}
+.fi select{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);
+  border-radius:12px;padding:13px 16px;color:#fff;font-family:'Cairo',sans-serif;
+  font-size:.9rem;width:100%;transition:.2s}
+.fi select:focus{outline:none;border-color:var(--green)}
+.fi select option{background:#0d1117}
+
+/* ── MAIN PAGE ── */
+#main-page{display:block}
+#main-page.hide{display:none}
+
+/* ── HERO ── */
+#hero{min-height:100vh;display:flex;align-items:center;padding:100px 0 60px;position:relative;overflow:hidden}
+#hero::before{content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 80% 60% at 50% -5%,rgba(34,197,94,.08) 0%,transparent 65%);
+  pointer-events:none}
+.hero-badge{display:inline-flex;align-items:center;gap:7px;padding:7px 16px;border-radius:99px;
+  font-size:.78rem;font-weight:700;background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.18);
+  color:rgba(255,255,255,.7);margin-bottom:22px}
+.hero-badge span{color:var(--green);font-weight:800}
+.hero-title{font-size:clamp(2.4rem,7vw,4.2rem);font-weight:900;line-height:1.15;
+  margin-bottom:18px;letter-spacing:-.03em}
+.hero-title .price{color:var(--green)}
+.hero-title .only{color:rgba(255,255,255,.55);font-size:clamp(1.8rem,5vw,3rem)}
+.hero-sub{font-size:clamp(.88rem,2vw,1rem);color:var(--text);font-weight:500;
+  line-height:1.9;margin-bottom:32px;max-width:480px}
+.hero-btns{display:flex;flex-direction:column;gap:12px;max-width:360px}
+.btn-hero-main{display:flex;align-items:center;justify-content:center;gap:8px;
+  background:var(--green);color:#fff;font-family:'Cairo',sans-serif;font-weight:800;
+  font-size:1rem;padding:16px 28px;border-radius:14px;border:none;cursor:pointer;
+  transition:.2s;text-decoration:none}
+.btn-hero-main:hover{background:var(--green2);transform:translateY(-2px)}
+.btn-hero-wa{display:flex;align-items:center;justify-content:center;gap:8px;
+  background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.7);
+  font-family:'Cairo',sans-serif;font-weight:700;font-size:.95rem;padding:14px 28px;
+  border-radius:14px;cursor:pointer;transition:.2s;text-decoration:none}
+.btn-hero-wa:hover{background:rgba(255,255,255,.08);color:#fff}
+@media(max-width:640px){.hero-btns{max-width:100%}}
+
+/* ── STATS ── */
+.stats-sec{padding:50px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0}
+.stat-col{text-align:center;padding:16px 10px;position:relative}
+.stat-col:not(:last-child)::after{content:'';position:absolute;top:15%;bottom:15%;left:0;
+  width:1px;background:var(--border)}
+.stat-num{font-size:clamp(1.8rem,5vw,2.8rem);font-weight:900;color:var(--green);
+  margin-bottom:4px;letter-spacing:-.03em}
+.stat-lbl{font-size:.78rem;font-weight:600;color:rgba(255,255,255,.35)}
+
+/* ── SECTION ── */
+.sec{padding:80px 0}
+.sec-title{font-size:clamp(1.8rem,4vw,2.8rem);font-weight:900;margin-bottom:8px;letter-spacing:-.02em}
+.sec-sub{font-size:.88rem;color:var(--text);font-weight:500}
+
+/* ── PACKAGES ── */
+.pkg-list{display:flex;flex-direction:column;gap:16px;max-width:480px;margin:36px auto 0}
+.pkg-card{background:var(--card);border:1px solid rgba(255,255,255,.08);border-radius:22px;padding:28px}
+.pkg-card.featured{border-color:var(--green);position:relative}
+.pkg-top-badge{display:inline-flex;padding:3px 12px;border-radius:99px;
+  font-size:.68rem;font-weight:800;background:rgba(255,255,255,.06);color:rgba(255,255,255,.45);
+  margin-bottom:12px}
+.pkg-popular-badge{position:absolute;top:20px;left:20px;background:var(--green);
+  color:#fff;padding:4px 12px;border-radius:99px;font-size:.68rem;font-weight:800}
+.pkg-name{font-size:1.4rem;font-weight:900;margin-bottom:4px;letter-spacing:-.02em}
+.pkg-price{font-size:2.4rem;font-weight:900;color:var(--green);line-height:1;margin-bottom:2px}
+.pkg-period{font-size:.78rem;color:rgba(255,255,255,.35);font-weight:600;margin-bottom:20px}
+.feat-list{list-style:none;display:flex;flex-direction:column;gap:11px;margin-bottom:22px}
+.feat-item{display:flex;align-items:center;gap:10px;font-size:.86rem;font-weight:600;color:rgba(255,255,255,.75)}
+.feat-item i{color:var(--green);font-size:.88rem;flex-shrink:0}
+.pkg-btn{display:flex;align-items:center;justify-content:center;
+  width:100%;padding:14px;border-radius:14px;font-family:'Cairo',sans-serif;
+  font-weight:800;font-size:.92rem;border:none;cursor:pointer;transition:.2s;text-decoration:none}
+.pkg-btn-dark{background:rgba(255,255,255,.07);color:rgba(255,255,255,.7)}
+.pkg-btn-dark:hover{background:rgba(255,255,255,.12);color:#fff}
+.pkg-btn-green{background:var(--green);color:#fff}
+.pkg-btn-green:hover{background:var(--green2);transform:translateY(-1px)}
+
+/* ── HOW IT WORKS ── */
+.steps-list{display:flex;flex-direction:column;gap:14px;max-width:480px;margin:36px auto 0}
+.step-card{background:var(--card);border:1px solid var(--border);border-radius:18px;
+  padding:22px 22px;display:flex;align-items:flex-start;gap:16px}
+.step-num{width:40px;height:40px;border-radius:50%;background:var(--green);
+  display:flex;align-items:center;justify-content:center;font-weight:900;font-size:1rem;
+  color:#fff;flex-shrink:0}
+.step-title{font-weight:800;font-size:.95rem;margin-bottom:4px}
+.step-desc{font-size:.78rem;color:var(--text);font-weight:500;line-height:1.6}
+
+/* ── FAQ ── */
+.faq-list{display:flex;flex-direction:column;gap:10px;max-width:640px;margin:36px auto 0}
+.faq-item{background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden;transition:.25s}
+.faq-item.open{border-color:rgba(34,197,94,.2)}
+.faq-q{display:flex;align-items:center;justify-content:space-between;gap:12px;
+  padding:18px 20px;cursor:pointer;font-weight:700;font-size:.9rem;color:rgba(255,255,255,.85);user-select:none}
+.faq-arrow{width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,.05);
+  display:flex;align-items:center;justify-content:center;font-size:.7rem;color:rgba(255,255,255,.4);
+  transition:.3s;flex-shrink:0}
+.faq-item.open .faq-arrow{background:rgba(34,197,94,.12);color:var(--green);transform:rotate(180deg)}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .35s ease}
+.faq-a-inner{padding:0 20px 18px;font-size:.84rem;color:rgba(255,255,255,.45);font-weight:500;line-height:1.85}
+
+/* ── FOOTER ── */
+footer{padding:50px 20px 32px;border-top:1px solid var(--border);text-align:center}
+.footer-logo{font-size:2rem;font-weight:900;color:var(--green);letter-spacing:-.03em;margin-bottom:10px}
+.footer-tagline{font-size:.85rem;color:rgba(255,255,255,.35);font-weight:500;margin-bottom:22px}
+.footer-copy{font-size:.72rem;color:rgba(255,255,255,.18);font-weight:600}
+
+/* ── FLOATING WA ── */
+#wa-float{position:fixed;bottom:24px;left:24px;z-index:500;width:54px;height:54px;
+  border-radius:50%;background:var(--green);display:flex;align-items:center;
+  justify-content:center;color:#fff;font-size:1.5rem;text-decoration:none;
+  box-shadow:0 6px 24px rgba(34,197,94,.4);animation:wapulse 2.5s ease-in-out infinite}
+@keyframes wapulse{0%,100%{box-shadow:0 6px 24px rgba(34,197,94,.4)}50%{box-shadow:0 6px 40px rgba(34,197,94,.65),0 0 0 12px rgba(34,197,94,.07)}}
+
+/* ── TOAST ── */
+#toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%);
+  background:#0f1520;color:#fff;padding:11px 22px;border-radius:99px;
+  font-size:.82rem;font-weight:700;z-index:10000;opacity:0;transition:.3s;
+  pointer-events:none;white-space:nowrap;border:1px solid rgba(255,255,255,.1)}
+#toast.show{opacity:1}
+
+/* ── ANNOUNCEMENT ── */
+#ann-bar{display:none;text-align:center;padding:10px 16px;font-size:.82rem;font-weight:700;
+  background:linear-gradient(90deg,#f59e0b,#f97316);color:#fff;z-index:300;position:relative}
+
+/* ══════════════════════
+   ADMIN DASHBOARD
+══════════════════════ */
+#adm-dash{position:fixed;inset:0;z-index:9999;background:#020812;display:none;flex-direction:column;overflow:hidden;font-family:'Cairo',sans-serif}
+#adm-dash.show{display:flex}
+.dash-header{height:56px;background:#0a1628;border-bottom:1px solid rgba(255,255,255,.07);
+  display:flex;align-items:center;justify-content:space-between;padding:0 20px;flex-shrink:0}
+.dash-logo{font-size:1.2rem;font-weight:900;color:#fff}.dash-logo span{color:#a78bfa}
+.dash-body{display:flex;flex:1;overflow:hidden}
+.dash-sidebar{width:200px;background:#060e1c;border-left:1px solid rgba(255,255,255,.06);
+  display:flex;flex-direction:column;padding:14px 10px;gap:3px;flex-shrink:0;overflow-y:auto}
+@media(max-width:600px){.dash-sidebar{width:52px;padding:10px 6px}}
+.dash-nav{display:flex;align-items:center;gap:9px;padding:10px 12px;border-radius:11px;
+  cursor:pointer;font-size:.82rem;font-weight:700;color:rgba(255,255,255,.4);
+  transition:.2s;border:1px solid transparent;white-space:nowrap}
+.dash-nav:hover{color:#fff;background:rgba(255,255,255,.05)}
+.dash-nav.act{background:rgba(147,51,234,.15);color:#c4b5fd;border-color:rgba(147,51,234,.2)}
+.dash-nav i{width:18px;text-align:center;font-size:.85rem;flex-shrink:0}
+@media(max-width:600px){.dash-nav span{display:none}}
+.dash-main{flex:1;overflow-y:auto;padding:22px 20px}
+@media(max-width:600px){.dash-main{padding:14px 12px}}
+.dash-page{display:none}.dash-page.act{display:block}
+.dash-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px}
+@media(max-width:900px){.dash-stats{grid-template-columns:repeat(2,1fr)}}
+.dash-stat{background:#0d1628;border:1px solid rgba(255,255,255,.07);border-radius:16px;padding:18px;position:relative;overflow:hidden}
+.dash-stat-icon{width:40px;height:40px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:1rem;margin-bottom:12px}
+.dash-stat-num{font-size:1.8rem;font-weight:900;line-height:1;margin-bottom:4px}
+.dash-stat-lbl{font-size:.7rem;color:rgba(255,255,255,.35);font-weight:600}
+.dash-stat-glow{position:absolute;width:100px;height:100px;border-radius:50%;top:-30px;left:-20px;pointer-events:none;filter:blur(40px);opacity:.45}
+.dash-table{width:100%;border-collapse:collapse;font-size:.82rem}
+.dash-table th{padding:10px 14px;text-align:right;font-size:.7rem;font-weight:700;color:rgba(255,255,255,.35);border-bottom:1px solid rgba(255,255,255,.07);white-space:nowrap}
+.dash-table td{padding:11px 14px;border-bottom:1px solid rgba(255,255,255,.04);color:rgba(255,255,255,.75);vertical-align:middle}
+.dash-table tr:last-child td{border-bottom:none}
+.dash-table tr:hover td{background:rgba(255,255,255,.02)}
+.dash-card{background:#0d1628;border:1px solid rgba(255,255,255,.07);border-radius:16px;overflow:hidden;margin-bottom:18px}
+.dash-card-header{padding:14px 18px;border-bottom:1px solid rgba(255,255,255,.06);display:flex;align-items:center;justify-content:space-between}
+.dash-card-title{font-weight:800;font-size:.88rem;color:#fff}
+.dash-card-body{padding:14px 18px}
+.badge-active{display:inline-flex;padding:3px 10px;border-radius:99px;font-size:.67rem;font-weight:800;background:rgba(34,197,94,.12);color:#4ade80;border:1px solid rgba(34,197,94,.2)}
+.badge-pending{display:inline-flex;padding:3px 10px;border-radius:99px;font-size:.67rem;font-weight:800;background:rgba(245,158,11,.12);color:#fbbf24;border:1px solid rgba(245,158,11,.2)}
+.badge-cancelled{display:inline-flex;padding:3px 10px;border-radius:99px;font-size:.67rem;font-weight:800;background:rgba(239,68,68,.1);color:#f87171;border:1px solid rgba(239,68,68,.15)}
+.badge-paid{display:inline-flex;padding:3px 10px;border-radius:99px;font-size:.67rem;font-weight:800;background:rgba(59,130,246,.12);color:#60a5fa;border:1px solid rgba(59,130,246,.2)}
+.dash-form-grid{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+@media(max-width:600px){.dash-form-grid{grid-template-columns:1fr}}
+.dash-fi{display:flex;flex-direction:column;gap:4px}
+.dash-fi label{font-size:.7rem;font-weight:700;color:rgba(255,255,255,.38)}
+.dash-fi input,.dash-fi select,.dash-fi textarea{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.09);border-radius:10px;padding:9px 12px;color:#fff;font-family:'Cairo',sans-serif;font-size:.84rem;width:100%;transition:.2s}
+.dash-fi input:focus,.dash-fi select:focus,.dash-fi textarea:focus{outline:none;border-color:#7c3aed;background:rgba(124,58,237,.04)}
+.dash-fi select option{background:#0d1628}
+.dash-btn{padding:9px 20px;border:none;border-radius:10px;font-family:'Cairo',sans-serif;font-weight:800;font-size:.82rem;cursor:pointer;transition:.2s;display:inline-flex;align-items:center;gap:6px}
+.dash-btn-purple{background:linear-gradient(135deg,#7c3aed,#6d28d9);color:#fff;box-shadow:0 4px 16px rgba(124,58,237,.25)}
+.dash-btn-purple:hover{transform:translateY(-1px)}
+.dash-btn-green{background:linear-gradient(135deg,#22c55e,#16a34a);color:#fff}
+.dash-btn-red{background:rgba(239,68,68,.13);color:#f87171;border:1px solid rgba(239,68,68,.18)}
+.dash-btn-sm{padding:5px 12px;font-size:.68rem;border-radius:7px;border:none;font-family:'Cairo',sans-serif;font-weight:700;cursor:pointer;transition:.2s}
+.dash-header-btn{padding:7px 14px;border:none;border-radius:9px;font-family:'Cairo',sans-serif;font-size:.74rem;font-weight:700;cursor:pointer;transition:.2s}
+
+/* ── Print invoice ── */
+@media print{body > *:not(#inv-print-area){display:none!important}
+  #inv-print-area{display:block!important;position:fixed;inset:0;background:#fff;color:#000;font-family:'Cairo',sans-serif;padding:40px;z-index:99999}}
+#inv-print-area{display:none}
+
+/* ── User nav ── */
+#nav-user{display:none;align-items:center;gap:8px}
+#nav-uname{font-size:.78rem;font-weight:700;color:rgba(255,255,255,.7)}
+
+@media(max-width:640px){
+  .nav-mid{display:none}
+}
+</style>
+</head>
+<body>
+
+<!-- ══ ADMIN DASHBOARD ══ -->
+<div id="adm-dash">
+  <div class="dash-header">
+    <div class="dash-logo">دخلك<span>.</span> <span style="font-size:.75rem;font-weight:500;color:rgba(255,255,255,.35);margin-right:8px">لوحة التحكم</span></div>
+    <div style="display:flex;gap:8px">
+      <button class="dash-header-btn" style="background:rgba(34,197,94,.15);color:#4ade80" onclick="openDashPage('stats',this)"><i class="fas fa-chart-bar"></i></button>
+      <button class="dash-header-btn dash-btn-red" onclick="dashLogout()"><i class="fas fa-sign-out-alt"></i> خروج</button>
+    </div>
+  </div>
+  <div class="dash-body">
+    <div class="dash-sidebar">
+      <div class="dash-nav act" onclick="openDashPage('stats',this)"><i class="fas fa-chart-bar"></i><span>الإحصائيات</span></div>
+      <div class="dash-nav" onclick="openDashPage('subs',this)"><i class="fas fa-users"></i><span>الاشتراكات</span></div>
+      <div class="dash-nav" onclick="openDashPage('invoices',this)"><i class="fas fa-file-invoice"></i><span>الفواتير</span></div>
+      <div class="dash-nav" onclick="openDashPage('clients',this)"><i class="fas fa-address-book"></i><span>العملاء</span></div>
+      <div class="dash-nav" onclick="openDashPage('settings',this)"><i class="fas fa-cog"></i><span>الإعدادات</span></div>
+    </div>
+    <div class="dash-main">
+
+      <!-- STATS -->
+      <div id="dp-stats" class="dash-page act">
+        <div style="font-weight:900;font-size:1.1rem;margin-bottom:18px">📊 الإحصائيات</div>
+        <div class="dash-stats">
+          <div class="dash-stat"><div class="dash-stat-glow" style="background:#7c3aed"></div><div class="dash-stat-icon" style="background:rgba(124,58,237,.15);color:#a78bfa"><i class="fas fa-eye"></i></div><div class="dash-stat-num" id="ds-visitors" style="color:#a78bfa">—</div><div class="dash-stat-lbl">زيارة</div></div>
+          <div class="dash-stat"><div class="dash-stat-glow" style="background:#22c55e"></div><div class="dash-stat-icon" style="background:rgba(34,197,94,.12);color:#4ade80"><i class="fas fa-user-plus"></i></div><div class="dash-stat-num" id="ds-regs" style="color:#4ade80">0</div><div class="dash-stat-lbl">مسجل جديد</div></div>
+          <div class="dash-stat"><div class="dash-stat-glow" style="background:#f59e0b"></div><div class="dash-stat-icon" style="background:rgba(245,158,11,.12);color:#fbbf24"><i class="fas fa-money-bill-wave"></i></div><div class="dash-stat-num" id="ds-revenue" style="color:#fbbf24">0</div><div class="dash-stat-lbl">إيرادات ر.س</div></div>
+          <div class="dash-stat"><div class="dash-stat-glow" style="background:#3b82f6"></div><div class="dash-stat-icon" style="background:rgba(59,130,246,.12);color:#60a5fa"><i class="fas fa-store"></i></div><div class="dash-stat-num" id="ds-active-subs" style="color:#60a5fa">0</div><div class="dash-stat-lbl">اشتراك نشط</div></div>
+        </div>
+        <div class="dash-card">
+          <div class="dash-card-header"><div class="dash-card-title">آخر الاشتراكات</div></div>
+          <div style="overflow-x:auto">
+            <table class="dash-table"><thead><tr><th>العميل</th><th>الباقة</th><th>التاريخ</th><th>الحالة</th></tr></thead><tbody id="ds-recent-body"><tr><td colspan="4" style="text-align:center;color:rgba(255,255,255,.2);padding:20px">لا توجد اشتراكات بعد</td></tr></tbody></table>
+          </div>
+        </div>
+      </div>
+
+      <!-- SUBSCRIPTIONS -->
+      <div id="dp-subs" class="dash-page">
+        <div style="font-weight:900;font-size:1.1rem;margin-bottom:18px">👥 الاشتراكات</div>
+        <div class="dash-card" style="margin-bottom:18px">
+          <div class="dash-card-header"><div class="dash-card-title">➕ اشتراك جديد</div></div>
+          <div class="dash-card-body">
+            <div class="dash-form-grid" style="margin-bottom:11px">
+              <div class="dash-fi"><label>اسم العميل</label><input id="sub-name" type="text" placeholder="محمد أحمد"/></div>
+              <div class="dash-fi"><label>رقم الجوال</label><input id="sub-phone" type="tel" placeholder="05xxxxxxxx"/></div>
+              <div class="dash-fi"><label>الباقة</label><select id="sub-pkg"><option value="">اختر الباقة</option><option value="no-store">بدون متجر — 99 ر.س</option><option value="store">متجر متكامل — 129 ر.س</option></select></div>
+              <div class="dash-fi"><label>تاريخ البدء</label><input id="sub-date" type="date"/></div>
+              <div class="dash-fi"><label>المبلغ المدفوع (ر.س)</label><input id="sub-amount" type="number" placeholder="99"/></div>
+              <div class="dash-fi"><label>ملاحظات</label><input id="sub-notes" type="text" placeholder="اختياري"/></div>
+            </div>
+            <button onclick="createSub()" class="dash-btn dash-btn-purple"><i class="fas fa-plus"></i> إضافة اشتراك</button>
+          </div>
+        </div>
+        <div class="dash-card">
+          <div class="dash-card-header"><div class="dash-card-title">قائمة الاشتراكات</div><span id="subs-count" style="font-size:.7rem;color:rgba(255,255,255,.3)">0 اشتراك</span></div>
+          <div style="overflow-x:auto"><table class="dash-table"><thead><tr><th>العميل</th><th>الجوال</th><th>الباقة</th><th>المبلغ</th><th>التاريخ</th><th>الحالة</th><th>إجراء</th></tr></thead><tbody id="subs-body"></tbody></table></div>
+        </div>
+      </div>
+
+      <!-- INVOICES -->
+      <div id="dp-invoices" class="dash-page">
+        <div style="font-weight:900;font-size:1.1rem;margin-bottom:18px">🧾 الفواتير</div>
+        <div class="dash-stats" style="grid-template-columns:repeat(3,1fr);margin-bottom:18px">
+          <div class="dash-stat"><div class="dash-stat-num" id="di-total" style="color:#a78bfa">0</div><div class="dash-stat-lbl">إجمالي الفواتير</div></div>
+          <div class="dash-stat"><div class="dash-stat-num" id="di-paid" style="color:#4ade80">0 ر.س</div><div class="dash-stat-lbl">المدفوع</div></div>
+          <div class="dash-stat"><div class="dash-stat-num" id="di-pending" style="color:#fbbf24">0 ر.س</div><div class="dash-stat-lbl">المعلق</div></div>
+        </div>
+        <div class="dash-card" style="margin-bottom:18px">
+          <div class="dash-card-header"><div class="dash-card-title">➕ فاتورة جديدة</div></div>
+          <div class="dash-card-body">
+            <div class="dash-form-grid" style="margin-bottom:11px">
+              <div class="dash-fi"><label>اسم العميل</label><input id="di-client" type="text" placeholder="محمد أحمد"/></div>
+              <div class="dash-fi"><label>رقم الجوال</label><input id="di-phone" type="tel" placeholder="05xxxxxxxx"/></div>
+              <div class="dash-fi"><label>الخدمة</label><select id="di-service"><option value="">اختر الخدمة</option><option>باقة بدون متجر — 99 ر.س</option><option>باقة متجر متكامل — 129 ر.س</option><option>تصاميم احترافية</option><option>دعم فني</option><option>أخرى</option></select></div>
+              <div class="dash-fi"><label>المبلغ (ر.س)</label><input id="di-amount" type="number" placeholder="99"/></div>
+              <div class="dash-fi" style="grid-column:1/-1"><label>ملاحظات</label><input id="di-notes" type="text" placeholder="اختياري"/></div>
+            </div>
+            <button onclick="createInvoice()" class="dash-btn dash-btn-purple"><i class="fas fa-plus"></i> إنشاء فاتورة</button>
+          </div>
+        </div>
+        <div class="dash-card">
+          <div class="dash-card-header"><div class="dash-card-title">سجل الفواتير</div></div>
+          <div style="overflow-x:auto"><table class="dash-table"><thead><tr><th>رقم</th><th>العميل</th><th>الخدمة</th><th>المبلغ</th><th>التاريخ</th><th>الحالة</th><th>إجراء</th></tr></thead><tbody id="inv-body"></tbody></table></div>
+        </div>
+      </div>
+
+      <!-- CLIENTS -->
+      <div id="dp-clients" class="dash-page">
+        <div style="font-weight:900;font-size:1.1rem;margin-bottom:18px">📋 العملاء المسجلون</div>
+        <div class="dash-card">
+          <div class="dash-card-header"><div class="dash-card-title">قائمة العملاء</div><span id="clients-count" style="font-size:.7rem;color:rgba(255,255,255,.3)"></span></div>
+          <div style="overflow-x:auto"><table class="dash-table"><thead><tr><th>الاسم</th><th>البريد</th><th>المدينة</th><th>تاريخ التسجيل</th></tr></thead><tbody id="clients-body"></tbody></table></div>
+        </div>
+      </div>
+
+      <!-- SETTINGS -->
+      <div id="dp-settings" class="dash-page">
+        <div style="font-weight:900;font-size:1.1rem;margin-bottom:18px">⚙️ الإعدادات</div>
+        <div class="dash-card" style="margin-bottom:14px">
+          <div class="dash-card-header"><div class="dash-card-title">الأسعار</div></div>
+          <div class="dash-card-body">
+            <div class="dash-form-grid" style="margin-bottom:12px">
+              <div class="dash-fi"><label>سعر باقة بدون متجر (ر.س)</label><input id="s-np" type="number" value="99"/></div>
+              <div class="dash-fi"><label>سعر باقة المتجر المتكامل (ر.س)</label><input id="s-sp" type="number" value="129"/></div>
+            </div>
+            <button onclick="savePrices()" class="dash-btn dash-btn-purple">💾 حفظ الأسعار</button>
+          </div>
+        </div>
+        <div class="dash-card" style="margin-bottom:14px">
+          <div class="dash-card-header"><div class="dash-card-title">إعلان عاجل</div></div>
+          <div class="dash-card-body">
+            <div class="dash-fi" style="margin-bottom:11px"><label>نص الإعلان</label><input id="s-ann" type="text" placeholder="أكتب الإعلان هنا..."/></div>
+            <div style="display:flex;gap:8px">
+              <button onclick="pubAnn()" class="dash-btn" style="background:rgba(245,158,11,.18);color:#fbbf24">📢 نشر</button>
+              <button onclick="delAnn()" class="dash-btn dash-btn-red">🗑 حذف</button>
+            </div>
+          </div>
+        </div>
+        <div class="dash-card">
+          <div class="dash-card-header"><div class="dash-card-title">الحساب</div></div>
+          <div class="dash-card-body">
+            <button onclick="dashLogout()" class="dash-btn dash-btn-red"><i class="fas fa-sign-out-alt"></i> تسجيل خروج</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ══ PRINT AREA ══ -->
+<div id="inv-print-area"></div>
+
+<!-- ══ ANNOUNCEMENT ══ -->
+<div id="ann-bar"></div>
+
+<!-- ══ LOGIN PAGE ══ -->
+<div id="login-page">
+  <div class="login-back" onclick="showMain()">
+    <i class="fas fa-arrow-left"></i> العودة للرئيسية
+  </div>
+  <div id="login-logo" class="login-logo">دخلك.</div>
+  <div id="login-heading" class="login-heading">عودتك هي بداية جديدة 🚀</div>
+  <div id="login-sub" class="login-sub">قم بتسجيل الدخول لمتابعة مشروعك</div>
+
+  <div class="login-box">
+    <div class="tab-row">
+      <button id="t-login" class="tab-btn act" onclick="switchTab('login')">تسجيل الدخول</button>
+      <button id="t-reg" class="tab-btn" onclick="switchTab('reg')">حساب جديد</button>
+    </div>
+
+    <!-- Login form -->
+    <div id="f-login">
+      <div class="fi"><label>البريد الإلكتروني</label><input id="l-email" type="email" placeholder="name@example.com"/></div>
+      <div class="fi"><label>كلمة المرور</label><input id="l-pass" type="password" placeholder="••••••••"/></div>
+      <div id="l-err" class="err-msg"></div>
+      <button onclick="doLogin()" class="btn-login" style="margin-top:8px">دخول</button>
+    </div>
+
+    <!-- Register form -->
+    <div id="f-reg" style="display:none">
+      <div class="fi"><label>الاسم الكامل</label><input id="r-name" type="text" placeholder="محمد أحمد"/></div>
+      <div class="fi"><label>البريد الإلكتروني</label><input id="r-email" type="email" placeholder="name@example.com"/></div>
+      <div class="fi"><label>المدينة / المنطقة</label>
+        <select id="r-city">
+          <option value="">اختر مدينتك</option>
+          <option>الرياض</option><option>جدة</option><option>مكة المكرمة</option>
+          <option>المدينة المنورة</option><option>الدمام</option><option>الخبر</option>
+          <option>الطائف</option><option>بريدة</option><option>تبوك</option>
+          <option>أبها</option><option>خميس مشيط</option><option>القصيم</option>
+          <option>نجران</option><option>جيزان</option><option>حائل</option><option>أخرى</option>
+        </select>
+      </div>
+      <div class="fi"><label>كلمة المرور (6 أحرف+)</label><input id="r-pass" type="password" placeholder="••••••"/></div>
+      <div id="r-err" class="err-msg"></div>
+      <button onclick="doReg()" class="btn-login" style="margin-top:8px;background:#22c55e">إنشاء الحساب مجاناً</button>
+    </div>
+  </div>
+
+  <div class="login-switch" id="login-switch-text">
+    ليس لديك حساب؟ <a onclick="switchTab('reg')">ابدأ رحلتك من هنا</a>
+  </div>
+</div>
+
+<!-- ══ MAIN PAGE ══ -->
+<div id="main-page">
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <div class="logo-nav">دخلك.</div>
+    <div class="nav-mid">
+      <a href="#" onclick="showLogin(event)">تسجيل الدخول</a>
+    </div>
+    <div style="display:flex;align-items:center;gap:10px">
+      <div id="nav-user">
+        <span id="nav-uname"></span>
+        <button onclick="doLogout()" style="background:rgba(239,68,68,.13);border:none;color:#f87171;padding:6px 12px;border-radius:9px;font-family:'Cairo',sans-serif;font-size:.74rem;font-weight:700;cursor:pointer">خروج</button>
+      </div>
+      <div id="nav-auth">
+        <button class="btn-start" onclick="showLogin(null,'reg')">ابدأ الآن</button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="con">
+    <div class="rv">
+      <div class="hero-badge">
+        <span>⭐</span>
+        <span>أكثر من <span>+500</span> عميل بدأوا رحلتهم معنا</span>
+      </div>
+    </div>
+    <h1 class="hero-title rv" style="transition-delay:.05s">
+      ابدأ تجارتك<br/>
+      براس مال<br/>
+      <span class="price">37 ريال</span> <span class="only">فقط</span>
+    </h1>
+    <p class="hero-sub rv" style="transition-delay:.1s">
+      ابدأ تجارتك الرقمية براس مال 37 ريال فقط — نوفر لك كل ما تحتاجه من تأسيس وهوية ومتجر ودعم فني، بأقل تكلفة في السوق السعودي.
+    </p>
+    <div class="hero-btns rv" style="transition-delay:.15s">
+      <button class="btn-hero-main" onclick="showLogin(null,'reg')">
+        ابدأ رحلتك الآن <i class="fas fa-arrow-left"></i>
+      </button>
+      <a href="https://wa.me/966531277423?text=مرحباً،%20أريد%20الاستفسار%20عن%20دخلك"
+         target="_blank" class="btn-hero-wa">
+        <i class="fab fa-whatsapp"></i> تواصل معنا واتساب
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats-sec">
+  <div class="con">
+    <div class="stats-grid">
+      <div class="stat-col rv">
+        <div class="stat-num">+500</div>
+        <div class="stat-lbl">عميل نشط</div>
+      </div>
+      <div class="stat-col rv" style="transition-delay:.06s">
+        <div class="stat-num">98%</div>
+        <div class="stat-lbl">رضا العملاء</div>
+      </div>
+      <div class="stat-col rv" style="transition-delay:.12s">
+        <div class="stat-num">24/7</div>
+        <div class="stat-lbl">دعم فني مستمر</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PACKAGES -->
+<section id="packages" class="sec" style="background:var(--bg2)">
+  <div class="con" style="text-align:center">
+    <div class="rv">
+      <h2 class="sec-title">ابدأ تجارتك بخطوة واحدة</h2>
+      <p class="sec-sub">ادفع مرة واحدة — واستلم مشروعك خلال 48 ساعة</p>
+    </div>
+    <div class="pkg-list rv" style="transition-delay:.08s">
+
+      <!-- Package 1 -->
+      <div class="pkg-card" style="border-color:rgba(255,255,255,.25)">
+        <div class="pkg-top-badge">باقة البداية</div>
+        <div class="pkg-name">باقة بدون متجر</div>
+        <div style="display:inline-flex;align-items:center;gap:6px;background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.25);border-radius:99px;padding:5px 14px;margin-bottom:14px">
+          <i class="fas fa-bolt" style="color:var(--green);font-size:.75rem"></i>
+          <span style="font-size:.78rem;font-weight:800;color:var(--green)">ابدأ براس مال 37 ريال فقط</span>
+        </div>
+        <div class="pkg-price" id="pnd">99</div>
+        <div class="pkg-period">ريال — تكلفة الباقة</div>
+        <ul class="feat-list">
+          <li class="feat-item"><i class="fas fa-circle-check"></i>تأسيس حسابات السوشيال ميديا</li>
+          <li class="feat-item"><i class="fas fa-circle-check"></i>تصميم هوية بصرية أساسية</li>
+          <li class="feat-item"><i class="fas fa-circle-check"></i>خطة محتوى شهرية</li>
+          <li class="feat-item"><i class="fas fa-circle-check"></i>دعم فني على مدار الساعة</li>
+        </ul>
+        <a href="https://wa.me/966531277423?text=السلام%20عليكم%20%F0%9F%91%8B%0A%0Aأبي%20أبدأ%20تجارتي%20مع%20*باقة%20بدون%20متجر*%20(99%20ر.س)%0A%0Aوش%20الخطوة%20الجاية%3F%20%F0%9F%99%8F"
+           target="_blank" class="pkg-btn pkg-btn-dark">ابدأ بها الآن</a>
+      </div>
+
+      <!-- Package 2 -->
+      <div class="pkg-card featured">
+        <div class="pkg-popular-badge">الأكثر طلباً</div>
+        <div class="pkg-top-badge" style="margin-top:8px">باقة المتجر المتكامل</div>
+        <div class="pkg-name">باقة المتجر المتكامل</div>
+        <div style="display:inline-flex;align-items:center;gap:6px;background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.25);border-radius:99px;padding:5px 14px;margin-bottom:14px">
+          <i class="fas fa-bolt" style="color:var(--green);font-size:.75rem"></i>
+          <span style="font-size:.78rem;font-weight:800;color:var(--green)">ابدأ براس مال 136 ريال + متجر</span>
+        </div>
+        <div class="pkg-price" id="psd">129</div>
+        <div class="pkg-period">ريال — تكلفة الباقة</div>
+        <ul class="feat-list">
+          <li class="feat-item"><i class="fas fa-circle-check"></i>إنشاء متجر إلكتروني متكامل</li>
+          <li class="feat-item"><i class="fas fa-circle-check"></i>تأسيس حسابات السوشيال ميديا</li>
+          <li class="feat-item"><i class="fas fa-circle-check"></i>تصميم هوية بصرية احترافية</li>
+          <li class="feat-item"><i class="fas fa-circle-check"></i>ربط بوابات الدفع</li>
+          <li class="feat-item"><i class="fas fa-circle-check"></i>دعم فني وأولوية في الرد</li>
+        </ul>
+        <a href="https://wa.me/966531277423?text=السلام%20عليكم%20%F0%9F%91%8B%0A%0Aأبي%20أبدأ%20تجارتي%20مع%20*باقة%20المتجر%20المتكامل*%20(129%20ر.س)%0A%0Aوش%20الخطوة%20الجاية%3F%20%F0%9F%99%8F"
+           target="_blank" class="pkg-btn pkg-btn-green">ابدأ بها الآن</a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section id="how" class="sec">
+  <div class="con" style="text-align:center">
+    <div class="rv">
+      <h2 class="sec-title">كيف تبدأ رحلتك؟</h2>
+    </div>
+    <div class="steps-list">
+      <div class="step-card rv" style="transition-delay:0s">
+        <div class="step-num">1</div>
+        <div>
+          <div class="step-title">سجل حسابك</div>
+          <div class="step-desc">بخطوات بسيطة وفي أقل من دقيقة</div>
+        </div>
+      </div>
+      <div class="step-card rv" style="transition-delay:.07s">
+        <div class="step-num">2</div>
+        <div>
+          <div class="step-title">اختر باقتك</div>
+          <div class="step-desc">اختر الباقة المناسبة لطموحك</div>
+        </div>
+      </div>
+      <div class="step-card rv" style="transition-delay:.14s">
+        <div class="step-num">3</div>
+        <div>
+          <div class="step-title">انطلق</div>
+          <div class="step-desc">فريقنا يبدأ العمل على تجهيز مشروعك</div>
+        </div>
+      </div>
+      <div class="step-card rv" style="transition-delay:.21s">
+        <div class="step-num">4</div>
+        <div>
+          <div class="step-title">حقق أرباحك</div>
+          <div class="step-desc">استلم مشروعك وابدأ رحلة النجاح</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq" class="sec" style="background:var(--bg2)">
+  <div class="con" style="text-align:center">
+    <div class="rv">
+      <h2 class="sec-title">الأسئلة الشائعة</h2>
+    </div>
+    <div class="faq-list rv" style="transition-delay:.06s">
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          <span>هل أحتاج إلى خبرة سابقة للبدء؟</span>
+          <span class="faq-arrow"><i class="fas fa-chevron-down"></i></span>
+        </div>
+        <div class="faq-a"><div class="faq-a-inner">لا تحتاج أي خبرة — نوفر لك تدريباً شاملاً من الصفر على البيع والتسويق وإدارة الطلبات، كل شيء خطوة بخطوة.</div></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          <span>متى يتم تسليم المشروع؟</span>
+          <span class="faq-arrow"><i class="fas fa-chevron-down"></i></span>
+        </div>
+        <div class="faq-a"><div class="faq-a-inner">المتجر الإلكتروني يكون جاهزاً خلال يومين عمل فقط من وقت الاشتراك، شاملاً التصميم والمنتجات ونظام الدفع.</div></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          <span>هل هناك رسوم خفية؟</span>
+          <span class="faq-arrow"><i class="fas fa-chevron-down"></i></span>
+        </div>
+        <div class="faq-a"><div class="faq-a-inner">لا يوجد أي رسوم خفية — تدفع مرة واحدة وتستلم خدمتك كاملة، بدون أي التزامات أو تكاليف إضافية.</div></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          <span>كيف يتم تقديم الدعم الفني؟</span>
+          <span class="faq-arrow"><i class="fas fa-chevron-down"></i></span>
+        </div>
+        <div class="faq-a"><div class="faq-a-inner">الدعم الفني يتم عبر واتساب 24 ساعة يومياً، 7 أيام في الأسبوع. فريقنا جاهز للرد على أي استفسار أو مشكلة.</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">دخلك.</div>
+  <div class="footer-tagline">شريكك الرقمي الأول في المملكة العربية السعودية</div>
+  <div class="footer-copy">© 2026 جميع الحقوق محفوظة لمنصة دخلك.</div>
+</footer>
+
+</div><!-- /main-page -->
+
+<!-- FLOATING WA -->
+<a href="https://wa.me/966531277423?text=مرحباً" target="_blank" id="wa-float">
+  <i class="fab fa-whatsapp"></i>
+</a>
+<div id="toast"></div>
+
+<script>
+/* ── Constants ── */
+const WA    = 'https://wa.me/966531277423';
+const ADME  = 'tx.9490@gmail.com';
+const ADMP  = 'Aa0010@@';
+const SK    = 'dk_s_v2';
+
+/* ── Storage helpers ── */
+const getS  = ()=>{ try{return JSON.parse(localStorage.getItem(SK))||null}catch{return null} };
+const setS  = v => localStorage.setItem(SK, JSON.stringify(v));
+const getU  = ()=>{ try{return JSON.parse(localStorage.getItem('dk_u'))||{}}catch{return{}} };
+const setU  = v => localStorage.setItem('dk_u', JSON.stringify(v));
+const getC  = ()=>{ try{return JSON.parse(localStorage.getItem('dk_c'))||{}}catch{return{}} };
+const setC  = v => localStorage.setItem('dk_c', JSON.stringify(v));
+const getSubs = ()=>{ try{return JSON.parse(localStorage.getItem('dk_subs'))||[]}catch{return[]} };
+const setSubs = v => localStorage.setItem('dk_subs', JSON.stringify(v));
+const getInv  = ()=>{ try{return JSON.parse(localStorage.getItem('dk_inv'))||[]}catch{return[]} };
+const setInv  = v => localStorage.setItem('dk_inv', JSON.stringify(v));
+
+/* ── Page navigation ── */
+function showLogin(e, tab){
+  if(e) e.preventDefault();
+  document.getElementById('main-page').classList.add('hide');
+  document.getElementById('login-page').classList.add('show');
+  if(tab) switchTab(tab);
+  else switchTab('login');
+  document.getElementById('wa-float').style.display='none';
+}
+function showMain(){
+  document.getElementById('main-page').classList.remove('hide');
+  document.getElementById('login-page').classList.remove('show');
+  document.getElementById('wa-float').style.display='flex';
+}
+
+/* ── Auth tab switch ── */
+function switchTab(tab){
+  const isLogin = tab==='login';
+  document.getElementById('t-login').classList.toggle('act', isLogin);
+  document.getElementById('t-reg').classList.toggle('act', !isLogin);
+  document.getElementById('f-login').style.display = isLogin?'block':'none';
+  document.getElementById('f-reg').style.display   = isLogin?'none':'block';
+  document.getElementById('login-heading').textContent = isLogin?'عودتك هي بداية جديدة 🚀':'انضم إلى عائلة دخلك 🎉';
+  document.getElementById('login-sub').textContent = isLogin?'قم بتسجيل الدخول لمتابعة مشروعك':'أنشئ حسابك مجاناً وابدأ رحلتك';
+  document.getElementById('login-switch-text').innerHTML = isLogin
+    ? 'ليس لديك حساب؟ <a onclick="switchTab(\'reg\')">ابدأ رحلتك من هنا</a>'
+    : 'لديك حساب؟ <a onclick="switchTab(\'login\')">سجل دخولك الآن</a>';
+}
+
+/* ── Admin check ── */
+function isAdmin(s){ return s && s.email===ADME && s.isAdmin===true; }
+
+/* ── Login ── */
+function doLogin(){
+  const email = document.getElementById('l-email').value.trim().toLowerCase();
+  const pass  = document.getElementById('l-pass').value;
+  const err   = document.getElementById('l-err');
+  err.style.display='none';
+  if(!email||!pass){ err.textContent='يرجى تعبئة جميع الحقول'; err.style.display='block'; return; }
+
+  if(email===ADME && pass===ADMP){
+    const s={email,name:'الأدمن',isAdmin:true};
+    setS(s);
+    showMain();
+    openDashboard();
+    showToast('أهلاً بك أدمن 👑');
+    return;
+  }
+
+  const users = getU();
+  const u = users[email];
+  if(!u || u.pass !== pass){
+    err.textContent='البريد أو كلمة المرور غير صحيحة';
+    err.style.display='block';
+    return;
+  }
+  const s={email,name:u.name,city:u.city};
+  setS(s);
+  showMain();
+  applySession();
+  showToast('أهلاً '+u.name+' 👋');
+}
+
+/* ── Register ── */
+function doReg(){
+  const name  = document.getElementById('r-name').value.trim();
+  const email = document.getElementById('r-email').value.trim().toLowerCase();
+  const city  = document.getElementById('r-city').value;
+  const pass  = document.getElementById('r-pass').value;
+  const err   = document.getElementById('r-err');
+  err.style.display='none';
+  if(!name||!email||!pass){ err.textContent='يرجى تعبئة جميع الحقول'; err.style.display='block'; return; }
+  if(pass.length<6){ err.textContent='كلمة المرور يجب أن تكون 6 أحرف على الأقل'; err.style.display='block'; return; }
+  const users=getU();
+  if(users[email]){ err.textContent='هذا البريد مسجل مسبقاً'; err.style.display='block'; return; }
+  users[email]={name,city,pass,created:Date.now()};
+  setU(users);
+  const s={email,name,city};
+  setS(s);
+  showMain();
+  applySession();
+  showToast('أهلاً بك '+name+' 🎉');
+}
+
+/* ── Logout ── */
+function doLogout(){
+  localStorage.removeItem(SK);
+  applySession();
+  showToast('تم تسجيل الخروج');
+}
+
+/* ── Apply session to UI ── */
+function applySession(){
+  const s=getS();
+  const navUser=document.getElementById('nav-user');
+  const navAuth=document.getElementById('nav-auth');
+  const navUname=document.getElementById('nav-uname');
+  if(s && !s.isAdmin){
+    navUser.style.display='flex';
+    navAuth.style.display='none';
+    navUname.textContent='👤 '+s.name;
+  } else {
+    navUser.style.display='none';
+    navAuth.style.display='flex';
+  }
+}
+
+/* ── Admin Dashboard ── */
+function openDashboard(){
+  document.getElementById('adm-dash').classList.add('show');
+  loadDashStats();
+}
+function dashLogout(){
+  localStorage.removeItem(SK);
+  document.getElementById('adm-dash').classList.remove('show');
+  applySession();
+  showToast('تم تسجيل الخروج');
+}
+function openDashPage(name, btn){
+  document.querySelectorAll('.dash-page').forEach(p=>p.classList.remove('act'));
+  document.querySelectorAll('.dash-nav').forEach(b=>b.classList.remove('act'));
+  document.getElementById('dp-'+name).classList.add('act');
+  if(btn) btn.closest('.dash-nav')?.classList.add('act');
+  if(name==='stats')    loadDashStats();
+  if(name==='subs')     renderSubs();
+  if(name==='invoices') renderInvoices();
+  if(name==='clients')  renderClients();
+  if(name==='settings') loadSettings();
+}
+
+/* ── Stats ── */
+function loadDashStats(){
+  fetch('https://api.countapi.xyz/hit/ko1sm-dakhlak/v1')
+    .then(r=>r.json())
+    .then(d=>{ const e=document.getElementById('ds-visitors'); if(e) e.textContent=d.value||'—'; })
+    .catch(()=>{});
+  const us=getU(), subs=getSubs();
+  const set=(id,v)=>{ const e=document.getElementById(id); if(e) e.textContent=v; };
+  set('ds-regs', Object.keys(us).length);
+  set('ds-revenue', subs.filter(s=>s.status==='active').reduce((a,s)=>a+(+s.amount||0),0));
+  set('ds-active-subs', subs.filter(s=>s.status==='active').length);
+  const tbody=document.getElementById('ds-recent-body');
+  if(tbody){
+    const recent=subs.slice(0,5);
+    tbody.innerHTML = recent.length
+      ? recent.map(s=>`<tr><td>${s.name}</td><td>${s.pkg==='store'?'متجر متكامل':'بدون متجر'}</td><td>${s.date}</td><td>${statusBadge(s.status)}</td></tr>`).join('')
+      : '<tr><td colspan="4" style="text-align:center;color:rgba(255,255,255,.2);padding:20px">لا توجد اشتراكات بعد</td></tr>';
+  }
+}
+function statusBadge(s){ return s==='active'?'<span class="badge-active">نشط</span>':s==='cancelled'?'<span class="badge-cancelled">ملغى</span>':'<span class="badge-pending">معلق</span>'; }
+
+/* ── Subscriptions ── */
+function createSub(){
+  const name=document.getElementById('sub-name').value.trim();
+  const phone=document.getElementById('sub-phone').value.trim();
+  const pkg=document.getElementById('sub-pkg').value;
+  const date=document.getElementById('sub-date').value || new Date().toLocaleDateString('ar-SA');
+  const amount=document.getElementById('sub-amount').value;
+  const notes=document.getElementById('sub-notes').value.trim();
+  if(!name||!pkg) return showToast('يرجى إدخال الاسم والباقة');
+  const subs=getSubs();
+  subs.unshift({id:Date.now(),name,phone,pkg,date,amount:+amount||0,notes,status:'active'});
+  setSubs(subs);
+  ['sub-name','sub-phone','sub-amount','sub-notes'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('sub-pkg').value='';
+  document.getElementById('sub-date').value='';
+  renderSubs(); loadDashStats();
+  showToast('تم إضافة الاشتراك ✅');
+}
+function changeSubStatus(id,status){ setSubs(getSubs().map(s=>s.id===id?{...s,status}:s)); renderSubs(); loadDashStats(); }
+function deleteSub(id){ setSubs(getSubs().filter(s=>s.id!==id)); renderSubs(); loadDashStats(); showToast('تم حذف الاشتراك'); }
+function renderSubs(){
+  const subs=getSubs();
+  const cnt=document.getElementById('subs-count'); if(cnt) cnt.textContent=subs.length+' اشتراك';
+  const tbody=document.getElementById('subs-body'); if(!tbody) return;
+  tbody.innerHTML = subs.length
+    ? subs.map(s=>`<tr><td>${s.name}</td><td>${s.phone||'—'}</td><td>${s.pkg==='store'?'متجر متكامل':'بدون متجر'}</td><td style="font-weight:800;color:#4ade80">${s.amount} ر.س</td><td>${s.date}</td><td>${statusBadge(s.status)}</td><td style="display:flex;gap:4px;flex-wrap:wrap">${s.status!=='active'?`<button class="dash-btn-sm" style="background:rgba(34,197,94,.15);color:#4ade80" onclick="changeSubStatus(${s.id},'active')">تفعيل</button>`:''} ${s.status==='active'?`<button class="dash-btn-sm" style="background:rgba(239,68,68,.12);color:#f87171" onclick="changeSubStatus(${s.id},'cancelled')">إلغاء</button>`:''} <button class="dash-btn-sm" style="background:rgba(255,255,255,.05);color:rgba(255,255,255,.3)" onclick="deleteSub(${s.id})">🗑</button></td></tr>`).join('')
+    : '<tr><td colspan="7" style="text-align:center;color:rgba(255,255,255,.2);padding:20px">لا توجد اشتراكات بعد</td></tr>';
+}
+
+/* ── Invoices ── */
+function createInvoice(){
+  const client=document.getElementById('di-client').value.trim();
+  const phone=document.getElementById('di-phone').value.trim();
+  const service=document.getElementById('di-service').value;
+  const amount=document.getElementById('di-amount').value;
+  const notes=document.getElementById('di-notes').value.trim();
+  if(!client||!amount) return showToast('يرجى إدخال اسم العميل والمبلغ');
+  const invs=getInv();
+  const num='INV-'+String(invs.length+1).padStart(3,'0');
+  const date=new Date().toLocaleDateString('ar-SA');
+  invs.unshift({id:Date.now(),num,client,phone,service,amount:+amount,notes,date,status:'pending'});
+  setInv(invs);
+  ['di-client','di-phone','di-amount','di-notes'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('di-service').value='';
+  renderInvoices();
+  showToast('تم إنشاء الفاتورة '+num+' ✅');
+}
+function changeInvStatus(id,status){ setInv(getInv().map(i=>i.id===id?{...i,status}:i)); renderInvoices(); }
+function deleteInv(id){ setInv(getInv().filter(i=>i.id!==id)); renderInvoices(); showToast('تم حذف الفاتورة'); }
+function renderInvoices(){
+  const invs=getInv();
+  const paid=invs.filter(i=>i.status==='paid').reduce((s,i)=>s+i.amount,0);
+  const pend=invs.filter(i=>i.status==='pending').reduce((s,i)=>s+i.amount,0);
+  const set=(id,v)=>{ const e=document.getElementById(id); if(e) e.textContent=v; };
+  set('di-total',invs.length); set('di-paid',paid+' ر.س'); set('di-pending',pend+' ر.س');
+  const tbody=document.getElementById('inv-body'); if(!tbody) return;
+  const invBadge=s=>s==='paid'?'<span class="badge-paid">مدفوعة</span>':s==='cancelled'?'<span class="badge-cancelled">ملغاة</span>':'<span class="badge-pending">معلقة</span>';
+  tbody.innerHTML = invs.length
+    ? invs.map(inv=>`<tr><td style="color:#a78bfa;font-weight:800">${inv.num}</td><td>${inv.client}</td><td style="font-size:.74rem;color:rgba(255,255,255,.5)">${inv.service||'—'}</td><td style="font-weight:900;color:#4ade80">${inv.amount} ر.س</td><td>${inv.date}</td><td>${invBadge(inv.status)}</td><td style="display:flex;gap:4px;flex-wrap:wrap">${inv.status!=='paid'?`<button class="dash-btn-sm" style="background:rgba(34,197,94,.15);color:#4ade80" onclick="changeInvStatus(${inv.id},'paid')">✓</button>`:''}<button class="dash-btn-sm" style="background:rgba(147,51,234,.18);color:#a78bfa" onclick="printInv(${inv.id})">🖨</button><button class="dash-btn-sm" style="background:rgba(255,255,255,.05);color:rgba(255,255,255,.3)" onclick="deleteInv(${inv.id})">🗑</button></td></tr>`).join('')
+    : '<tr><td colspan="7" style="text-align:center;color:rgba(255,255,255,.2);padding:20px">لا توجد فواتير بعد</td></tr>';
+}
+
+/* ── Print Invoice ── */
+function printInv(id){
+  const inv=getInv().find(i=>i.id===id); if(!inv) return;
+  const area=document.getElementById('inv-print-area');
+  area.innerHTML=`<div style="max-width:600px;margin:0 auto;direction:rtl;font-family:'Cairo',sans-serif">
+    <div style="display:flex;justify-content:space-between;align-items:center;border-bottom:2px solid #22c55e;padding-bottom:16px;margin-bottom:24px">
+      <div><div style="font-size:2rem;font-weight:900;color:#22c55e">دخلك.</div><div style="font-size:.76rem;color:#6b7280">منصة التجارة الرقمية السعودية</div></div>
+      <div style="text-align:left"><div style="font-size:1.2rem;font-weight:900;color:#111">فاتورة</div><div style="font-size:.88rem;font-weight:700;color:#22c55e">${inv.num}</div></div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:22px">
+      <div><div style="font-size:.7rem;color:#9ca3af;margin-bottom:3px">العميل</div><div style="font-weight:700">${inv.client}</div></div>
+      <div><div style="font-size:.7rem;color:#9ca3af;margin-bottom:3px">الجوال</div><div style="font-weight:700">${inv.phone||'—'}</div></div>
+      <div><div style="font-size:.7rem;color:#9ca3af;margin-bottom:3px">التاريخ</div><div style="font-weight:700">${inv.date}</div></div>
+      <div><div style="font-size:.7rem;color:#9ca3af;margin-bottom:3px">الحالة</div><div style="font-weight:700;color:${inv.status==='paid'?'#16a34a':inv.status==='cancelled'?'#dc2626':'#d97706'}">${inv.status==='paid'?'مدفوعة':inv.status==='cancelled'?'ملغاة':'معلقة'}</div></div>
+    </div>
+    <table style="width:100%;border-collapse:collapse;margin-bottom:22px">
+      <thead><tr style="background:#f3f4f6"><th style="padding:9px 12px;text-align:right;font-size:.78rem;color:#374151">الخدمة</th><th style="padding:9px 12px;text-align:left;font-size:.78rem;color:#374151">المبلغ</th></tr></thead>
+      <tbody><tr style="border-bottom:1px solid #e5e7eb"><td style="padding:11px 12px;font-size:.86rem">${inv.service||'خدمة دخلك'}</td><td style="padding:11px 12px;font-weight:900;text-align:left;color:#22c55e">${inv.amount} ر.س</td></tr></tbody>
+      <tfoot><tr><td colspan="2" style="padding:13px 12px;text-align:left;font-size:1.05rem;font-weight:900">الإجمالي: <span style="color:#22c55e">${inv.amount} ر.س</span></td></tr></tfoot>
+    </table>
+    ${inv.notes?`<div style="background:#f9fafb;border-radius:8px;padding:11px;font-size:.8rem;color:#6b7280"><strong>ملاحظات:</strong> ${inv.notes}</div>`:''}
+    <div style="margin-top:28px;padding-top:14px;border-top:1px solid #e5e7eb;font-size:.7rem;color:#9ca3af;text-align:center">شكراً لثقتكم — دخلك. | واتساب: 966531277423+</div>
+  </div>`;
+  area.style.display='block'; window.print(); area.style.display='none';
+}
+
+/* ── Clients ── */
+function renderClients(){
+  const us=getU(), keys=Object.keys(us);
+  const cnt=document.getElementById('clients-count'); if(cnt) cnt.textContent=keys.length+' عميل';
+  const tbody=document.getElementById('clients-body'); if(!tbody) return;
+  tbody.innerHTML = keys.length
+    ? keys.map(e=>{const u=us[e],d=u.created?new Date(u.created).toLocaleDateString('ar-SA'):'—';return `<tr><td style="font-weight:700">${u.name}</td><td style="font-size:.76rem;color:rgba(255,255,255,.5)">${e}</td><td>${u.city||'—'}</td><td style="font-size:.76rem;color:rgba(255,255,255,.4)">${d}</td></tr>`;}).join('')
+    : '<tr><td colspan="4" style="text-align:center;color:rgba(255,255,255,.2);padding:20px">لا يوجد عملاء مسجلون بعد</td></tr>';
+}
+
+/* ── Settings ── */
+function loadSettings(){
+  const c=getC();
+  if(c.np) document.getElementById('s-np').value=c.np;
+  if(c.sp) document.getElementById('s-sp').value=c.sp;
+  if(c.ann) document.getElementById('s-ann').value=c.ann;
+}
+function savePrices(){
+  const np=document.getElementById('s-np').value;
+  const sp=document.getElementById('s-sp').value;
+  const pnd=document.getElementById('pnd'); if(pnd) pnd.textContent=np;
+  const psd=document.getElementById('psd'); if(psd) psd.textContent=sp;
+  const c=getC(); c.np=np; c.sp=sp; setC(c);
+  showToast('تم تحديث الأسعار ✅');
+}
+function pubAnn(){
+  const t=document.getElementById('s-ann').value.trim(); if(!t) return;
+  const bar=document.getElementById('ann-bar');
+  bar.textContent='📢 '+t; bar.style.display='block';
+  const c=getC(); c.ann=t; setC(c);
+  showToast('تم نشر الإعلان ✅');
+}
+function delAnn(){
+  document.getElementById('s-ann').value='';
+  document.getElementById('ann-bar').style.display='none';
+  const c=getC(); delete c.ann; setC(c);
+  showToast('تم حذف الإعلان');
+}
+
+/* ── FAQ ── */
+function toggleFaq(btn){
+  const item=btn.parentElement;
+  const ans=item.querySelector('.faq-a');
+  const inner=item.querySelector('.faq-a-inner');
+  const isOpen=item.classList.contains('open');
+  document.querySelectorAll('.faq-item.open').forEach(i=>{
+    i.classList.remove('open');
+    i.querySelector('.faq-a').style.maxHeight='0';
+  });
+  if(!isOpen){ item.classList.add('open'); ans.style.maxHeight=inner.scrollHeight+'px'; }
+}
+
+/* ── Toast ── */
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2400);
+}
+
+/* ── Scroll reveal ── */
+const revObs = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('on'); });
+},{threshold:.1});
+document.querySelectorAll('.rv').forEach(el=>revObs.observe(el));
+
+/* ── Announcement ── */
+function loadAnn(){
+  const c=getC(); if(c.ann){ const bar=document.getElementById('ann-bar'); bar.textContent='📢 '+c.ann; bar.style.display='block'; }
+}
+
+/* ── Saved prices ── */
+function loadPrices(){
+  const c=getC();
+  if(c.np){ const e=document.getElementById('pnd'); if(e) e.textContent=c.np; }
+  if(c.sp){ const e=document.getElementById('psd'); if(e) e.textContent=c.sp; }
+}
+
+/* ── Init ── */
+window.addEventListener('DOMContentLoaded',()=>{
+  loadAnn();
+  loadPrices();
+  const s=getS();
+  if(isAdmin(s)){
+    openDashboard();
+  } else {
+    applySession();
+  }
+  fetch('https://api.countapi.xyz/hit/ko1sm-dakhlak/v1').catch(()=>{});
+});
+</script>
+</body>
+</html>
