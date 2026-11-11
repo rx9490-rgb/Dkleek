@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>نصيب | Naseeb — تعارف جاد وزواج</title>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 128 128'%3E%3Crect width='128' height='128' rx='24' fill='%230F0B1E'/%3E%3Cpath d='M28 60 Q28 90 64 90' stroke='%237C3AED' stroke-width='10' fill='none' stroke-linecap='round'/%3E%3Cpath d='M64 90 Q100 90 100 60 L100 52' stroke='%237DA9CC' stroke-width='10' fill='none' stroke-linecap='round'/%3E%3Crect x='56' y='25' width='16' height='16' fill='%237DA9CC' transform='rotate(45 64 33)'/%3E%3C/svg%3E" />
-<!-- تم تثبيت الإصدار لضمان الاستقرار وتفادي خطأ Load failed -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.47.0"></script>
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://unpkg.com/lucide@latest"></script>
@@ -320,9 +319,9 @@
 <div id="toast" class="hidden fixed bottom-6 left-1/2 -translate-x-1/2 z-[60] px-6 py-3 rounded-xl font-bold shadow-2xl"></div>
 
 <script>
-// ============ ⚠️ ضع مفاتيح Supabase هنا ============
-const SUPABASE_URL = 'https://YOUR-PROJECT.supabase.co';
-const SUPABASE_ANON_KEY = 'YOUR-ANON-KEY';
+// ============ تم دمج مفاتيح مشروعك هنا ============
+const SUPABASE_URL = 'https://hzxxemfxwndnswyphtxs.supabase.co';
+const SUPABASE_ANON_KEY = 'sb_publishable_DpefXs6FlXf1WljxS87-XA_1Q27vbbd';
 // ====================================================
 
 const ALLOWED_COUNTRIES = { 'SA': 'السعودية', 'AE': 'الإمارات', 'KW': 'الكويت', 'QA': 'قطر', 'BH': 'البحرين', 'OM': 'عُمان', 'JO': 'الأردن', 'YE': 'اليمن' };
@@ -503,7 +502,11 @@ async function runSearch() {
       <div class="flex items-center gap-3 mb-3">
         <div class="w-14 h-14 grad rounded-full flex items-center justify-center font-black text-xl">${(p.full_name||'؟')[0]}</div>
         <div>
-          <div class="font-bold flex items-center gap-2">${esc(p.full_name)} ${p.is_verified?'<i data-lucide="check-circle" class="w-4 h-4 text-blue-400"></i>':''}</div>
+          <div class="font-bold flex items-center gap-2">
+            ${esc(p.full_name)} 
+            ${p.is_verified?'<i data-lucide="check-circle" class="w-4 h-4 text-blue-400"></i>':''}
+            ${p.is_vip?'<span class="vip-badge text-[10px]">VIP</span>':''}
+          </div>
           <div class="text-xs text-gray-400">${esc(p.city||'')} • ${esc(countryName(p.country))}</div>
         </div>
       </div>
