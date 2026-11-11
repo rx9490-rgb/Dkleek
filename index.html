@@ -5,7 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>نصيب | Naseeb — تعارف جاد وزواج</title>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 128 128'%3E%3Crect width='128' height='128' rx='24' fill='%230F0B1E'/%3E%3Cpath d='M28 60 Q28 90 64 90' stroke='%237C3AED' stroke-width='10' fill='none' stroke-linecap='round'/%3E%3Cpath d='M64 90 Q100 90 100 60 L100 52' stroke='%237DA9CC' stroke-width='10' fill='none' stroke-linecap='round'/%3E%3Crect x='56' y='25' width='16' height='16' fill='%237DA9CC' transform='rotate(45 64 33)'/%3E%3C/svg%3E" />
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<!-- تم تثبيت الإصدار لضمان الاستقرار وتفادي خطأ Load failed -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.47.0"></script>
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://unpkg.com/lucide@latest"></script>
 <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
@@ -210,7 +211,6 @@
           </div>
           <div id="chat-messages" class="flex-1 overflow-y-auto p-4 space-y-2"></div>
           
-          <!-- حظر الإرسال لغير المشتركين -->
           <div id="chat-lock-overlay" class="hidden absolute bottom-0 left-0 w-full p-4 bg-[#0F0B1E]/90 backdrop-blur border-t border-white/10 flex flex-col items-center">
             <p class="text-sm text-red-400 mb-2 font-bold">تحتاج إلى اشتراك VIP أو مشاهدة إعلان لبدء المراسلة</p>
             <button onclick="switchTab('subscription')" class="btn px-4 py-2 grad text-black rounded-lg text-sm font-bold">ترقية الحساب الآن</button>
@@ -291,16 +291,13 @@
         <button onclick="loadAdminSection('ads')" class="admin-sub-tab px-4 py-2 rounded-lg font-bold hover:bg-white/5">الإعلانات</button>
         <button onclick="loadAdminSection('billing')" class="admin-sub-tab px-4 py-2 rounded-lg font-bold hover:bg-white/5">الفواتير</button>
       </div>
-      <div id="admin-content">
-        <!-- سيتم تحميل المحتوى هنا -->
-      </div>
+      <div id="admin-content"></div>
     </div>
 
   </main>
 </div>
 
 <!-- ==================== MODALS ==================== -->
-<!-- Video Call Modal -->
 <div id="video-modal" class="hidden fixed inset-0 bg-black/95 z-50 flex flex-col p-4">
   <div class="flex justify-between items-center mb-4">
     <span class="font-bold flex items-center gap-2"><i data-lucide="video" class="text-red-500"></i> مكالمة مباشرة</span>
@@ -309,7 +306,6 @@
   <iframe id="video-frame" class="flex-1 w-full rounded-xl bg-black border border-white/10" allow="camera; microphone; fullscreen; display-capture"></iframe>
 </div>
 
-<!-- Ad Modal -->
 <div id="ad-modal" class="hidden fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4">
   <div class="card rounded-2xl p-8 max-w-md w-full text-center">
     <h3 class="text-2xl font-black mb-2">جاري عرض الإعلان...</h3>
@@ -321,14 +317,13 @@
   </div>
 </div>
 
-<!-- Toast -->
 <div id="toast" class="hidden fixed bottom-6 left-1/2 -translate-x-1/2 z-[60] px-6 py-3 rounded-xl font-bold shadow-2xl"></div>
 
 <script>
-// ============ إعدادات Supabase ============
+// ============ ⚠️ ضع مفاتيح Supabase هنا ============
 const SUPABASE_URL = 'https://YOUR-PROJECT.supabase.co';
 const SUPABASE_ANON_KEY = 'YOUR-ANON-KEY';
-// ==========================================
+// ====================================================
 
 const ALLOWED_COUNTRIES = { 'SA': 'السعودية', 'AE': 'الإمارات', 'KW': 'الكويت', 'QA': 'قطر', 'BH': 'البحرين', 'OM': 'عُمان', 'JO': 'الأردن', 'YE': 'اليمن' };
 const isValidCountry = (code) => code && ALLOWED_COUNTRIES[code] !== undefined;
@@ -337,7 +332,6 @@ const countryName = (code) => ALLOWED_COUNTRIES[code] || '—';
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 const state = { user: null, profile: null, mode: 'login', activeChat: null, chatChannel: null, blockedIds: [], isVip: false };
 
-// Helpers
 const $ = (id) => document.getElementById(id);
 const toast = (msg, ok=true) => {
   const t = $('toast'); t.textContent = msg;
@@ -352,7 +346,6 @@ const esc = (s) => String(s||'').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt
 const calcAge = (bd) => bd ? Math.floor((Date.now() - new Date(bd).getTime()) / 31557600000) : '—';
 const initIcons = () => { if(window.lucide) lucide.createIcons(); };
 
-// Auth Logic
 const showAuth = (mode) => { state.mode = mode; updateAuthUI(); showScreen('auth'); };
 const toggleAuth = () => { state.mode = state.mode==='login'?'register':'login'; updateAuthUI(); };
 const updateAuthUI = () => {
@@ -375,17 +368,21 @@ async function doAuth() {
 
   if (!email || !password) return showAuthError('املأ البريد وكلمة المرور');
 
-  if (state.mode === 'register') {
-    if (!name) return showAuthError('أدخل الاسم الكامل');
-    if (!isValidCountry(country)) return showAuthError('اختر دولة صحيحة');
-    const { data, error } = await sb.auth.signUp({ email, password, options: { data: { full_name: name, country } } });
-    if (error) return showAuthError(error.message);
-    if (!data.session) return showAuthError('تحقق من بريدك الإلكتروني لتأكيد الحساب');
-  } else {
-    const { error } = await sb.auth.signInWithPassword({ email, password });
-    if (error) return showAuthError(error.message);
+  try {
+    if (state.mode === 'register') {
+      if (!name) return showAuthError('أدخل الاسم الكامل');
+      if (!isValidCountry(country)) return showAuthError('اختر دولة صحيحة');
+      const { data, error } = await sb.auth.signUp({ email, password, options: { data: { full_name: name, country } } });
+      if (error) return showAuthError(error.message);
+      if (!data.session) return showAuthError('تحقق من بريدك الإلكتروني لتأكيد الحساب');
+    } else {
+      const { error } = await sb.auth.signInWithPassword({ email, password });
+      if (error) return showAuthError(error.message);
+    }
+    await enterApp();
+  } catch (err) {
+    showAuthError('فشل الاتصال بالخادم: تأكد من إعدادات Supabase أو تحقق من اتصالك بالإنترنت.');
   }
-  await enterApp();
 }
 
 async function logout() {
@@ -395,7 +392,6 @@ async function logout() {
   showScreen('landing');
 }
 
-// Main App Logic
 async function enterApp() {
   const { data: { user } } = await sb.auth.getUser();
   if (!user) return showScreen('landing');
@@ -448,7 +444,6 @@ function updateChatLock() {
   }
 }
 
-// Profile
 function loadProfileForm() {
   const p = state.profile || {};
   $('profile-name-display').textContent = p.full_name || '—';
@@ -480,7 +475,6 @@ async function saveProfile() {
   toast('تم حفظ الملف بنجاح');
 }
 
-// Search & Block
 async function loadBlocked() {
   const { data } = await sb.from('blocks').select('blocked_id').eq('blocker_id', state.user.id);
   state.blockedIds = (data || []).map(b => b.blocked_id);
@@ -540,7 +534,6 @@ async function blockUser(id) {
   await loadBlocked(); toast('تم الحظر'); runSearch();
 }
 
-// Chat
 function subscribeToMessages() {
   if (state.chatChannel) sb.removeChannel(state.chatChannel);
   state.chatChannel = sb.channel('realtime:messages').on('postgres_changes', { event:'INSERT', schema:'public', table:'messages' }, payload => {
@@ -612,7 +605,6 @@ function startVideoCall() {
 }
 function closeVideoCall() { $('video-frame').src = ''; $('video-modal').classList.add('hidden'); }
 
-// Subscription & VIP
 async function redeemCode() {
   const code = $('vip-code-input').value.trim().toUpperCase();
   if (!code) return toast('أدخل الكود أولاً', false);
@@ -650,7 +642,7 @@ async function watchAdForVip() {
 
 async function grantTemporaryVip() {
   const now = new Date();
-  const expires = new Date(now.getTime() + (3 * 60 * 60 * 1000)); // 3 hours
+  const expires = new Date(now.getTime() + (3 * 60 * 60 * 1000));
   const { error } = await sb.from('profiles').update({ is_vip: true, vip_expires_at: expires.toISOString() }).eq('id', state.user.id);
   if (!error) {
     toast('تم تفعيل VIP لمدة 3 ساعات!');
@@ -663,7 +655,6 @@ async function grantTemporaryVip() {
   }
 }
 
-// Admin Panel
 async function loadAdminSection(section) {
   if (!state.profile?.is_admin) return;
   document.querySelectorAll('.admin-sub-tab').forEach(b => b.classList.remove('bg-white/10'));
@@ -768,7 +759,6 @@ async function adminGenerateCode() {
   toast('تم توليد الكود: ' + code); loadAdminSection('codes');
 }
 
-// Tabs Router
 function switchTab(name) {
   document.querySelectorAll('.tab-content').forEach(t => t.classList.add('hidden'));
   $('tab-'+name).classList.remove('hidden');
@@ -781,7 +771,6 @@ function switchTab(name) {
   initIcons();
 }
 
-// Init
 (async function init() {
   initIcons();
   const { data: { session } } = await sb.auth.getSession();
