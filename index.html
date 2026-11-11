@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="ar" dir="rtl" class="dark">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
@@ -9,225 +9,197 @@
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://unpkg.com/lucide@latest"></script>
 <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
+<script>
+  tailwind.config = {
+    darkMode: 'class',
+    theme: {
+      extend: { colors: { primary: '#7C3AED', dark: '#0B0914', card: '#171524' } }
+    }
+  }
+</script>
 <style>
-  :root { --primary: #7C3AED; --bg: #0B0914; --card: #171524; }
-  body { font-family: 'Tajawal', sans-serif; background: var(--bg); color: white; overflow-x: hidden; }
-  .card { background: var(--card); border: 1px solid rgba(255,255,255,0.05); }
+  body { font-family: 'Tajawal', sans-serif; transition: background-color 0.3s, color 0.3s; }
+  .dark body { background-color: #0B0914; color: #FFFFFF; }
+  body { background-color: #F3F4F6; color: #111827; }
+  
+  .card { background-color: #FFFFFF; border: 1px solid rgba(0,0,0,0.05); }
+  .dark .card { background-color: #171524; border: 1px solid rgba(255,255,255,0.05); }
+  
   .btn-primary { background: linear-gradient(135deg, #7C3AED, #A855F7); color: white; }
   .hidden { display: none !important; }
-  input, select, textarea { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white; outline: none; }
-  select option { background: var(--card); }
-  .tab-active { color: var(--primary); border-bottom: 2px solid var(--primary); }
   
-  /* Animations */
-  @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-  .animate-fade-up { animation: fadeInUp 0.6s ease-out forwards; }
-  .delay-1 { animation-delay: 0.1s; } .delay-2 { animation-delay: 0.2s; } .delay-3 { animation-delay: 0.3s; }
-
-  /* Splash Screen */
-  #splash { position: fixed; inset: 0; background: #0B0914; z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: opacity 0.5s; }
-  .logo-icon { animation: pulse 2s infinite; }
-  @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
+  input, select, textarea { background-color: rgba(0,0,0,0.05); border: 1px solid rgba(0,0,0,0.1); color: #111827; }
+  .dark input, .dark select, .dark textarea { background-color: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white; }
+  
+  .tab-active { color: #7C3AED; }
+  .tab-active i { stroke: #7C3AED; }
+  
+  .msg-me { background: linear-gradient(135deg, #7C3AED, #6D28D9); border-radius: 16px 16px 4px 16px; color: white; }
+  .msg-them { background-color: #E5E7EB; border-radius: 16px 16px 16px 4px; color: #111827; }
+  .dark .msg-them { background-color: #2D2A3E; color: white; }
+  
+  .spinner { animation: spin 1s linear infinite; }
+  @keyframes spin { 100% { transform: rotate(360deg); } }
 </style>
 </head>
 <body class="min-h-screen pb-20">
 
 <!-- Splash Screen -->
-<div id="splash">
-  <svg viewBox="0 0 128 128" class="w-24 h-24 logo-icon">
+<div id="splash" class="fixed inset-0 bg-[#0B0914] z-[100] flex flex-col items-center justify-center">
+  <svg viewBox="0 0 128 128" class="w-20 h-20 spinner">
     <path d="M 28 60 Q 28 90 64 90" stroke="#7C3AED" stroke-width="10" fill="none" stroke-linecap="round"/>
     <path d="M 64 90 Q 100 90 100 60 L 100 52" stroke="#A855F7" stroke-width="10" fill="none" stroke-linecap="round"/>
     <rect x="56" y="25" width="16" height="16" fill="#A855F7" transform="rotate(45 64 33)"/>
   </svg>
-  <h1 class="text-3xl font-black mt-4 text-white">نصيب</h1>
 </div>
 
-<!-- ==================== شاشة الترحيب (Landing Page) ==================== -->
-<div id="screen-landing" class="hidden min-h-screen flex flex-col p-6 relative overflow-hidden">
-  
-  <!-- Background Decor -->
-  <div class="absolute top-[-10%] right-[-10%] w-64 h-64 bg-primary/20 rounded-full blur-3xl"></div>
-  <div class="absolute bottom-[-10%] left-[-10%] w-64 h-64 bg-purple-500/10 rounded-full blur-3xl"></div>
-
-  <div class="flex-1 flex flex-col justify-center items-center text-center relative z-10 mt-10">
-    <div class="animate-fade-up">
-      <svg viewBox="0 0 128 128" class="w-20 h-20 mx-auto mb-6 logo-icon">
-        <path d="M 28 60 Q 28 90 64 90" stroke="#7C3AED" stroke-width="10" fill="none" stroke-linecap="round"/>
-        <path d="M 64 90 Q 100 90 100 60 L 100 52" stroke="#A855F7" stroke-width="10" fill="none" stroke-linecap="round"/>
-        <rect x="56" y="25" width="16" height="16" fill="#A855F7" transform="rotate(45 64 33)"/>
-      </svg>
-    </div>
+<!-- ==================== 1. LANDING PAGE ==================== -->
+<div id="screen-landing" class="hidden min-h-screen flex flex-col p-6">
+  <div class="flex-1 flex flex-col justify-center items-center text-center mt-10">
+    <svg viewBox="0 0 128 128" class="w-20 h-20 mx-auto mb-6">
+      <path d="M 28 60 Q 28 90 64 90" stroke="#7C3AED" stroke-width="10" fill="none" stroke-linecap="round"/>
+      <path d="M 64 90 Q 100 90 100 60 L 100 52" stroke="#A855F7" stroke-width="10" fill="none" stroke-linecap="round"/>
+      <rect x="56" y="25" width="16" height="16" fill="#A855F7" transform="rotate(45 64 33)"/>
+    </svg>
+    <h1 class="text-4xl font-black mb-4 leading-tight">ابحث عن <span class="text-primary">نصيبك</span><br>بجدية واحترام</h1>
+    <p class="text-gray-500 dark:text-gray-400 text-sm mb-10 px-4">منصة التعارف الراقية الأولى في الخليج واليمن والأردن.</p>
     
-    <h1 class="text-4xl font-black mb-4 animate-fade-up delay-1 leading-tight">ابحث عن <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary to-purple-400">نصيبك</span><br>بجدية واحترام</h1>
-    <p class="text-gray-400 text-sm mb-10 px-4 animate-fade-up delay-2">منصة التعارف الراقية الأولى في الخليج واليمن والأردن. نوفر لك بيئة آمنة ومجدية للعثور على شريك حياتك المناسب.</p>
-
-    <!-- Features Grid -->
-    <div class="grid grid-cols-2 gap-3 w-full max-w-sm mb-10 animate-fade-up delay-3">
-      <div class="card p-4 rounded-2xl flex flex-col items-center text-center">
-        <i data-lucide="shield-check" class="w-8 h-8 text-green-400 mb-2"></i>
+    <div class="grid grid-cols-2 gap-3 w-full max-w-sm mb-10">
+      <div class="card p-4 rounded-2xl flex flex-col items-center text-center shadow-sm">
+        <i data-lucide="shield-check" class="w-8 h-8 text-green-500 mb-2"></i>
         <span class="text-sm font-bold">خصوصية تامة</span>
-        <span class="text-[10px] text-gray-400 mt-1">لا نشارك بياناتك مع أي طرف ثالث</span>
       </div>
-      <div class="card p-4 rounded-2xl flex flex-col items-center text-center">
-        <i data-lucide="users" class="w-8 h-8 text-blue-400 mb-2"></i>
+      <div class="card p-4 rounded-2xl flex flex-col items-center text-center shadow-sm">
+        <i data-lucide="users" class="w-8 h-8 text-blue-500 mb-2"></i>
         <span class="text-sm font-bold">جديون فقط</span>
-        <span class="text-[10px] text-gray-400 mt-1">نظام صارم لفلترة الحسابات الوهمية</span>
-      </div>
-      <div class="card p-4 rounded-2xl flex flex-col items-center text-center">
-        <i data-lucide="heart-handshake" class="w-8 h-8 text-pink-400 mb-2"></i>
-        <span class="text-sm font-bold">توافق ذكي</span>
-        <span class="text-[10px] text-gray-400 mt-1">ترشيحات مبنية على معاييرك الدقيقة</span>
-      </div>
-      <div class="card p-4 rounded-2xl flex flex-col items-center text-center">
-        <i data-lucide="sparkles" class="w-8 h-8 text-yellow-400 mb-2"></i>
-        <span class="text-sm font-bold">ميزات VIP</span>
-        <span class="text-[10px] text-gray-400 mt-1">تفاعل بلا حدود ومراسلة لا نهائية</span>
       </div>
     </div>
   </div>
-
-  <div class="w-full space-y-3 relative z-10 animate-fade-up delay-3">
-    <button onclick="showAuth('register')" class="btn-primary w-full py-4 rounded-2xl font-black text-lg shadow-lg shadow-primary/30">إنشاء حساب جديد</button>
-    <button onclick="showAuth('login')" class="w-full py-4 rounded-2xl font-bold text-gray-300 border border-white/10 hover:bg-white/5 transition">تسجيل الدخول</button>
+  <div class="w-full space-y-3">
+    <button onclick="showAuth('register')" class="btn-primary w-full py-4 rounded-2xl font-black text-lg shadow-lg">إنشاء حساب جديد</button>
+    <button onclick="showAuth('login')" class="w-full py-4 rounded-2xl font-bold border border-gray-300 dark:border-white/10 hover:bg-gray-100 dark:hover:bg-white/5 transition">تسجيل الدخول</button>
   </div>
 </div>
 
-<!-- ==================== شاشة الدخول / التسجيل ==================== -->
+<!-- ==================== 2. AUTH SCREEN ==================== -->
 <div id="screen-auth" class="hidden min-h-screen flex flex-col p-6 justify-center">
-  <button onclick="showLanding()" class="absolute top-6 right-6 text-gray-400"><i data-lucide="arrow-right" class="w-6 h-6"></i></button>
-  
+  <button onclick="showLanding()" class="absolute top-6 right-6 text-gray-500"><i data-lucide="arrow-right" class="w-6 h-6"></i></button>
   <div class="text-center mb-8">
     <h2 id="auth-title" class="text-3xl font-black mb-2">إنشاء حساب</h2>
-    <p class="text-gray-400 text-sm">انضم إلينا وابدأ رحلة البحث</p>
   </div>
-  
-  <div id="auth-error" class="hidden mb-4 p-3 rounded-xl bg-red-500/10 text-red-400 text-sm text-center border border-red-500/20"></div>
+  <div id="auth-error" class="hidden mb-4 p-3 rounded-xl bg-red-500/10 text-red-500 text-sm text-center border border-red-500/20"></div>
   
   <div class="space-y-4">
     <div id="auth-name-field"><input id="auth-name" type="text" placeholder="الاسم الكامل" class="w-full p-4 rounded-xl" /></div>
-    
     <div id="auth-gender-field">
-      <label class="text-xs text-gray-400 mb-2 block mr-1">أنا:</label>
       <div class="flex gap-2">
-        <button onclick="selectGender('male')" id="btn-male" class="flex-1 py-3 rounded-xl border border-white/10 text-gray-400 font-bold transition">رجل</button>
-        <button onclick="selectGender('female')" id="btn-female" class="flex-1 py-3 rounded-xl border border-white/10 text-gray-400 font-bold transition">امرأة</button>
+        <button onclick="selectGender('male')" id="btn-male" class="flex-1 py-3 rounded-xl border border-gray-300 dark:border-white/10 text-gray-500 font-bold transition">رجل</button>
+        <button onclick="selectGender('female')" id="btn-female" class="flex-1 py-3 rounded-xl border border-gray-300 dark:border-white/10 text-gray-500 font-bold transition">امرأة</button>
       </div>
     </div>
-
-    <div id="auth-country-field">
-      <select id="auth-country" class="w-full p-4 rounded-xl">
-        <option value="">اختر دولتك</option>
-        <option value="SA">السعودية</option><option value="AE">الإمارات</option><option value="KW">الكويت</option>
-        <option value="QA">قطر</option><option value="BH">البحرين</option><option value="OM">عُمان</option>
-        <option value="JO">الأردن</option><option value="YE">اليمن</option>
-      </select>
-    </div>
-    
     <input id="auth-email" type="email" placeholder="البريد الإلكتروني" class="w-full p-4 rounded-xl" dir="ltr" />
     <input id="auth-password" type="password" placeholder="كلمة المرور" class="w-full p-4 rounded-xl" dir="ltr" />
-    
     <button onclick="doAuth()" id="auth-submit" class="btn-primary w-full py-4 rounded-xl font-bold text-lg mt-4">تسجيل</button>
-    
-    <div class="text-center mt-4">
-      <button onclick="toggleAuth()" class="text-gray-400 text-sm">
-        <span id="auth-switch-text">لديك حساب؟ سجل الدخول</span>
-      </button>
-    </div>
+    <div class="text-center mt-4"><button onclick="toggleAuth()" class="text-gray-500 text-sm"><span id="auth-switch-text">لديك حساب؟ سجل الدخول</span></button></div>
   </div>
 </div>
 
-<!-- ==================== التطبيق الرئيسي ==================== -->
+<!-- ==================== 3. MAIN APP ==================== -->
 <div id="screen-main" class="hidden">
-  <header class="flex justify-between items-center p-4 sticky top-0 bg-[#0B0914]/90 backdrop-blur-md z-40 border-b border-white/5">
+  <header class="flex justify-between items-center p-4 sticky top-0 bg-white/90 dark:bg-[#0B0914]/90 backdrop-blur-md z-40 border-b border-gray-200 dark:border-white/5">
     <div class="flex items-center gap-2">
       <div class="w-8 h-8 rounded-lg bg-primary flex items-center justify-center"><i data-lucide="heart" class="w-4 h-4 text-white"></i></div>
       <span class="font-black text-xl">نصيب</span>
     </div>
     <div class="flex items-center gap-3">
-      <div id="vip-badge" class="hidden bg-yellow-500/20 text-yellow-400 text-xs px-2 py-1 rounded-full font-bold border border-yellow-500/30">VIP</div>
-      <button onclick="logout()"><i data-lucide="log-out" class="w-6 h-6 text-gray-400"></i></button>
+      <div id="vip-badge" class="hidden bg-yellow-500/20 text-yellow-600 dark:text-yellow-400 text-xs px-2 py-1 rounded-full font-bold border border-yellow-500/30">VIP</div>
+      <button onclick="switchTab('settings')"><i data-lucide="settings" class="w-6 h-6 text-gray-500"></i></button>
     </div>
   </header>
 
   <main class="p-4 max-w-lg mx-auto">
-    <!-- Tabs -->
-    <div class="flex border-b border-white/10 mb-6">
-      <button onclick="switchTab('search')" id="tab-btn-search" class="flex-1 py-3 text-sm font-bold text-gray-400 transition-colors">الترشيحات</button>
-      <button onclick="switchTab('matches')" id="tab-btn-matches" class="flex-1 py-3 text-sm font-bold text-gray-400 transition-colors">الإعجابات</button>
-      <button onclick="switchTab('profile')" id="tab-btn-profile" class="flex-1 py-3 text-sm font-bold text-gray-400 transition-colors">ملفي</button>
-    </div>
-
-    <!-- ===== SEARCH (Opposite Gender Only) ===== -->
+    <!-- TABS -->
     <div id="tab-search" class="tab-content">
+      <h2 class="text-xl font-bold mb-4">الترشيحات</h2>
       <div id="search-grid" class="grid grid-cols-2 gap-3"></div>
     </div>
 
-    <!-- ===== MATCHES ===== -->
     <div id="tab-matches" class="tab-content hidden">
-      <div class="flex flex-col items-center justify-center mt-20 text-center">
-        <i data-lucide="heart" class="w-16 h-16 text-primary/30 mb-4"></i>
-        <h3 class="text-xl font-black mb-2">لا توجد إعجابات متبادلة</h3>
-        <p class="text-gray-400 text-sm px-6 mb-6">استمر في تصفح الترشيحات وإرسال الإعجابات.</p>
-        <button onclick="switchTab('search')" class="btn-primary px-6 py-2 rounded-xl text-sm font-bold">تصفح الترشيحات</button>
-      </div>
+      <h2 class="text-xl font-bold mb-4">الإعجابات المتبادلة</h2>
+      <div id="matches-grid" class="grid grid-cols-2 gap-3"></div>
     </div>
 
-    <!-- ===== PROFILE ===== -->
+    <!-- CHATS TAB (الرسائل) -->
+    <div id="tab-chats" class="tab-content hidden">
+      <h2 class="text-xl font-bold mb-4">الرسائل الخاصة</h2>
+      <div id="chats-list" class="space-y-2"></div>
+    </div>
+
+    <!-- PROFILE -->
     <div id="tab-profile" class="tab-content hidden">
       <div class="flex flex-col items-center mb-6">
-        <div class="w-24 h-24 rounded-full bg-gradient-to-br from-primary to-purple-600 flex items-center justify-center text-4xl font-black mb-3" id="profile-avatar">؟</div>
+        <div class="w-24 h-24 rounded-full bg-gradient-to-br from-primary to-purple-600 flex items-center justify-center text-4xl font-black mb-3 text-white shadow-lg" id="profile-avatar">؟</div>
         <h2 id="profile-name" class="text-2xl font-black">الاسم</h2>
-        <p id="profile-type" class="text-gray-400 text-sm mt-1">حساب رجل</p>
+        <p id="profile-type" class="text-gray-500 text-sm mt-1">حساب</p>
       </div>
-      
       <div class="space-y-3">
-        <div class="card p-4 rounded-xl flex justify-between items-center">
-          <span class="text-sm">الدولة</span>
-          <span id="profile-country" class="text-sm font-bold text-primary">—</span>
-        </div>
-        <div class="card p-4 rounded-xl flex justify-between items-center">
-          <span class="text-sm">حالة الحساب</span>
-          <span class="text-sm font-bold text-green-400">نشط وموثق</span>
-        </div>
-        
-        <button onclick="showVipModal()" class="w-full mt-4 btn-primary p-4 rounded-xl flex items-center justify-between">
-          <div class="text-right">
-            <div class="font-black">ترقية إلى VIP</div>
-            <div class="text-xs opacity-80 mt-1">فتح المراسلة المباشرة</div>
-          </div>
+        <button onclick="showVipModal()" class="w-full mt-4 btn-primary p-4 rounded-xl flex items-center justify-between shadow-lg">
+          <div class="text-right"><div class="font-black">ترقية إلى VIP</div><div class="text-xs opacity-80 mt-1">فتح المراسلة المباشرة</div></div>
           <i data-lucide="crown" class="w-6 h-6"></i>
         </button>
       </div>
     </div>
+
+    <!-- SETTINGS -->
+    <div id="tab-settings" class="tab-content hidden">
+      <div class="flex items-center gap-2 mb-6">
+        <button onclick="switchTab('profile')" class="text-gray-500"><i data-lucide="arrow-right" class="w-5 h-5"></i></button>
+        <h2 class="text-xl font-bold">الإعدادات</h2>
+      </div>
+      <div class="space-y-4">
+        <div class="card rounded-xl p-4 flex justify-between items-center shadow-sm">
+          <span class="font-bold text-sm">الوضع الداكن</span>
+          <button onclick="toggleDarkMode()" id="dark-mode-btn" class="w-12 h-6 bg-primary rounded-full relative transition-colors"><div class="absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-transform" style="transform: translateX(0)"></div></button>
+        </div>
+        <button onclick="logout()" class="w-full py-3 rounded-xl bg-red-500/10 text-red-500 font-bold text-sm">تسجيل الخروج</button>
+      </div>
+    </div>
+
   </main>
 
-  <!-- Bottom Nav -->
-  <nav class="fixed bottom-0 left-0 w-full bg-[#0B0914]/95 backdrop-blur-lg border-t border-white/5 flex justify-around items-center py-3 z-40">
-    <button onclick="switchTab('search')" data-tab="search" class="tab flex flex-col items-center gap-1 text-gray-500">
-      <i data-lucide="compass" class="w-6 h-6"></i><span class="text-[10px] font-bold">الترشيحات</span>
-    </button>
-    <button onclick="switchTab('matches')" data-tab="matches" class="tab flex flex-col items-center gap-1 text-gray-500">
-      <i data-lucide="heart" class="w-6 h-6"></i><span class="text-[10px] font-bold">الإعجابات</span>
-    </button>
-    <button onclick="switchTab('profile')" data-tab="profile" class="tab flex flex-col items-center gap-1 text-gray-500">
-      <i data-lucide="user" class="w-6 h-6"></i><span class="text-[10px] font-bold">ملفي</span>
-    </button>
+  <!-- BOTTOM NAV (4 TABS) -->
+  <nav class="fixed bottom-0 left-0 w-full bg-white/95 dark:bg-[#0B0914]/95 backdrop-blur-lg border-t border-gray-200 dark:border-white/5 flex justify-around items-center py-3 z-40">
+    <button onclick="switchTab('search')" data-tab="search" class="tab flex flex-col items-center gap-1 text-gray-400"><i data-lucide="compass" class="w-6 h-6"></i><span class="text-[10px] font-bold">الترشيحات</span></button>
+    <button onclick="switchTab('matches')" data-tab="matches" class="tab flex flex-col items-center gap-1 text-gray-400"><i data-lucide="heart" class="w-6 h-6"></i><span class="text-[10px] font-bold">الإعجابات</span></button>
+    <button onclick="switchTab('chats')" data-tab="chats" class="tab flex flex-col items-center gap-1 text-gray-400"><i data-lucide="message-circle" class="w-6 h-6"></i><span class="text-[10px] font-bold">الرسائل</span></button>
+    <button onclick="switchTab('profile')" data-tab="profile" class="tab flex flex-col items-center gap-1 text-gray-400"><i data-lucide="user" class="w-6 h-6"></i><span class="text-[10px] font-bold">ملفي</span></button>
   </nav>
 </div>
 
-<!-- Modal VIP -->
-<div id="modal-vip" class="hidden fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4 backdrop-blur-sm">
-  <div class="bg-[#171524] rounded-3xl p-6 w-full max-w-sm text-center relative border border-white/10">
-    <button onclick="hideVipModal()" class="absolute top-4 right-4 text-gray-400"><i data-lucide="x" class="w-6 h-6"></i></button>
-    <i data-lucide="crown" class="w-16 h-16 text-yellow-400 mx-auto mb-4"></i>
-    <h3 class="text-2xl font-black mb-2 text-yellow-400">عضوية VIP</h3>
-    <p class="text-gray-400 text-sm mb-6">لبدء محادثة مع من أعجبك، تحتاج إلى اشتراك VIP.</p>
-    <div class="text-4xl font-black mb-6">99 <span class="text-lg text-yellow-400">ريال</span></div>
-    <button onclick="mockPayment()" class="btn-primary block w-full py-3 rounded-xl font-bold mb-3">شراء الآن</button>
+<!-- ==================== 4. CHAT VIEW (Overlay) ==================== -->
+<div id="chat-view" class="hidden fixed inset-0 bg-white dark:bg-[#0B0914] z-50 flex flex-col">
+  <header class="flex items-center gap-3 p-4 border-b border-gray-200 dark:border-white/10 bg-white dark:bg-[#0B0914]">
+    <button onclick="closeChat()" class="text-gray-500"><i data-lucide="arrow-right" class="w-6 h-6"></i></button>
+    <div class="font-bold" id="chat-header-name">اسم المستخدم</div>
+  </header>
+  <div id="chat-messages" class="flex-1 overflow-y-auto p-4 space-y-3 bg-gray-50 dark:bg-[#0B0914]"></div>
+  <div class="p-3 border-t border-gray-200 dark:border-white/10 flex gap-2 bg-white dark:bg-[#0B0914]">
+    <input id="chat-input" placeholder="اكتب رسالة..." class="flex-1 p-3 rounded-xl" onkeydown="if(event.key==='Enter') sendMessage()" />
+    <button onclick="sendMessage()" class="btn-primary w-12 h-12 rounded-xl flex items-center justify-center shadow-md"><i data-lucide="send" class="w-5 h-5"></i></button>
   </div>
 </div>
 
-<!-- Toast -->
+<!-- VIP Modal -->
+<div id="modal-vip" class="hidden fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4 backdrop-blur-sm">
+  <div class="card rounded-3xl p-6 w-full max-w-sm text-center relative shadow-2xl">
+    <button onclick="hideVipModal()" class="absolute top-4 right-4 text-gray-400"><i data-lucide="x" class="w-6 h-6"></i></button>
+    <i data-lucide="crown" class="w-16 h-16 text-yellow-500 mx-auto mb-4"></i>
+    <h3 class="text-2xl font-black mb-2 text-yellow-500">عضوية VIP</h3>
+    <p class="text-gray-500 text-sm mb-6">لبدء محادثة غير محدودة.</p>
+    <button onclick="mockPayment()" class="btn-primary block w-full py-3 rounded-xl font-bold mb-3">شراء الآن (تجريبي)</button>
+  </div>
+</div>
+
 <div id="toast" class="hidden fixed top-10 left-1/2 -translate-x-1/2 z-[60] px-6 py-3 rounded-full font-bold shadow-2xl text-sm"></div>
 
 <script>
@@ -235,22 +207,19 @@ const SUPABASE_URL = 'https://hzxxemfxwndnswyphtxs.supabase.co';
 const SUPABASE_ANON_KEY = 'sb_publishable_DpefXs6FlXf1WljxS87-XA_1Q27vbbd';
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-const state = { user: null, profile: null, isVip: false, selectedGender: null };
+const state = { user: null, profile: null, isVip: false, selectedGender: null, activeChatId: null, chatChannel: null };
 const $ = id => document.getElementById(id);
 const initIcons = () => lucide.createIcons();
 
-// Splash Screen Logic
+// Splash & Init
 setTimeout(() => {
-  const splash = $('splash');
-  splash.style.opacity = '0';
-  setTimeout(() => { splash.style.display = 'none'; }, 500);
-  
-  // Check session
+  $('splash').style.opacity = '0';
+  setTimeout(() => $('splash').style.display = 'none', 500);
   sb.auth.getSession().then(({ data: { session } }) => {
     if(session) enterApp();
     else showLanding();
   });
-}, 1500);
+}, 1000);
 
 function showLanding() {
   ['screen-landing','screen-auth','screen-main'].forEach(s => $(s).classList.add('hidden'));
@@ -266,15 +235,10 @@ function showAuth(mode) {
 }
 
 let isRegister = true;
-function toggleAuth() {
-  isRegister = !isRegister;
-  updateAuthUI();
-}
-
+function toggleAuth() { isRegister = !isRegister; updateAuthUI(); }
 function updateAuthUI() {
   $('auth-name-field').classList.toggle('hidden', !isRegister);
   $('auth-gender-field').classList.toggle('hidden', !isRegister);
-  $('auth-country-field').classList.toggle('hidden', !isRegister);
   $('auth-title').textContent = isRegister ? 'إنشاء حساب' : 'تسجيل الدخول';
   $('auth-submit').textContent = isRegister ? 'تسجيل' : 'دخول';
   $('auth-switch-text').textContent = isRegister ? 'لديك حساب؟ سجل الدخول' : 'ليس لديك حساب؟ سجل الآن';
@@ -282,8 +246,8 @@ function updateAuthUI() {
 
 function selectGender(g) {
   state.selectedGender = g;
-  $('btn-male').className = g === 'male' ? 'flex-1 py-3 rounded-xl border border-primary text-primary font-bold bg-primary/10 transition' : 'flex-1 py-3 rounded-xl border border-white/10 text-gray-400 font-bold transition';
-  $('btn-female').className = g === 'female' ? 'flex-1 py-3 rounded-xl border border-primary text-primary font-bold bg-primary/10 transition' : 'flex-1 py-3 rounded-xl border border-white/10 text-gray-400 font-bold transition';
+  $('btn-male').className = g === 'male' ? 'flex-1 py-3 rounded-xl border border-primary text-primary font-bold bg-primary/10 transition' : 'flex-1 py-3 rounded-xl border border-gray-300 dark:border-white/10 text-gray-500 font-bold transition';
+  $('btn-female').className = g === 'female' ? 'flex-1 py-3 rounded-xl border border-primary text-primary font-bold bg-primary/10 transition' : 'flex-1 py-3 rounded-xl border border-gray-300 dark:border-white/10 text-gray-500 font-bold transition';
 }
 
 function toast(msg, isErr=false) {
@@ -292,6 +256,7 @@ function toast(msg, isErr=false) {
   setTimeout(() => t.classList.add('hidden'), 3000);
 }
 
+// Auth Logic
 async function doAuth() {
   const email = $('auth-email').value;
   const pass = $('auth-password').value;
@@ -299,24 +264,16 @@ async function doAuth() {
   
   if (isRegister) {
     const name = $('auth-name').value;
-    const country = $('auth-country').value;
-    
-    if(!name || !country || !state.selectedGender) return $('auth-error').textContent = 'أكمل جميع البيانات';
+    if(!name || !state.selectedGender) return $('auth-error').textContent = 'أكمل جميع البيانات';
     
     const { data, error } = await sb.auth.signUp({ email, password: pass });
     if (error) return $('auth-error').textContent = error.message;
     
-    // إضافة البيانات لجدول profiles بعد التسجيل
     if (data.user) {
       await sb.from('profiles').insert({
-        id: data.user.id,
-        full_name: name,
-        gender: state.selectedGender,
-        country: country,
-        is_verified: true
+        id: data.user.id, full_name: name, gender: state.selectedGender, country: 'SA', is_verified: true
       });
       
-      // توليد 10 حسابات وهمية من الجنس الآخر
       const oppositeGender = state.selectedGender === 'male' ? 'female' : 'male';
       await sb.rpc('generate_dummy_profiles', { target_gender: oppositeGender });
       
@@ -326,7 +283,6 @@ async function doAuth() {
     const { error } = await sb.auth.signInWithPassword({ email, password: pass });
     if (error) return $('auth-error').textContent = error.message;
   }
-  
   enterApp();
 }
 
@@ -348,7 +304,6 @@ async function enterApp() {
   
   $('profile-avatar').textContent = prof?.full_name?.charAt(0) || '؟';
   $('profile-name').textContent = prof?.full_name || 'مستخدم';
-  $('profile-country').textContent = prof?.country === 'SA' ? 'السعودية' : prof?.country || '—';
   $('profile-type').textContent = prof?.gender === 'male' ? 'حساب رجل' : 'حساب امرأة';
   
   ['screen-landing','screen-auth','screen-main'].forEach(s => $(s).classList.add('hidden'));
@@ -361,52 +316,53 @@ async function enterApp() {
 function switchTab(name) {
   document.querySelectorAll('.tab-content').forEach(t => t.classList.add('hidden'));
   $(`tab-${name}`).classList.remove('hidden');
-  
-  ['search', 'matches', 'profile'].forEach(t => {
-    const btn = $(`tab-btn-${t}`);
-    const navBtn = document.querySelector(`.tab[data-tab="${t}"]`);
-    if(t === name) {
-      if(btn) btn.classList.add('tab-active');
-      if(navBtn) { navBtn.classList.add('tab-active'); navBtn.classList.remove('text-gray-500'); }
-    } else {
-      if(btn) btn.classList.remove('tab-active');
-      if(navBtn) { navBtn.classList.remove('tab-active'); navBtn.classList.add('text-gray-500'); }
-    }
-  });
+  document.querySelectorAll('.tab').forEach(t => { t.classList.remove('tab-active'); t.classList.add('text-gray-400'); });
+  const btn = document.querySelector(`.tab[data-tab="${name}"]`);
+  if(btn) { btn.classList.add('tab-active'); btn.classList.remove('text-gray-400'); }
   
   if(name === 'search') loadProfiles();
+  if(name === 'chats') loadChats();
+  if(name === 'matches') loadMatches();
   initIcons();
   window.scrollTo(0,0);
 }
 
-// تحميل الترشيحات (الجنس الآخر فقط)
+// Load Profiles (Opposite Gender Only)
 async function loadProfiles() {
   const grid = $('search-grid');
   grid.innerHTML = '<div class="col-span-2 text-center py-10"><i data-lucide="loader" class="w-6 h-6 animate-spin mx-auto text-primary"></i></div>';
   initIcons();
   
-  // العزل: جلب الجنس الآخر فقط
+  // تأكد من وجود بروفايل للمستخدم
+  if(!state.profile || !state.profile.gender) {
+      grid.innerHTML = '<div class="col-span-2 text-center text-red-500 mt-10 font-bold">خطأ في جلب بيانات حسابك. يرجى تسجيل الخروج وإعادة التسجيل.</div>';
+      return;
+  }
+
   const targetGender = state.profile.gender === 'male' ? 'female' : 'male';
-  
   const { data, error } = await sb.from('profiles').select('*').eq('gender', targetGender).limit(20);
   
-  if(error || !data || data.length === 0) {
-    grid.innerHTML = '<div class="col-span-2 text-center text-gray-500 mt-10">لا توجد ترشيحات حالياً</div>';
+  if(error) {
+      grid.innerHTML = `<div class="col-span-2 text-center text-red-500 mt-10 font-bold">خطأ في الاتصال: ${error.message}</div>`;
+      return;
+  }
+
+  if(!data || data.length === 0) {
+    grid.innerHTML = '<div class="col-span-2 text-center text-gray-500 mt-10 font-bold">لا توجد ترشيحات حالياً. تأكد من تشغيل كود الـ SQL الخاص بتوليد الحسابات.</div>';
     return;
   }
   
   grid.innerHTML = data.map(p => `
-    <div class="relative rounded-2xl overflow-hidden h-64 shadow-lg border border-white/5">
-      <div class="absolute inset-0 bg-gradient-to-br from-[#1E1B2E] to-[#0B0914] flex items-center justify-center">
-         <i data-lucide="user" class="w-16 h-16 text-white/10"></i>
-      </div>
-      <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent"></div>
+    <div class="relative rounded-2xl overflow-hidden h-64 shadow-md border border-gray-200 dark:border-white/5 bg-gray-100 dark:bg-[#1E1B2E]">
+      <img src="${p.avatar_url || 'https://i.pravatar.cc/300'}" class="w-full h-full object-cover" />
+      <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
       <div class="absolute bottom-0 left-0 w-full p-3 text-white">
         <div class="font-bold text-sm flex items-center gap-1">${p.full_name} ${p.is_verified?'<i data-lucide="check-circle" class="w-3 h-3 text-blue-400"></i>':''}</div>
-        <div class="text-[10px] text-gray-300 mb-2">${p.age || '—'} سنة • ${p.city || p.country}</div>
-        <button onclick="sendLike('${p.id}')" class="w-full py-2 rounded-lg btn-primary text-xs font-bold flex justify-center items-center gap-1">
-          <i data-lucide="heart" class="w-3 h-3"></i> إعجاب
-        </button>
+        <div class="text-[10px] text-gray-300 mb-2">${p.age || '—'} سنة • ${p.city || '—'}</div>
+        <div class="flex gap-1">
+          <button onclick="sendLike('${p.id}')" class="flex-1 py-1.5 rounded-lg btn-primary text-xs font-bold flex justify-center items-center gap-1"><i data-lucide="heart" class="w-3 h-3"></i> إعجاب</button>
+          <button onclick="startChat('${p.id}', '${p.full_name}')" class="px-2 py-1.5 rounded-lg bg-white/20 hover:bg-white/30 backdrop-blur text-xs"><i data-lucide="message-circle" class="w-4 h-4"></i></button>
+        </div>
       </div>
     </div>
   `).join('');
@@ -417,12 +373,143 @@ async function sendLike(id) {
   const { error } = await sb.from('likes').insert({ liker_id: state.user.id, liked_id: id });
   if(error && error.code === '23505') return toast('لقد أرسلت إعجاباً مسبقاً', true);
   if(error) return toast('حدث خطأ', true);
-  
-  toast('تم إرسال الإعجاب بنجاح');
-  // سيتم إضافة منطق المطابقة المتبادلة وفتح الدردشة لاحقاً
+  toast('تم إرسال الإعجاب');
 }
 
-// VIP Modal
+async function loadMatches() {
+  const grid = $('matches-grid');
+  grid.innerHTML = '<div class="col-span-2 text-center text-gray-500 mt-10">جاري التحميل...</div>';
+  
+  const { data: sent } = await sb.from('likes').select('liked_id').eq('liker_id', state.user.id);
+  if(!sent || sent.length === 0) return grid.innerHTML = '<div class="col-span-2 text-center text-gray-500 mt-10 font-bold">لا توجد إعجابات متبادلة بعد</div>';
+  
+  const ids = sent.map(s => s.liked_id);
+  const { data: mutual } = await sb.from('likes').select('liker_id').eq('liked_id', state.user.id).in('liker_id', ids);
+  
+  if(!mutual || mutual.length === 0) return grid.innerHTML = '<div class="col-span-2 text-center text-gray-500 mt-10 font-bold">لا توجد إعجابات متبادلة بعد</div>';
+  
+  const mutualIds = mutual.map(m => m.liker_id);
+  const { data: profiles } = await sb.from('profiles').select('*').in('id', mutualIds);
+  
+  grid.innerHTML = profiles.map(p => `
+    <div class="relative rounded-2xl overflow-hidden h-56 shadow-md border border-gray-200 dark:border-white/5 bg-gray-100 dark:bg-[#1E1B2E]">
+       <img src="${p.avatar_url || 'https://i.pravatar.cc/300'}" class="w-full h-full object-cover" />
+       <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+       <div class="absolute bottom-0 left-0 w-full p-3 text-white text-center">
+         <div class="font-bold text-sm">${p.full_name}</div>
+         <button onclick="startChat('${p.id}', '${p.full_name}')" class="mt-2 w-full py-1.5 rounded-lg btn-primary text-xs font-bold">مراسلة</button>
+       </div>
+    </div>
+  `).join('');
+  initIcons();
+}
+
+// Chat Logic
+async function loadChats() {
+  const list = $('chats-list');
+  list.innerHTML = '<div class="text-center text-gray-500 py-10"><i data-lucide="loader" class="w-6 h-6 animate-spin mx-auto text-primary"></i></div>';
+  initIcons();
+  
+  const { data, error } = await sb.from('messages')
+    .select('*')
+    .or(`sender_id.eq.${state.user.id},recipient_id.eq.${state.user.id}`)
+    .order('created_at', { ascending: false });
+    
+  if(error || !data || data.length === 0) return list.innerHTML = '<div class="text-center text-gray-500 py-10 font-bold">لا توجد رسائل حالياً. ابدأ بمراسلة أحد الترشيحات!</div>';
+  
+  const chats = {};
+  data.forEach(m => {
+    const otherId = m.sender_id === state.user.id ? m.recipient_id : m.sender_id;
+    if(!chats[otherId]) chats[otherId] = m;
+  });
+  
+  const otherIds = Object.keys(chats);
+  const { data: profiles } = await sb.from('profiles').select('id, full_name, avatar_url').in('id', otherIds);
+  const pMap = {};
+  profiles.forEach(p => pMap[p.id] = p);
+  
+  list.innerHTML = otherIds.map(id => `
+    <div onclick="startChat('${id}', '${pMap[id]?.full_name}')" class="card p-4 rounded-xl flex items-center gap-3 cursor-pointer shadow-sm hover:bg-gray-50 dark:hover:bg-white/5 transition">
+      <img src="${pMap[id]?.avatar_url || 'https://i.pravatar.cc/150'}" class="w-12 h-12 rounded-full object-cover" />
+      <div class="flex-1 overflow-hidden">
+        <div class="font-bold text-sm">${pMap[id]?.full_name || 'مستخدم'}</div>
+        <div class="text-xs text-gray-500 truncate">${chats[id].content}</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+async function startChat(id, name) {
+  state.activeChatId = id;
+  $('chat-header-name').textContent = name;
+  $('chat-view').classList.remove('hidden');
+  $('chat-messages').innerHTML = '<div class="text-center text-gray-500 py-4 text-xs">جاري التحميل...</div>';
+  
+  await fetchMessages();
+  
+  if(state.chatChannel) sb.removeChannel(state.chatChannel);
+  state.chatChannel = sb.channel('chat_room')
+    .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages' }, payload => {
+      const msg = payload.new;
+      if((msg.sender_id === state.user.id && msg.recipient_id === state.activeChatId) || 
+         (msg.sender_id === state.activeChatId && msg.recipient_id === state.user.id)) {
+        appendMessage(msg);
+      }
+    }).subscribe();
+}
+
+async function fetchMessages() {
+  const { data } = await sb.from('messages')
+    .select('*')
+    .or(`and(sender_id.eq.${state.user.id},recipient_id.eq.${state.activeChatId}),and(sender_id.eq.${state.activeChatId},recipient_id.eq.${state.user.id})`)
+    .order('created_at');
+  
+  $('chat-messages').innerHTML = '';
+  if(data) data.forEach(appendMessage);
+}
+
+function appendMessage(m) {
+  const isMe = m.sender_id === state.user.id;
+  const div = document.createElement('div');
+  div.className = `flex ${isMe ? 'justify-start' : 'justify-end'} mb-2`;
+  div.innerHTML = `
+    <div class="max-w-[75%] px-4 py-2 text-sm ${isMe ? 'msg-me' : 'msg-them'} shadow-sm">
+      ${m.content}
+    </div>
+  `;
+  $('chat-messages').appendChild(div);
+  $('chat-messages').scrollTop = $('chat-messages').scrollHeight;
+}
+
+async function sendMessage() {
+  const text = $('chat-input').value.trim();
+  if(!text || !state.activeChatId) return;
+  $('chat-input').value = '';
+  
+  await sb.from('messages').insert({ sender_id: state.user.id, recipient_id: state.activeChatId, content: text });
+}
+
+function closeChat() {
+  $('chat-view').classList.add('hidden');
+  state.activeChatId = null;
+  if(state.chatChannel) sb.removeChannel(state.chatChannel);
+  loadChats();
+}
+
+// Settings & UI
+function toggleDarkMode() {
+  document.documentElement.classList.toggle('dark');
+  const isDark = document.documentElement.classList.contains('dark');
+  const btn = $('dark-mode-btn');
+  if(isDark) {
+    btn.style.backgroundColor = '#7C3AED';
+    btn.querySelector('div').style.transform = 'translateX(0)';
+  } else {
+    btn.style.backgroundColor = '#ccc';
+    btn.querySelector('div').style.transform = 'translateX(-24px)';
+  }
+}
+
 function showVipModal() { $('modal-vip').classList.remove('hidden'); initIcons(); }
 function hideVipModal() { $('modal-vip').classList.add('hidden'); }
 async function mockPayment() {
@@ -435,7 +522,7 @@ async function mockPayment() {
   }
 }
 
-// Init
+// Start
 initIcons();
 </script>
 </body>
