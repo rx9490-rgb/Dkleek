@@ -28,6 +28,16 @@
   .tab-active { background: linear-gradient(135deg, #7C3AED, #D4AF37); color: #fff; }
   .logo-glow { filter: drop-shadow(0 0 20px rgba(124,58,237,.4)); }
   .vip-badge { background: linear-gradient(135deg, #F59E0B, #D4AF37); color: #000; font-weight: bold; padding: 2px 8px; border-radius: 4px; font-size: 12px; }
+  
+  /* حركة دوران شعار النون */
+  @keyframes spin-n { 
+    0% { transform: rotate(0deg); } 
+    100% { transform: rotate(360deg); } 
+  }
+  .n-spinner {
+    animation: spin-n 1.5s linear infinite;
+    display: inline-block;
+  }
 </style>
 </head>
 <body>
@@ -62,7 +72,18 @@
 
 <!-- ==================== AUTH ==================== -->
 <div id="screen-auth" class="hidden min-h-screen flex items-center justify-center px-4 bg-black/50">
-  <div class="card rounded-2xl p-8 w-full max-w-md">
+  <div class="card rounded-2xl p-8 w-full max-w-md relative">
+    
+    <!-- شعار النون الدوار (يظهر أثناء التحميل) -->
+    <div id="auth-spinner" class="hidden absolute inset-0 bg-[#0F0B1E]/90 rounded-2xl z-10 flex flex-col items-center justify-center">
+      <svg viewBox="0 0 128 128" style="width:60px;height:60px;" class="n-spinner logo-glow">
+        <path d="M 28 60 Q 28 90 64 90" stroke="#7C3AED" stroke-width="10" fill="none" stroke-linecap="round"/>
+        <path d="M 64 90 Q 100 90 100 60 L 100 52" stroke="#7DA9CC" stroke-width="10" fill="none" stroke-linecap="round"/>
+        <rect x="56" y="25" width="16" height="16" fill="#7DA9CC" transform="rotate(45 64 33)"/>
+      </svg>
+      <p class="text-gray-400 text-sm mt-4">جاري التحقق...</p>
+    </div>
+
     <div class="text-center mb-6">
       <svg viewBox="0 0 128 128" style="width:60px;height:60px;margin:0 auto 10px;" class="logo-glow">
         <path d="M 28 60 Q 28 90 64 90" stroke="#7C3AED" stroke-width="10" fill="none" stroke-linecap="round"/>
@@ -183,7 +204,7 @@
     </div>
 
     <!-- ===== TAB: SEARCH ===== -->
-    <div id="tab-search" class="tab-content hidden">
+    <div id="tab-search" class="tab-content hidden relative min-h-[400px]">
       <div class="card rounded-2xl p-6 mb-4">
         <h3 class="text-xl font-black mb-3 flex items-center gap-2"><i data-lucide="search"></i> بحث عن شريك</h3>
         <div class="grid md:grid-cols-4 gap-3">
@@ -193,6 +214,17 @@
           <button onclick="runSearch()" class="btn px-6 py-2 grad-blue rounded-lg font-bold">بحث</button>
         </div>
       </div>
+      
+      <!-- مؤشر البحث الدوار في صفحة البحث -->
+      <div id="search-spinner" class="hidden absolute inset-0 bg-[#0F0B1E]/60 backdrop-blur-sm z-10 flex flex-col items-center justify-center rounded-2xl">
+        <svg viewBox="0 0 128 128" style="width:60px;height:60px;" class="n-spinner logo-glow">
+          <path d="M 28 60 Q 28 90 64 90" stroke="#7C3AED" stroke-width="10" fill="none" stroke-linecap="round"/>
+          <path d="M 64 90 Q 100 90 100 60 L 100 52" stroke="#7DA9CC" stroke-width="10" fill="none" stroke-linecap="round"/>
+          <rect x="56" y="25" width="16" height="16" fill="#7DA9CC" transform="rotate(45 64 33)"/>
+        </svg>
+        <p class="text-gray-400 text-sm mt-4">جاري البحث عن نصيبك...</p>
+      </div>
+
       <div id="search-results" class="grid md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
     </div>
 
@@ -319,10 +351,10 @@
 <div id="toast" class="hidden fixed bottom-6 left-1/2 -translate-x-1/2 z-[60] px-6 py-3 rounded-xl font-bold shadow-2xl"></div>
 
 <script>
-// ============ تم دمج مفاتيح مشروعك هنا ============
+// ============ مفاتيح مشروعك ============
 const SUPABASE_URL = 'https://hzxxemfxwndnswyphtxs.supabase.co';
 const SUPABASE_ANON_KEY = 'sb_publishable_DpefXs6FlXf1WljxS87-XA_1Q27vbbd';
-// ====================================================
+// ======================================
 
 const ALLOWED_COUNTRIES = { 'SA': 'السعودية', 'AE': 'الإمارات', 'KW': 'الكويت', 'QA': 'قطر', 'BH': 'البحرين', 'OM': 'عُمان', 'JO': 'الأردن', 'YE': 'اليمن' };
 const isValidCountry = (code) => code && ALLOWED_COUNTRIES[code] !== undefined;
@@ -367,19 +399,37 @@ async function doAuth() {
 
   if (!email || !password) return showAuthError('املأ البريد وكلمة المرور');
 
+  $('auth-spinner').classList.remove('hidden'); // إظهار شعار النون الدوار
+
   try {
     if (state.mode === 'register') {
       if (!name) return showAuthError('أدخل الاسم الكامل');
       if (!isValidCountry(country)) return showAuthError('اختر دولة صحيحة');
-      const { data, error } = await sb.auth.signUp({ email, password, options: { data: { full_name: name, country } } });
-      if (error) return showAuthError(error.message);
-      if (!data.session) return showAuthError('تحقق من بريدك الإلكتروني لتأكيد الحساب');
+      
+      // إنشاء الحساب مع تعطيل الحاجة لتأكيد البريد (سيدخل مباشرة)
+      const { data, error } = await sb.auth.signUp({ 
+        email, 
+        password, 
+        options: { 
+          data: { full_name: name, country },
+          emailRedirectTo: window.location.origin 
+        } 
+      });
+      
+      if (error) { $('auth-spinner').classList.add('hidden'); return showAuthError(error.message); }
+      
+      // إذا كان الحساب جديداً ولم يتم تسجيل الدخول تلقائياً، نسجل الدخول يدوياً
+      if (!data.session) {
+        const { error: signInError } = await sb.auth.signInWithPassword({ email, password });
+        if (signInError) { $('auth-spinner').classList.add('hidden'); return showAuthError('تم إنشاء الحساب، يرجى تسجيل الدخول.'); }
+      }
     } else {
       const { error } = await sb.auth.signInWithPassword({ email, password });
-      if (error) return showAuthError(error.message);
+      if (error) { $('auth-spinner').classList.add('hidden'); return showAuthError(error.message); }
     }
     await enterApp();
   } catch (err) {
+    $('auth-spinner').classList.add('hidden');
     showAuthError('فشل الاتصال بالخادم: تأكد من إعدادات Supabase أو تحقق من اتصالك بالإنترنت.');
   }
 }
@@ -393,7 +443,7 @@ async function logout() {
 
 async function enterApp() {
   const { data: { user } } = await sb.auth.getUser();
-  if (!user) return showScreen('landing');
+  if (!user) { $('auth-spinner').classList.add('hidden'); return showScreen('landing'); }
   state.user = user;
   
   const { data: prof } = await sb.from('profiles').select('*').eq('id', user.id).single();
@@ -407,6 +457,7 @@ async function enterApp() {
   subscribeToMessages();
   
   if (state.profile.is_admin) $('nav-tabs').querySelector('[data-tab="admin"]').classList.remove('hidden');
+  $('auth-spinner').classList.add('hidden');
   initIcons();
 }
 
@@ -481,11 +532,19 @@ async function loadBlocked() {
 
 async function runSearch() {
   const gender = $('s-gender').value, country = $('s-country').value, ageMin = parseInt($('s-age_min').value) || 0;
+  
+  // إظهار شعار النون الدوار أثناء البحث
+  $('search-spinner').classList.remove('hidden');
+  $('search-results').innerHTML = '';
+  
   let q = sb.from('profiles').select('*').neq('id', state.user.id).eq('is_banned', false);
   if (gender) q = q.eq('gender', gender);
   if (country) q = q.eq('country', country);
   
   const { data, error } = await q.limit(100);
+  
+  $('search-spinner').classList.add('hidden'); // إخفاء الشعار بعد البحث
+  
   if (error) return toast(error.message, false);
   
   const results = (data || []).filter(p => {
