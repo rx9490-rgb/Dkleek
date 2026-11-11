@@ -229,9 +229,9 @@
 <div id="toast" class="hidden fixed top-10 left-1/2 -translate-x-1/2 z-[80] px-6 py-3 rounded-full font-bold shadow-2xl text-sm"></div>
 
 <script>
-const SUPABASE_URL = 'https://hzxxemfxwndnswyphtxs.supabase.co';
-const SUPABASE_ANON_KEY = 'sb_publishable_DpefXs6FlXf1WljxS87-XA_1Q27vbbd';
-const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+const SUPABASE_URL = window.NASEEB_CONFIG && window.NASEEB_CONFIG.supabaseUrl || '';
+const SUPABASE_ANON_KEY = window.NASEEB_CONFIG && window.NASEEB_CONFIG.supabaseAnonKey || '';
+const sb = window.supabase && SUPABASE_URL && SUPABASE_ANON_KEY ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
 
 const state = { user: null, profile: null, selectedGender: null, activeChatId: null, chatChannel: null, isRegister: true, vipInterval: null };
 const $ = id => document.getElementById(id);
@@ -240,10 +240,11 @@ const initIcons = () => lucide.createIcons();
 setTimeout(() => {
   $('splash').style.opacity = '0';
   setTimeout(() => $('splash').style.display = 'none', 500);
+  if (!sb) { showLanding(); return; }
   sb.auth.getSession().then(({ data: { session } }) => {
     if(session) enterApp();
     else showLanding();
-  });
+  }).catch(() => showLanding());
 }, 1000);
 
 function showLanding() {
@@ -592,6 +593,236 @@ async function loadAdmin() {
 }
 
 initIcons();
+
+function escapeHTML(value) {
+  return String(value == null ? '' : value).replace(/[&<>"']/g, function (ch) {
+    return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch];
+  });
+}
+function isNaseebAdmin() { return Boolean(state.profile && state.profile.is_admin); }
+function isVipActive() {
+  if (!state.profile) return false;
+  if (isNaseebAdmin() || state.profile.gender === 'female') return true;
+  const expiry = Date.parse(state.profile.vip_expires_at || '');
+  return Number.isFinite(expiry) && expiry > Date.now();
+}
+function updateMembershipUI() {
+  const statusEl = $('membership-status');
+  const detailEl = $('membership-detail') || $('subscription-detail');
+  const badge = $('vip-badge');
+  const planEl = $('subscription-status');
+  if (!state.profile) return;
+  let label = 'VIP غير نشط';
+  let detail = 'يمكنك استكشاف المنصة، وتظهر الباقات عند الحاجة فقط.';
+  if (isNaseebAdmin()) { label = 'صلاحية المدير'; detail = 'دخول كامل دون قيود اشتراك.'; }
+  else if (state.profile.gender === 'female') { label = 'VIP مجاني مدى الحياة ❤️'; detail = 'جميع مزايا VIP متاحة لحسابك.'; }
+  else {
+    const expiry = Date.parse(state.profile.vip_expires_at || '');
+    if (Number.isFinite(expiry) && expiry > Date.now()) {
+      const remaining = expiry - Date.now();
+      const days = Math.floor(remaining / 86400000);
+      const hours = Math.floor((remaining % 86400000) / 3600000);
+      const minutes = Math.floor((remaining % 3600000) / 60000);
+      label = 'VIP نشط';
+      detail = 'المتبقي: ' + (days ? days + ' يوم، ' : '') + hours + ' ساعة و' + minutes + ' دقيقة. ينتهي ' + new Date(expiry).toLocaleString('ar');
+    }
+  }
+  if (statusEl) statusEl.textContent = label;
+  if (detailEl) detailEl.textContent = detail;
+  if (planEl) planEl.textContent = label;
+  if (badge) {
+    if (isNaseebAdmin() || state.profile.gender === 'female' || isVipActive()) {
+      badge.classList.remove('hidden');
+      badge.textContent = isNaseebAdmin() ? 'مدير' : (state.profile.gender === 'female' ? 'VIP مجاني' : 'VIP نشط');
+    } else badge.classList.add('hidden');
+  }
+}
+function requireVip() {
+  if (isVipActive()) return true;
+  showPaywall();
+  return false;
+}
+function checkVipStatus() {
+  if (state.vipInterval) clearInterval(state.vipInterval);
+  updateMembershipUI();
+  if (state.profile && state.profile.gender !== 'female' && !isNaseebAdmin() && isVipActive()) {
+    state.vipInterval = setInterval(updateMembershipUI, 30000);
+  }
+}
+function showPaywall() {
+  if (isNaseebAdmin() || (state.profile && state.profile.gender === 'female')) return;
+  if ($('screen-main') && !$('screen-main').classList.contains('hidden')) switchTab('subscription');
+  toast('انتهت مدة VIP. يمكنك متابعة استخدام الحساب وفتح الباقات عند رغبتك.', true);
+}
+function startCheckout(days) {
+  toast('الدفع غير مرتبط بالخادم بعد؛ لم يتم خصم أي مبلغ.', true);
+}
+function mockSubscribe(days) { startCheckout(days); }
+function showVipModal() { switchTab('subscription'); }
+function watchAd() {
+  toast('نظام الإعلانات المكافئة يحتاج ربطاً والتحقق من الخادم؛ لم تُمنح مدة VIP.', true);
+}
+function grantAdVip() {
+  toast('لا يمكن تفعيل VIP من الواجهة وحدها.', true);
+}
+function installNaseebEnhancements() {
+  const style = document.createElement('style');
+  style.textContent = [
+    'html.dark body{background:#0B0914;color:#fff} html:not(.dark) body{background:#F3F4F6;color:#111827}',
+    '.naseeb-announcement{margin:10px 16px;padding:12px 14px;border:1px solid rgba(212,175,55,.3);border-radius:16px;background:linear-gradient(120deg,rgba(124,58,237,.14),rgba(212,175,55,.12));display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:12px;font-weight:700}',
+    '.naseeb-announcement button,.naseeb-top-cta{border:0;border-radius:12px;padding:9px 12px;background:linear-gradient(135deg,#7C3AED,#A855F7);color:#fff;font-weight:800;white-space:nowrap}',
+    '.naseeb-sub-wrap{padding-bottom:20px}.naseeb-plan{position:relative;border:1px solid rgba(124,58,237,.24);border-radius:22px;padding:18px;margin:14px 0;background:linear-gradient(145deg,rgba(124,58,237,.10),rgba(255,255,255,.02))}',
+    '.naseeb-plan.featured{border:1px solid rgba(212,175,55,.65);box-shadow:0 12px 38px rgba(124,58,237,.13)}',
+    '.naseeb-plan ul{padding:0 18px 0 0;margin:12px 0;line-height:2;font-size:13px}',
+    '.naseeb-price{font-size:30px;font-weight:900;color:#7C3AED}.naseeb-old{color:#888;text-decoration:line-through;margin-inline-start:8px;font-size:14px}',
+    '.naseeb-membership{border-radius:18px;padding:16px;margin:16px 0;background:linear-gradient(135deg,rgba(124,58,237,.12),rgba(212,175,55,.10));border:1px solid rgba(124,58,237,.18)}',
+    '.naseeb-muted{font-size:12px;color:#888;line-height:1.8}.naseeb-security-note{margin-top:14px;padding:12px;border-radius:14px;background:rgba(239,68,68,.08);color:#b91c1c;font-size:11px;line-height:1.8}',
+    '@media(max-width:390px){.naseeb-top-cta{padding:8px;font-size:11px}.naseeb-announcement{font-size:11px}}'
+  ].join('');
+  document.head.appendChild(style);
+  const header = document.querySelector('#screen-main > header');
+  if (header) {
+    const actions = header.querySelector('.flex.items-center.gap-3');
+    if (actions) {
+      const cta = document.createElement('button');
+      cta.className = 'naseeb-top-cta'; cta.textContent = 'اشترك الآن'; cta.onclick = function () { switchTab('subscription'); };
+      actions.prepend(cta);
+    }
+    const notice = document.createElement('div');
+    notice.className = 'naseeb-announcement';
+    notice.innerHTML = '<span>عروض VIP في نصيب ❤️ استمتع بجميع المميزات ابتداءً من 99 ريالاً</span><button type="button">عرض الباقات</button>';
+    notice.querySelector('button').onclick = function () { switchTab('subscription'); };
+    header.after(notice);
+  }
+  const main = document.querySelector('#screen-main main');
+  if (main && !$('tab-subscription')) {
+    const panel = document.createElement('div');
+    panel.id = 'tab-subscription'; panel.className = 'tab-content hidden naseeb-sub-wrap';
+    panel.innerHTML = '<div class="flex items-center justify-between mb-2"><h2 class="text-xl font-black">الاشتراكات وVIP</h2><button onclick="switchTab(\'profile\')" class="text-gray-500 text-sm">حسابي</button></div><p class="naseeb-muted">اختر باقتك وقتما يناسبك. لن تظهر صفحة الدفع عند تسجيل الدخول.</p><div class="naseeb-membership"><div id="subscription-status" class="font-black">حالة العضوية</div><div id="subscription-detail" class="naseeb-muted mt-1">—</div></div><article class="naseeb-plan"><div class="flex items-center justify-between"><strong>شهر واحد</strong><span class="text-xs text-primary font-bold">خصم 34%</span></div><div class="mt-2"><span class="naseeb-price">99 ر.س</span><span class="naseeb-old">150 ر.س</span></div><ul><li>VIP كامل لمدة 30 يوماً</li><li>محادثات وطلبات تواصل</li><li>بحث وفلاتر متقدمة</li><li>دون إعلانات أثناء الاشتراك</li></ul><button class="btn-primary w-full py-3 rounded-xl font-bold" onclick="startCheckout(30)">اشترك الآن</button></article><article class="naseeb-plan featured"><div class="flex items-center justify-between"><strong>شهران</strong><span class="text-xs text-gold font-black">الأفضل قيمة · خصم 40%</span></div><div class="mt-2"><span class="naseeb-price">179 ر.س</span><span class="naseeb-old">300 ر.س</span></div><ul><li>VIP كامل لمدة 60 يوماً</li><li>جميع مميزات الباقة الشهرية</li><li>طلبات ومحادثات غير محدودة بحسب سياسة المنصة</li><li>دون إعلانات أثناء الاشتراك</li></ul><button class="w-full py-3 rounded-xl font-bold bg-gold text-black" onclick="startCheckout(60)">اختر أفضل عرض</button></article><div class="naseeb-security-note">الدفع ومشاهدة الإعلانات لم يُربطا بخادم موثوق هنا؛ لن يتم تفعيل اشتراك أو منح VIP بمجرد الضغط على زر.</div></div>';
+    const settings = $('tab-settings');
+    main.insertBefore(panel, settings || null);
+  }
+  const nav = document.querySelector('#screen-main nav');
+  if (nav && !nav.querySelector('[data-tab="subscription"]')) {
+    const item = document.createElement('button');
+    item.className = 'tab flex flex-col items-center gap-1 text-gray-400'; item.setAttribute('data-tab', 'subscription'); item.onclick = function () { switchTab('subscription'); };
+    item.innerHTML = '<i data-lucide="crown" class="w-6 h-6"></i><span class="text-[10px] font-bold">VIP</span>';
+    const profileItem = nav.querySelector('[data-tab="profile"]');
+    nav.insertBefore(item, profileItem || null);
+  }
+  const profilePanel = $('tab-profile');
+  if (profilePanel && !$('membership-card')) {
+    const card = document.createElement('div');
+    card.id = 'membership-card'; card.className = 'naseeb-membership';
+    card.innerHTML = '<div id="membership-status" class="font-black">حالة العضوية</div><div id="membership-detail" class="naseeb-muted mt-1">—</div><button class="btn-primary w-full py-3 rounded-xl font-bold mt-3" onclick="switchTab(\'subscription\')">الاشتراكات وVIP</button>';
+    const vipButton = $('vip-btn');
+    if (vipButton) vipButton.after(card); else profilePanel.appendChild(card);
+  }
+  const authEmail = $('auth-email');
+  if (authEmail && !$('auth-extra-fields')) {
+    const extra = document.createElement('div'); extra.id = 'auth-extra-fields'; extra.className = 'space-y-3';
+    extra.innerHTML = '<input id="auth-display-name" type="text" placeholder="اسم العرض" class="w-full p-4 rounded-xl" /><input id="auth-phone" type="tel" placeholder="رقم الهاتف" class="w-full p-4 rounded-xl" dir="ltr" /><input id="auth-birth-date" type="date" class="w-full p-4 rounded-xl" />';
+    authEmail.before(extra);
+    const submit = $('auth-submit');
+    const terms = document.createElement('label'); terms.id = 'auth-terms-wrap'; terms.className = 'flex items-start gap-2 text-xs text-gray-500 leading-6';
+    terms.innerHTML = '<input id="auth-terms" type="checkbox" class="mt-1" /><span>أوافق على الشروط وسياسة الخصوصية.</span>';
+    submit.before(terms);
+  }
+  initIcons();
+}
+function updateAuthUI() {
+  $('auth-name-field').classList.toggle('hidden', !state.isRegister);
+  $('auth-gender-field').classList.toggle('hidden', !state.isRegister);
+  if ($('auth-extra-fields')) $('auth-extra-fields').classList.toggle('hidden', !state.isRegister);
+  if ($('auth-terms-wrap')) $('auth-terms-wrap').classList.toggle('hidden', !state.isRegister);
+  $('auth-title').textContent = state.isRegister ? 'إنشاء حساب' : 'تسجيل الدخول';
+  $('auth-submit').textContent = state.isRegister ? 'إنشاء الحساب' : 'دخول';
+  $('auth-switch-text').textContent = state.isRegister ? 'لديك حساب؟ سجل الدخول' : 'ليس لديك حساب؟ سجل الآن';
+}
+async function doAuth() {
+  if (!sb) return toast('إعداد اتصال الخادم غير مكتمل.', true);
+  const email = $('auth-email').value.trim();
+  const pass = $('auth-password').value;
+  const errorBox = $('auth-error'); errorBox.classList.add('hidden');
+  if (!email || !pass) { errorBox.textContent = 'أدخل البريد الإلكتروني وكلمة المرور.'; errorBox.classList.remove('hidden'); return; }
+  if (state.isRegister) {
+    const name = $('auth-name').value.trim();
+    const phone = $('auth-phone') ? $('auth-phone').value.trim() : '';
+    const displayName = $('auth-display-name') ? $('auth-display-name').value.trim() : '';
+    const birthDate = $('auth-birth-date') ? $('auth-birth-date').value : '';
+    if (!name || !phone || !state.selectedGender || !$('auth-terms').checked) {
+      errorBox.textContent = 'أكمل الحقول المطلوبة واختر الجنس ووافق على الشروط.'; errorBox.classList.remove('hidden'); return;
+    }
+    if (pass.length < 8) { errorBox.textContent = 'يجب أن تكون كلمة المرور 8 أحرف على الأقل.'; errorBox.classList.remove('hidden'); return; }
+    const { data, error } = await sb.auth.signUp({ email: email, password: pass, options: { data: { full_name: name, display_name: displayName || name, phone: phone, birth_date: birthDate || null, gender: state.selectedGender, terms_accepted: true } } });
+    if (error) { errorBox.textContent = error.message; errorBox.classList.remove('hidden'); return; }
+    if (!data.session) { toast('تحقق من بريدك الإلكتروني لإكمال تفعيل الحساب.', false); showAuth('login'); return; }
+    await enterApp(); return;
+  }
+  const { error } = await sb.auth.signInWithPassword({ email: email, password: pass });
+  if (error) { errorBox.textContent = error.message; errorBox.classList.remove('hidden'); return; }
+  await enterApp();
+}
+async function saveQuestionnaire() {
+  if (!sb || !state.user) return toast('تعذر الاتصال بالخادم.', true);
+  const data = { age: parseInt($('q-age').value, 10) || null, city: $('q-city').value.trim() || null, nationality: $('q-nationality').value.trim() || null, height: $('q-height').value.trim() || null, weight: $('q-weight').value.trim() || null, marital_status: $('q-marital').value || null, education: $('q-education').value || null, job: $('q-job').value.trim() || null, bio: $('q-bio').value.trim() || null };
+  if (!data.age || !data.city) return toast('أدخل العمر والمدينة على الأقل.', true);
+  const button = $('save-q-btn'); const oldText = button.textContent; button.disabled = true; button.textContent = 'جارٍ الحفظ...';
+  const { error } = await sb.from('profiles').update(data).eq('id', state.user.id);
+  button.disabled = false; button.textContent = oldText;
+  if (error) return toast('لم يتم حفظ الملف: ' + error.message, true);
+  await enterApp();
+}
+async function sendRequest(id) {
+  if (!sb || !state.user || !state.profile) return toast('سجّل الدخول أولاً.', true);
+  if (!requireVip()) return;
+  if (!id || id === state.user.id) return toast('تعذر إرسال الطلب.', true);
+  const { error } = await sb.from('requests').insert({ sender_id: state.user.id, receiver_id: id });
+  if (error && error.code === '23505') return toast('أرسلت طلباً مسبقاً.', true);
+  if (error) return toast('تعذر إرسال الطلب.', true);
+  toast('تم إرسال طلب التواصل.');
+}
+async function sendMessage() {
+  if (!sb || !state.user || !state.profile) return toast('سجّل الدخول أولاً.', true);
+  if (!requireVip()) return;
+  const text = $('chat-input').value.trim();
+  if (!text || !state.activeChatId) return;
+  if (containsForbiddenContent(text)) return toast('ممنوع مشاركة الأرقام أو حسابات التواصل.', true);
+  $('chat-input').value = '';
+  const { error } = await sb.from('messages').insert({ sender_id: state.user.id, content: text, receiver_id: state.activeChatId });
+  if (error) { $('chat-input').value = text; toast('تعذر إرسال الرسالة.', true); }
+}
+function appendMessage(message) {
+  const box = $('chat-messages'); if (!box || !message) return;
+  const mine = message.sender_id === state.user.id;
+  const row = document.createElement('div'); row.className = 'flex ' + (mine ? 'justify-start' : 'justify-end') + ' mb-2';
+  const bubble = document.createElement('div'); bubble.className = 'max-w-[75%] px-4 py-2 text-sm ' + (mine ? 'msg-me' : 'msg-them') + ' shadow-sm';
+  bubble.textContent = message.content || ''; row.appendChild(bubble); box.appendChild(row); box.scrollTop = box.scrollHeight;
+}
+async function fetchMessages() {
+  if (!sb || !state.user || !state.activeChatId) return;
+  const { data, error } = await sb.from('messages').select('id,sender_id,receiver_id,content,created_at').or('and(sender_id.eq.' + state.user.id + ',receiver_id.eq.' + state.activeChatId + '),and(sender_id.eq.' + state.activeChatId + ',receiver_id.eq.' + state.user.id + ')').order('created_at');
+  if (error) return toast('تعذر تحميل المحادثة.', true);
+  $('chat-messages').innerHTML = ''; if (data) data.forEach(appendMessage);
+}
+async function loadProfiles() {
+  if (!sb || !state.profile || !state.user) return;
+  const grid = $('search-grid'); grid.innerHTML = '<div class="col-span-2 text-center py-8 text-gray-500">جاري التحميل...</div>';
+  const targetGender = state.profile.gender === 'male' ? 'female' : 'male';
+  const { data, error } = await sb.from('profiles').select('id,full_name,age,city').eq('gender', targetGender).neq('id', state.user.id).limit(20);
+  if (error) { grid.textContent = 'تعذر تحميل الترشيحات.'; return; }
+  if (!data || !data.length) { grid.textContent = 'لا توجد ترشيحات حالياً.'; return; }
+  grid.innerHTML = data.map(function (p) {
+    return '<div class="relative rounded-2xl overflow-hidden h-64 shadow-md border border-gray-200 dark:border-white/5 bg-gray-100 dark:bg-[#1E1B2E]"><div class="absolute inset-0 flex items-center justify-center"><i data-lucide="user" class="w-16 h-16 text-black/10 dark:text-white/10"></i></div><div class="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent"></div><div class="absolute bottom-0 left-0 w-full p-3 text-white"><div class="font-bold text-sm">' + escapeHTML(p.full_name) + '</div><div class="text-[10px] text-gray-300 mb-2">' + escapeHTML(p.age) + ' سنة • ' + escapeHTML(p.city) + '</div><button onclick="sendRequest(\'' + escapeHTML(p.id) + '\')" class="w-full py-1.5 rounded-lg bg-white/20 text-xs font-bold">طلب تواصل</button></div></div>';
+  }).join(''); initIcons();
+}
+function updateAdminUI() {
+  if (isNaseebAdmin() && $('admin-btn')) $('admin-btn').classList.remove('hidden');
+  updateMembershipUI();
+}
+
+installNaseebEnhancements();
+if (!sb) setTimeout(() => toast('اتصال الخادم غير مهيأ لهذه النسخة.', true), 1200);
 </script>
 </body>
 </html>
