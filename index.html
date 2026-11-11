@@ -10,7 +10,7 @@
 <script>
   window.NASEEB_CONFIG = {
     supabaseUrl: 'https://njwmcgmyxfvfeddoalmz.supabase.co',
-    supabaseAnonKey: 'sb_publishable_G_pSFXhhG0Nk1bELVBvjvw_3Y_kY1jT' 
+    supabaseAnonKey: 'sb_publishable_G_pSFXhhG0Nk1bELVBvjvw_3Y_kY1jT'
   };
 </script>
 
@@ -475,8 +475,8 @@ async function loadProfiles() {
       <div class="absolute inset-0 flex items-center justify-center"><i data-lucide="user" class="w-16 h-16 text-black/10 dark:text-white/10"></i></div>
       <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent"></div>
       <div class="absolute bottom-0 left-0 w-full p-3 text-white">
-        <div class="font-bold text-sm">${escapeHTML(p.full_name)}</div>
-        <div class="text-[10px] text-gray-300 mb-2">${escapeHTML(p.age)} سنة • ${escapeHTML(p.city)}</div>
+        <div class="font-bold text-sm">${p.full_name}</div>
+        <div class="text-[10px] text-gray-300 mb-2">${p.age} سنة • ${p.city}</div>
         <button onclick="sendRequest('${p.id}')" class="w-full py-1.5 rounded-lg bg-white/20 hover:bg-white/30 backdrop-blur text-xs font-bold">طلب تواصل</button>
       </div>
     </div>`;
@@ -500,7 +500,7 @@ async function loadRequests() {
   
   list.innerHTML = data.map(r => `
     <div class="card p-4 rounded-xl mb-2 flex justify-between items-center">
-      <div><div class="font-bold text-sm">${escapeHTML(r.profiles.full_name)}</div><div class="text-xs text-gray-500">${escapeHTML(r.profiles.city)}</div></div>
+      <div><div class="font-bold text-sm">${r.profiles.full_name}</div><div class="text-xs text-gray-500">${r.profiles.city}</div></div>
       <div class="flex gap-2">
         <button onclick="acceptRequest(${r.id})" class="btn-primary px-4 py-2 rounded-lg text-xs">قبول</button>
         <button onclick="rejectRequest(${r.id})" class="bg-red-500/10 text-red-500 px-4 py-2 rounded-lg text-xs font-bold">رفض</button>
@@ -522,9 +522,9 @@ async function loadChats() {
     const other = r.sender_id === state.user.id ? r.receiver : r.profiles;
     const otherId = r.sender_id === state.user.id ? r.receiver_id : r.sender_id;
     return `
-      <div onclick="startChat('${otherId}', '${escapeHTML(other.full_name)}')" class="card p-4 rounded-xl mb-2 cursor-pointer flex items-center gap-3">
-        <div class="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center font-bold text-primary">${escapeHTML(other.full_name.charAt(0))}</div>
-        <div class="font-bold text-sm">${escapeHTML(other.full_name)}</div>
+      <div onclick="startChat('${otherId}', '${other.full_name}')" class="card p-4 rounded-xl mb-2 cursor-pointer flex items-center gap-3">
+        <div class="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center font-bold text-primary">${other.full_name.charAt(0)}</div>
+        <div class="font-bold text-sm">${other.full_name}</div>
       </div>`;
   }).join('');
 }
@@ -553,7 +553,7 @@ function appendMessage(m) {
   const isMe = m.sender_id === state.user.id;
   const div = document.createElement('div');
   div.className = `flex ${isMe ? 'justify-start' : 'justify-end'} mb-2`;
-  div.innerHTML = `<div class="max-w-[75%] px-4 py-2 text-sm ${isMe ? 'msg-me' : 'msg-them'} shadow-sm">${escapeHTML(m.content)}</div>`;
+  div.innerHTML = `<div class="max-w-[75%] px-4 py-2 text-sm ${isMe ? 'msg-me' : 'msg-them'} shadow-sm">${m.content}</div>`;
   $('chat-messages').appendChild(div);
   $('chat-messages').scrollTop = $('chat-messages').scrollHeight;
 }
@@ -716,7 +716,8 @@ function installNaseebEnhancements() {
   const authEmail = $('auth-email');
   if (authEmail && !$('auth-extra-fields')) {
     const extra = document.createElement('div'); extra.id = 'auth-extra-fields'; extra.className = 'space-y-3';
-    extra.innerHTML = '<input id="auth-display-name" type="text" placeholder="اسم العرض" class="w-full p-4 rounded-xl" /><input id="auth-phone" type="tel" placeholder="رقم الهاتف" class="w-full p-4 rounded-xl" dir="ltr" /><input id="auth-birth-date" type="date" class="w-full p-4 rounded-xl" />';
+    // تم إزالة حقل رقم الهاتف من هنا
+    extra.innerHTML = '<input id="auth-display-name" type="text" placeholder="اسم العرض" class="w-full p-4 rounded-xl" /><input id="auth-birth-date" type="date" class="w-full p-4 rounded-xl" />';
     authEmail.before(extra);
     const submit = $('auth-submit');
     const terms = document.createElement('label'); terms.id = 'auth-terms-wrap'; terms.className = 'flex items-start gap-2 text-xs text-gray-500 leading-6';
@@ -742,14 +743,14 @@ async function doAuth() {
   if (!email || !pass) { errorBox.textContent = 'أدخل البريد الإلكتروني وكلمة المرور.'; errorBox.classList.remove('hidden'); return; }
   if (state.isRegister) {
     const name = $('auth-name').value.trim();
-    const phone = $('auth-phone') ? $('auth-phone').value.trim() : '';
+    // تم إزالة شرط رقم الهاتف من هنا
     const displayName = $('auth-display-name') ? $('auth-display-name').value.trim() : '';
     const birthDate = $('auth-birth-date') ? $('auth-birth-date').value : '';
-    if (!name || !phone || !state.selectedGender || !$('auth-terms').checked) {
+    if (!name || !state.selectedGender || !$('auth-terms').checked) {
       errorBox.textContent = 'أكمل الحقول المطلوبة واختر الجنس ووافق على الشروط.'; errorBox.classList.remove('hidden'); return;
     }
     if (pass.length < 8) { errorBox.textContent = 'يجب أن تكون كلمة المرور 8 أحرف على الأقل.'; errorBox.classList.remove('hidden'); return; }
-    const { data, error } = await sb.auth.signUp({ email: email, password: pass, options: { data: { full_name: name, display_name: displayName || name, phone: phone, birth_date: birthDate || null, gender: state.selectedGender, terms_accepted: true } } });
+    const { data, error } = await sb.auth.signUp({ email: email, password: pass, options: { data: { full_name: name, display_name: displayName || name, birth_date: birthDate || null, gender: state.selectedGender, terms_accepted: true } } });
     if (error) { errorBox.textContent = error.message; errorBox.classList.remove('hidden'); return; }
     if (!data.session) { toast('تحقق من بريدك الإلكتروني لإكمال تفعيل الحساب.', false); showAuth('login'); return; }
     await enterApp(); return;
