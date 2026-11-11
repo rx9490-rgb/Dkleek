@@ -45,10 +45,6 @@
   <div class="flex-1 flex flex-col justify-center items-center text-center mt-10">
     <h1 class="text-4xl font-black mb-3">ابحث عن <span class="text-primary">نصيبك</span></h1>
     <p class="text-gray-500 text-sm mb-10 px-4">منصة التعارف الراقية والآمنة للزواج الشرعي.</p>
-    <div class="grid grid-cols-2 gap-3 w-full max-w-sm mb-10">
-      <div class="card p-4 rounded-2xl flex flex-col items-center"><i data-lucide="shield-check" class="w-8 h-8 text-green-500 mb-2"></i><span class="text-xs font-bold">خصوصية تامة</span></div>
-      <div class="card p-4 rounded-2xl flex flex-col items-center"><i data-lucide="lock" class="w-8 h-8 text-primary mb-2"></i><span class="text-xs font-bold">فصل تام</span></div>
-    </div>
   </div>
   <div class="w-full space-y-3">
     <button onclick="showAuth('register')" class="btn-primary w-full py-4 rounded-2xl font-black text-lg">إنشاء حساب جديد</button>
@@ -111,7 +107,7 @@
       <div><label class="text-xs text-gray-500 mb-1 block">الوظيفة</label><input type="text" id="q-job" class="w-full p-3 rounded-xl" placeholder="مهندس، طبيب،..." /></div>
       <div><label class="text-xs text-gray-500 mb-1 block">نبذة عنك</label><textarea id="q-bio" rows="3" class="w-full p-3 rounded-xl" placeholder="أبحث عن شريك حياة..."></textarea></div>
       
-      <button onclick="saveQuestionnaire()" class="btn-primary w-full py-4 rounded-xl font-bold mt-6">إكمال الملف الشخصي</button>
+      <button onclick="saveQuestionnaire()" id="save-q-btn" class="btn-primary w-full py-4 rounded-xl font-bold mt-6">إكمال الملف الشخصي</button>
     </div>
   </div>
 </div>
@@ -198,7 +194,7 @@
   </div>
 </div>
 
-<!-- VIP Modal & Paywall -->
+<!-- VIP Modal -->
 <div id="modal-vip" class="hidden fixed inset-0 bg-black/80 z-[60] flex items-center justify-center p-4 backdrop-blur-sm">
   <div class="card rounded-3xl p-6 w-full max-w-sm text-center relative">
     <button onclick="hideModal('modal-vip')" class="absolute top-4 right-4 text-gray-400"><i data-lucide="x" class="w-6 h-6"></i></button>
@@ -208,21 +204,17 @@
     
     <div class="space-y-3">
       <div class="border border-primary/30 p-4 rounded-xl relative cursor-pointer hover:bg-primary/5" onclick="mockSubscribe(30)">
-        <div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-primary text-white text-[10px] px-2 py-0.5 rounded-full">خصم 34%</div>
         <div class="text-lg font-black">شهر واحد</div>
-        <div class="text-gray-400 line-through text-sm">150 ريال</div>
         <div class="text-primary text-2xl font-black">99 <span class="text-sm">ريال</span></div>
       </div>
       <div class="border border-gold/50 p-4 rounded-xl relative cursor-pointer hover:bg-gold/5 bg-gold/5" onclick="mockSubscribe(60)">
-        <div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-gold text-black text-[10px] px-2 py-0.5 rounded-full font-bold">الأفضل قيمة</div>
         <div class="text-lg font-black">شهران</div>
-        <div class="text-gray-400 line-through text-sm">300 ريال</div>
         <div class="text-gold text-2xl font-black">179 <span class="text-sm">ريال</span></div>
       </div>
     </div>
     
     <div class="mt-4 pt-4 border-t border-gray-200 dark:border-white/10">
-      <button onclick="watchAd()" class="w-full py-3 rounded-xl bg-gray-200 dark:bg-white/10 text-sm font-bold flex items-center justify-center gap-2"><i data-lucide="play-circle" class="w-5 h-5"></i> شاهد إعلان لساعتين VIP مجاناً</button>
+      <button onclick="watchAd()" class="w-full py-3 rounded-xl bg-gray-200 dark:bg-white/10 text-sm font-bold flex items-center justify-center gap-2"><i data-lucide="play-circle" class="w-5 h-5"></i> شاهد إعلان لساعتين VIP</button>
     </div>
   </div>
 </div>
@@ -245,7 +237,6 @@ const state = { user: null, profile: null, selectedGender: null, activeChatId: n
 const $ = id => document.getElementById(id);
 const initIcons = () => lucide.createIcons();
 
-// Splash & Init
 setTimeout(() => {
   $('splash').style.opacity = '0';
   setTimeout(() => $('splash').style.display = 'none', 500);
@@ -342,25 +333,45 @@ async function enterApp() {
   initIcons();
 }
 
-// Questionnaire Logic
+// --- إصلاح مشكلة التعليق في الاستبيان ---
 async function saveQuestionnaire() {
   const data = {
-    age: parseInt($('q-age').value),
-    city: $('q-city').value,
-    nationality: $('q-nationality').value,
-    height: $('q-height').value,
-    weight: $('q-weight').value,
-    marital_status: $('q-marital').value,
-    education: $('q-education').value,
-    job: $('q-job').value,
-    bio: $('q-bio').value
+    age: parseInt($('q-age').value) || null,
+    city: $('q-city').value || null,
+    nationality: $('q-nationality').value || null,
+    height: $('q-height').value || null,
+    weight: $('q-weight').value || null,
+    marital_status: $('q-marital').value || null,
+    education: $('q-education').value || null,
+    job: $('q-job').value || null,
+    bio: $('q-bio').value || null
   };
   
-  if (!data.age || !data.city) return toast('أكمل الحقول الأساسية', true);
+  if (!data.age || !data.city) return toast('أدخل العمر والمدينة على الأقل', true);
   
+  $('save-q-btn').textContent = 'جاري الحفظ...';
+  
+  // 1. تحديث قاعدة البيانات
   await sb.from('profiles').update(data).eq('id', state.user.id);
+  
+  // 2. تحديث ذاكرة المتصفح فوراً
+  state.profile = { ...state.profile, ...data };
+  
+  $('save-q-btn').textContent = 'إكمال الملف الشخصي';
   toast('تم حفظ الملف بنجاح');
-  enterApp();
+  
+  // 3. الانتقال للصفحة الرئيسية عنوة
+  if (state.profile.is_admin) $('admin-btn').classList.remove('hidden');
+  $('prof-avatar').textContent = state.profile.full_name ? state.profile.full_name.charAt(0) : '؟';
+  $('prof-name').textContent = state.profile.full_name || 'مستخدم';
+  $('prof-info').textContent = `${state.profile.age} سنة • ${state.profile.city}`;
+  
+  ['screen-landing','screen-auth','screen-main','screen-questionnaire'].forEach(s => $(s).classList.add('hidden'));
+  $('screen-main').classList.remove('hidden');
+  
+  checkVipStatus();
+  switchTab('search');
+  initIcons();
 }
 
 // VIP Logic
@@ -390,7 +401,7 @@ function checkVipStatus() {
       $('vip-badge').classList.add('hidden');
       $('vip-timer').textContent = 'انتهى الاشتراك';
       $('vip-timer').classList.remove('hidden');
-      showPaywall(); // إظهار نافذة الدفع
+      showPaywall();
     }
   };
   
@@ -399,17 +410,16 @@ function checkVipStatus() {
 }
 
 function showPaywall() {
-  if (state.profile.gender === 'female') return; // النساء لا يدفعن
+  if (state.profile.gender === 'female') return;
   showModal('modal-vip');
 }
 
 async function mockSubscribe(days) {
   const expiry = new Date();
   expiry.setDate(expiry.getDate() + days);
-  
   await sb.from('profiles').update({ is_vip: true, vip_expires_at: expiry.toISOString() }).eq('id', state.user.id);
   state.profile.vip_expires_at = expiry.toISOString();
-  toast('تم تفعيل الاشتراك بنجاح (محاكاة الدفع)');
+  toast('تم تفعيل الاشتراك');
   hideModal('modal-vip');
   checkVipStatus();
 }
@@ -420,23 +430,17 @@ function watchAd() {
   let t = 5;
   $('ad-timer').textContent = t;
   $('ad-progress').style.width = '0%';
-  
   const int = setInterval(() => {
     t--;
     $('ad-timer').textContent = t;
     $('ad-progress').style.width = `${((5-t)/5)*100}%`;
-    if(t <= 0) {
-      clearInterval(int);
-      hideModal('modal-ad');
-      grantAdVip();
-    }
+    if(t <= 0) { clearInterval(int); hideModal('modal-ad'); grantAdVip(); }
   }, 1000);
 }
 
 async function grantAdVip() {
   const expiry = new Date();
   expiry.setHours(expiry.getHours() + 2);
-  
   await sb.from('profiles').update({ is_vip: true, vip_expires_at: expiry.toISOString() }).eq('id', state.user.id);
   state.profile.vip_expires_at = expiry.toISOString();
   toast('تم تفعيل ساعتين VIP مجاناً!');
@@ -459,39 +463,25 @@ function switchTab(name) {
   window.scrollTo(0,0);
 }
 
-// Compatibility Score (Simulated simple algorithm)
-function calcCompatibility(p) {
-  let score = 50;
-  if (p.city === state.profile.city) score += 20;
-  if (p.nationality === state.profile.nationality) score += 10;
-  if (p.education === state.profile.education) score += 20;
-  return Math.min(score, 99);
-}
-
 async function loadProfiles() {
   const grid = $('search-grid');
   grid.innerHTML = '<div class="col-span-2 text-center py-10"><i data-lucide="loader" class="w-6 h-6 animate-spin mx-auto text-primary"></i></div>';
   initIcons();
   
-  // RLS will filter, but we add the opposite gender query
   const targetGender = state.profile.gender === 'male' ? 'female' : 'male';
   const { data } = await sb.from('profiles').select('*').eq('gender', targetGender).limit(20);
   
-  if(!data || data.length === 0) return grid.innerHTML = '<div class="col-span-2 text-center text-gray-500 mt-10">لا توجد ترشيحات حالياً.</div>';
+  if(!data || data.length === 0) return grid.innerHTML = '<div class="col-span-2 text-center text-gray-500 mt-10">لا توجد ترشيحات.</div>';
   
   grid.innerHTML = data.map(p => {
-    const comp = calcCompatibility(p);
     return `
     <div class="relative rounded-2xl overflow-hidden h-64 shadow-md border border-gray-200 dark:border-white/5 bg-gray-100 dark:bg-[#1E1B2E]">
       <div class="absolute inset-0 flex items-center justify-center"><i data-lucide="user" class="w-16 h-16 text-black/10 dark:text-white/10"></i></div>
-      <div class="absolute top-2 right-2 bg-primary text-white text-xs font-bold px-2 py-1 rounded-lg">${comp}% توافق</div>
       <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent"></div>
       <div class="absolute bottom-0 left-0 w-full p-3 text-white">
         <div class="font-bold text-sm">${p.full_name}</div>
         <div class="text-[10px] text-gray-300 mb-2">${p.age} سنة • ${p.city}</div>
-        <div class="flex gap-1">
-          <button onclick="sendRequest('${p.id}')" class="flex-1 py-1.5 rounded-lg bg-white/20 hover:bg-white/30 backdrop-blur text-xs font-bold">طلب تواصل</button>
-        </div>
+        <button onclick="sendRequest('${p.id}')" class="w-full py-1.5 rounded-lg bg-white/20 hover:bg-white/30 backdrop-blur text-xs font-bold">طلب تواصل</button>
       </div>
     </div>`;
   }).join('');
@@ -509,17 +499,12 @@ async function sendRequest(id) {
 async function loadRequests() {
   const list = $('requests-list');
   list.innerHTML = 'جاري التحميل...';
-  
   const { data } = await sb.from('requests').select('*, profiles!requests_sender_id_fkey(full_name, city)').eq('receiver_id', state.user.id).eq('status', 'pending');
-  
-  if(!data || data.length === 0) return list.innerHTML = '<div class="text-center text-gray-500 py-10">لا توجد طلبات جديدة.</div>';
+  if(!data || data.length === 0) return list.innerHTML = '<div class="text-center text-gray-500 py-10">لا توجد طلبات.</div>';
   
   list.innerHTML = data.map(r => `
     <div class="card p-4 rounded-xl mb-2 flex justify-between items-center">
-      <div>
-        <div class="font-bold text-sm">${r.profiles.full_name}</div>
-        <div class="text-xs text-gray-500">${r.profiles.city}</div>
-      </div>
+      <div><div class="font-bold text-sm">${r.profiles.full_name}</div><div class="text-xs text-gray-500">${r.profiles.city}</div></div>
       <div class="flex gap-2">
         <button onclick="acceptRequest(${r.id})" class="btn-primary px-4 py-2 rounded-lg text-xs">قبول</button>
         <button onclick="rejectRequest(${r.id})" class="bg-red-500/10 text-red-500 px-4 py-2 rounded-lg text-xs font-bold">رفض</button>
@@ -528,25 +513,14 @@ async function loadRequests() {
   `).join('');
 }
 
-async function acceptRequest(id) {
-  await sb.from('requests').update({ status: 'accepted' }).eq('id', id);
-  toast('تم القبول، يمكنك الآن المحادثة');
-  loadRequests();
-}
-async function rejectRequest(id) {
-  await sb.from('requests').update({ status: 'rejected' }).eq('id', id);
-  toast('تم الرفض');
-  loadRequests();
-}
+async function acceptRequest(id) { await sb.from('requests').update({ status: 'accepted' }).eq('id', id); toast('تم القبول'); loadRequests(); }
+async function rejectRequest(id) { await sb.from('requests').update({ status: 'rejected' }).eq('id', id); toast('تم الرفض'); loadRequests(); }
 
-// Secure Chat Logic
 async function loadChats() {
   const list = $('chats-list');
   list.innerHTML = 'جاري التحميل...';
-  
   const { data } = await sb.from('requests').select('*, profiles!requests_sender_id_fkey(full_name), receiver:profiles!requests_receiver_id_fkey(full_name)').eq('status', 'accepted').or(`sender_id.eq.${state.user.id},receiver_id.eq.${state.user.id}`);
-  
-  if(!data || data.length === 0) return list.innerHTML = '<div class="text-center text-gray-500 py-10">لا توجد محادثات. يتم فتح المحادثة بعد قبول طلب التواصل.</div>';
+  if(!data || data.length === 0) return list.innerHTML = '<div class="text-center text-gray-500 py-10">لا توجد محادثات.</div>';
   
   list.innerHTML = data.map(r => {
     const other = r.sender_id === state.user.id ? r.receiver : r.profiles;
@@ -555,8 +529,7 @@ async function loadChats() {
       <div onclick="startChat('${otherId}', '${other.full_name}')" class="card p-4 rounded-xl mb-2 cursor-pointer flex items-center gap-3">
         <div class="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center font-bold text-primary">${other.full_name.charAt(0)}</div>
         <div class="font-bold text-sm">${other.full_name}</div>
-      </div>
-    `;
+      </div>`;
   }).join('');
 }
 
@@ -567,7 +540,6 @@ async function startChat(id, name) {
   $('chat-messages').innerHTML = '';
   
   await fetchMessages();
-  
   if(state.chatChannel) sb.removeChannel(state.chatChannel);
   state.chatChannel = sb.channel('chat_room').on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages' }, payload => {
     const msg = payload.new;
@@ -590,64 +562,34 @@ function appendMessage(m) {
   $('chat-messages').scrollTop = $('chat-messages').scrollHeight;
 }
 
-// Filter External Links & Numbers
 function containsForbiddenContent(text) {
-  const patterns = [
-    /(\+?\d{1,4}[\s-]?)?\(?\d{3}\)?[\s-]?\d{3}[\s-]?\d{4}/, // أرقام هواتف
-    /whatsapp|واتساب|واتس/i,
-    /telegram|تلجرام|تيليجرام/i,
-    /snap|سناب|سنابشات/i,
-    /insta|انستقرام|إنستغرام/i,
-    /twitter|تويتر|اكس|X\.com/i,
-    /http|https|www\./i,
-    /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/i // إيميل
-  ];
+  const patterns = [ /(\+?\d{1,4}[\s-]?)?\(?\d{3}\)?[\s-]?\d{3}[\s-]?\d{4}/, /whatsapp|واتساب|واتس/i, /telegram|تلجرام|تيليجرام/i, /snap|سناب|سنابشات/i, /insta|انستقرام|إنستغرام/i, /http|https|www\./i, /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/i ];
   return patterns.some(p => p.test(text));
 }
 
 async function sendMessage() {
   if (!state.profile.is_vip && new Date(state.profile.vip_expires_at) < new Date()) return showPaywall();
-  
   const text = $('chat-input').value.trim();
   if(!text || !state.activeChatId) return;
   
   if (containsForbiddenContent(text)) {
-    toast('ممنوع مشاركة الأرقام أو وسائل التواصل الخارجية!', true);
+    toast('ممنوع مشاركة الأرقام أو حسابات التواصل!', true);
     return;
   }
-  
   $('chat-input').value = '';
   await sb.from('messages').insert({ sender_id: state.user.id, content: text, receiver_id: state.activeChatId });
 }
 
-function closeChat() {
-  $('chat-view').classList.add('hidden');
-  state.activeChatId = null;
-  if(state.chatChannel) sb.removeChannel(state.chatChannel);
-}
-
-// Admin
-async function loadAdmin() {
-  const c = $('admin-content');
-  c.innerHTML = 'جاري التحميل...';
-  const { count: users } = await sb.from('profiles').select('*', { count:'exact', head:true });
-  const { count: males } = await sb.from('profiles').select('*', { count:'exact', head:true }).eq('gender', 'male');
-  const { count: females } = await sb.from('profiles').select('*', { count:'exact', head:true }).eq('gender', 'female');
-  
-  c.innerHTML = `
-    <div class="grid grid-cols-3 gap-2 mb-4 text-center">
-      <div class="card p-3 rounded-xl"><div class="text-xl font-black">${users}</div><div class="text-xs text-gray-500">الكل</div></div>
-      <div class="card p-3 rounded-xl"><div class="text-xl font-black text-blue-500">${males}</div><div class="text-xs text-gray-500">رجال</div></div>
-      <div class="card p-3 rounded-xl"><div class="text-xl font-black text-pink-500">${females}</div><div class="text-xs text-gray-500">نساء</div></div>
-    </div>
-    <p class="text-xs text-gray-500 text-center">هذه واجهة مبسطة للوحة التحكم، سيتم ربط الإدارة الكاملة بـ Supabase Dashboard.</p>
-  `;
-}
-
-// UI Helpers
+function closeChat() { $('chat-view').classList.add('hidden'); state.activeChatId = null; if(state.chatChannel) sb.removeChannel(state.chatChannel); }
 function showModal(id) { $(id).classList.remove('hidden'); initIcons(); }
 function hideModal(id) { $(id).classList.add('hidden'); }
 function toggleDarkMode() { document.documentElement.classList.toggle('dark'); }
+
+async function loadAdmin() {
+  const c = $('admin-content');
+  const { count: users } = await sb.from('profiles').select('*', { count:'exact', head:true });
+  c.innerHTML = `<div class="card p-4 rounded-xl text-center"><div class="text-2xl font-black">${users}</div><div class="text-xs text-gray-500">إجمالي المستخدمين</div></div>`;
+}
 
 initIcons();
 </script>
