@@ -8,10 +8,7 @@
 
 <!-- إعدادات الاتصال بقاعدة البيانات الخاصة بك -->
 <script>
-  window.NASEEB_CONFIG = {
-    supabaseUrl: 'https://njwmcgmyxfvfeddoalmz.supabase.co',
-    supabaseAnonKey: 'sb_publishable_G_pSFXhhG0Nk1bELVBvjvw_3Y_kY1jT'
-  };
+  window.NASEEB_CONFIG = window.NASEEB_CONFIG || { supabaseUrl: '', supabaseAnonKey: '' };
 </script>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.47.0"></script>
@@ -70,12 +67,12 @@
     <div id="auth-name-field"><input id="auth-name" type="text" placeholder="الاسم الكامل" class="w-full p-4 rounded-xl" /></div>
     <div id="auth-gender-field">
       <div class="flex gap-2">
-        <button onclick="selectGender('male')" id="btn-male" class="flex-1 py-3 rounded-xl border border-gray-300 text-gray-500 font-bold">رجل</button>
-        <button onclick="selectGender('female')" id="btn-female" class="flex-1 py-3 rounded-xl border border-gray-300 text-gray-500 font-bold">امرأة</button>
+        <button onclick="selectGender('male')" id="btn-male" class="flex-1 py-3 rounded-xl border border-gray-300 text-gray-500 font-bold" aria-label="ذكر">👨 ذكر</button>
+        <button onclick="selectGender('female')" id="btn-female" class="flex-1 py-3 rounded-xl border border-gray-300 text-gray-500 font-bold" aria-label="أنثى">👩 أنثى</button>
       </div>
     </div>
-    <input id="auth-email" type="email" placeholder="البريد الإلكتروني" class="w-full p-4 rounded-xl" dir="ltr" />
-    <input id="auth-password" type="password" placeholder="كلمة المرور" class="w-full p-4 rounded-xl" dir="ltr" />
+    <input id="auth-email" type="email" autocomplete="email" placeholder="البريد الإلكتروني" class="w-full p-4 rounded-xl" dir="ltr" />
+    <input id="auth-password" type="password" autocomplete="current-password" placeholder="كلمة المرور" class="w-full p-4 rounded-xl" dir="ltr" />
     <button onclick="doAuth()" id="auth-submit" class="btn-primary w-full py-4 rounded-xl font-bold mt-4">تسجيل</button>
     <div class="text-center mt-4"><button onclick="toggleAuth()" class="text-gray-500 text-sm"><span id="auth-switch-text">لديك حساب؟ سجل الدخول</span></button></div>
   </div>
@@ -169,6 +166,16 @@
           <span class="text-sm font-bold">الوضع الداكن</span>
           <button onclick="toggleDarkMode()" class="w-12 h-6 bg-primary rounded-full relative"><div class="absolute left-1 top-1 w-4 h-4 bg-white rounded-full"></div></button>
         </div>
+        <div class="card rounded-xl p-4">
+          <label for="availability-status" class="text-sm font-bold block mb-2">حالتي الظاهرة للآخرين</label>
+          <select id="availability-status" onchange="saveAvailabilityStatus(this.value)" class="w-full p-3 rounded-xl">
+            <option value="online">متصل</option>
+            <option value="available">متاح</option>
+            <option value="busy">مشغول</option>
+            <option value="offline">غير متصل</option>
+          </select>
+          <p class="text-xs text-gray-500 mt-2">الحالة للعرض فقط؛ يمكنك إرسال الرسائل حتى عند اختيار غير متصل.</p>
+        </div>
         <button onclick="switchTab('admin')" id="admin-btn" class="hidden w-full py-3 rounded-xl bg-blue-500/10 text-blue-500 font-bold text-sm mt-4">لوحة الإدارة</button>
         <div class="card rounded-xl p-4 border border-red-500/20"><button onclick="logout()" class="text-right text-sm font-bold text-red-500 w-full">تسجيل الخروج</button></div>
       </div>
@@ -193,7 +200,7 @@
 <div id="chat-view" class="hidden fixed inset-0 bg-gray-50 dark:bg-[#0B0914] z-50 flex flex-col">
   <header class="flex items-center gap-3 p-4 border-b border-gray-200 dark:border-white/10 bg-white dark:bg-[#0B0914]">
     <button onclick="closeChat()" class="text-gray-500"><i data-lucide="arrow-right" class="w-6 h-6"></i></button>
-    <div class="font-bold text-sm" id="chat-header-name">اسم المستخدم</div>
+    <div><div class="font-bold text-sm" id="chat-header-name">اسم المستخدم</div><div class="text-xs mt-1" id="chat-header-status"></div></div>
   </header>
   <div class="bg-red-500/10 text-red-600 dark:text-red-400 p-2 text-center text-[10px] font-bold">تنبيه: لا تشارك أرقامك أو حساباتك الخارجية. التواصل الآمن عبر نصيب فقط.</div>
   <div id="chat-messages" class="flex-1 overflow-y-auto p-4 space-y-3"></div>
@@ -242,18 +249,18 @@ const SUPABASE_URL = window.NASEEB_CONFIG && window.NASEEB_CONFIG.supabaseUrl ||
 const SUPABASE_ANON_KEY = window.NASEEB_CONFIG && window.NASEEB_CONFIG.supabaseAnonKey || '';
 const sb = window.supabase && SUPABASE_URL && SUPABASE_ANON_KEY ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
 
-const state = { user: null, profile: null, selectedGender: null, activeChatId: null, chatChannel: null, isRegister: true, vipInterval: null };
+const state = { user: null, profile: null, selectedGender: null, activeChatId: null, chatChannel: null, presenceChannel: null, isRegister: true, vipInterval: null };
 const $ = id => document.getElementById(id);
 const initIcons = () => lucide.createIcons();
 
 setTimeout(() => {
   $('splash').style.opacity = '0';
   setTimeout(() => $('splash').style.display = 'none', 500);
-  if (!sb) { showLanding(); return; }
+  if (!sb) { showAuth('register'); showAuthMessage('الاتصال بقاعدة البيانات غير مهيأ. شغّل الخادم واضبط متغيرات Supabase.', true); return; }
   sb.auth.getSession().then(({ data: { session } }) => {
     if(session) enterApp();
-    else showLanding();
-  }).catch(() => showLanding());
+    else showAuth('register');
+  }).catch(() => showAuth('register'));
 }, 1000);
 
 function showLanding() {
@@ -265,83 +272,60 @@ function showAuth(mode) {
   ['screen-landing','screen-auth','screen-main','screen-questionnaire'].forEach(s => $(s).classList.add('hidden'));
   $('screen-auth').classList.remove('hidden');
   state.isRegister = (mode === 'register');
+  if (state.isRegister) state.selectedGender = null;
+  const authError = $('auth-error');
+  if (authError) authError.classList.add('hidden');
   updateAuthUI();
   initIcons();
 }
 
-function toggleAuth() { state.isRegister = !state.isRegister; updateAuthUI(); }
-function updateAuthUI() {
-  $('auth-name-field').classList.toggle('hidden', !state.isRegister);
-  $('auth-gender-field').classList.toggle('hidden', !state.isRegister);
-  $('auth-title').textContent = state.isRegister ? 'إنشاء حساب' : 'تسجيل الدخول';
-  $('auth-submit').textContent = state.isRegister ? 'تسجيل' : 'دخول';
-  $('auth-switch-text').textContent = state.isRegister ? 'لديك حساب؟ سجل الدخول' : 'ليس لديك حساب؟ سجل الآن';
-}
-
-function selectGender(g) {
-  state.selectedGender = g;
-  $('btn-male').className = g === 'male' ? 'flex-1 py-3 rounded-xl border border-primary text-primary font-bold bg-primary/10' : 'flex-1 py-3 rounded-xl border border-gray-300 text-gray-500 font-bold';
-  $('btn-female').className = g === 'female' ? 'flex-1 py-3 rounded-xl border border-primary text-primary font-bold bg-primary/10' : 'flex-1 py-3 rounded-xl border border-gray-300 text-gray-500 font-bold';
-}
-
-function toast(msg, isErr=false) {
-  const t = $('toast'); t.textContent = msg;
-  t.className = `fixed top-10 left-1/2 -translate-x-1/2 z-[80] px-6 py-3 rounded-full font-bold shadow-2xl text-sm ${isErr?'bg-red-500':'bg-green-500'} text-white`;
-  t.style.opacity = '1';
-  setTimeout(() => { t.style.opacity = '0'; setTimeout(() => t.classList.add('hidden'), 300); }, 3000);
-}
-
-async function doAuth() {
-  const email = $('auth-email').value;
-  const pass = $('auth-password').value;
-  $('auth-error').classList.add('hidden');
-  
-  if (state.isRegister) {
-    const name = $('auth-name').value;
-    if(!name || !state.selectedGender) return $('auth-error').textContent = 'أكمل البيانات';
-    
-    const { data, error } = await sb.auth.signUp({ 
-      email, password: pass, options: { data: { full_name: name, gender: state.selectedGender } } 
-    });
-    if (error) return $('auth-error').textContent = error.message;
-    if (!data.session) await sb.auth.signInWithPassword({ email, password: pass });
-  } else {
-    const { error } = await sb.auth.signInWithPassword({ email, password: pass });
-    if (error) return $('auth-error').textContent = error.message;
-  }
-  enterApp();
-}
-
+function toggleAuth() { state.isRegister = !state.isRegister; if (state.isRegister) state.selectedGender = null; updateAuthUI(); }
 async function logout() { await sb.auth.signOut(); location.reload(); }
 
-async function enterApp() {
-  const { data: { user } } = await sb.auth.getUser();
-  if (!user) return showLanding();
-  state.user = user;
-  
-  const { data: prof } = await sb.from('profiles').select('*').eq('id', user.id).single();
-  state.profile = prof;
-  
-  if (!prof || !prof.age || !prof.city) {
-    ['screen-landing','screen-auth','screen-main'].forEach(s => $(s).classList.add('hidden'));
-    $('screen-questionnaire').classList.remove('hidden');
-    initIcons();
-    return;
-  }
-
-  if (prof.is_admin) $('admin-btn').classList.remove('hidden');
-  $('prof-avatar').textContent = prof.full_name.charAt(0);
-  $('prof-name').textContent = prof.full_name;
-  $('prof-info').textContent = `${prof.age} سنة • ${prof.city}`;
-  
-  ['screen-landing','screen-auth','screen-main','screen-questionnaire'].forEach(s => $(s).classList.add('hidden'));
-  $('screen-main').classList.remove('hidden');
-  
-  checkVipStatus();
-  switchTab('search');
-  initIcons();
+async function ensureProfile(user) {
+  const { data: current, error: readError } = await sb.from('profiles').select('*').eq('id', user.id).maybeSingle();
+  if (readError) throw readError;
+  if (current) return current;
+  const meta = user.user_metadata || {};
+  const gender = meta.gender;
+  if (gender !== 'male' && gender !== 'female') throw new Error('بيانات الجنس غير موجودة في ملف الحساب.');
+  const profile = { id: user.id, full_name: meta.full_name || (user.email ? user.email.split('@')[0] : 'مستخدم'), gender: gender };
+  const { data: created, error: insertError } = await sb.from('profiles').insert(profile).select('*').single();
+  if (!insertError && created) return created;
+  const { data: retry, error: retryError } = await sb.from('profiles').select('*').eq('id', user.id).maybeSingle();
+  if (!retryError && retry) return retry;
+  throw insertError || retryError || new Error('تعذر إنشاء ملف الحساب.');
 }
 
+async function enterApp() {
+  try {
+    const { data: { user }, error: authError } = await sb.auth.getUser();
+    if (authError) throw authError;
+    if (!user) return showAuth('register');
+    state.user = user;
+    state.profile = await ensureProfile(user);
+    if ($('availability-status')) $('availability-status').value = state.profile.availability_status || 'available';
+    if (!state.profile.age || !state.profile.city) {
+      ['screen-landing','screen-auth','screen-main'].forEach(s => $(s).classList.add('hidden'));
+      $('screen-questionnaire').classList.remove('hidden');
+      initIcons();
+      return;
+    }
+    if (state.profile.is_admin) $('admin-btn').classList.remove('hidden');
+    $('prof-avatar').textContent = (state.profile.full_name || 'م').charAt(0);
+    $('prof-name').textContent = state.profile.full_name || 'مستخدم';
+    $('prof-info').textContent = state.profile.age + ' سنة • ' + state.profile.city;
+    ['screen-landing','screen-auth','screen-main','screen-questionnaire'].forEach(s => $(s).classList.add('hidden'));
+    $('screen-main').classList.remove('hidden');
+    checkVipStatus();
+    subscribePresenceUpdates();
+    switchTab('search');
+    initIcons();
+  } catch (error) {
+    showAuth('login');
+    showAuthMessage(formatAuthError(error), true);
+  }
+}
 async function saveQuestionnaire() {
   const data = {
     age: parseInt($('q-age').value) || null,
@@ -459,31 +443,6 @@ function switchTab(name) {
   window.scrollTo(0,0);
 }
 
-async function loadProfiles() {
-  const grid = $('search-grid');
-  grid.innerHTML = '<div class="col-span-2 text-center py-10"><i data-lucide="loader" class="w-6 h-6 animate-spin mx-auto text-primary"></i></div>';
-  initIcons();
-  
-  const targetGender = state.profile.gender === 'male' ? 'female' : 'male';
-  const { data } = await sb.from('profiles').select('*').eq('gender', targetGender).limit(20);
-  
-  if(!data || data.length === 0) return grid.innerHTML = '<div class="col-span-2 text-center text-gray-500 mt-10">لا توجد ترشيحات.</div>';
-  
-  grid.innerHTML = data.map(p => {
-    return `
-    <div class="relative rounded-2xl overflow-hidden h-64 shadow-md border border-gray-200 dark:border-white/5 bg-gray-100 dark:bg-[#1E1B2E]">
-      <div class="absolute inset-0 flex items-center justify-center"><i data-lucide="user" class="w-16 h-16 text-black/10 dark:text-white/10"></i></div>
-      <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent"></div>
-      <div class="absolute bottom-0 left-0 w-full p-3 text-white">
-        <div class="font-bold text-sm">${p.full_name}</div>
-        <div class="text-[10px] text-gray-300 mb-2">${p.age} سنة • ${p.city}</div>
-        <button onclick="sendRequest('${p.id}')" class="w-full py-1.5 rounded-lg bg-white/20 hover:bg-white/30 backdrop-blur text-xs font-bold">طلب تواصل</button>
-      </div>
-    </div>`;
-  }).join('');
-  initIcons();
-}
-
 async function sendRequest(id) {
   if (!state.profile.is_vip && new Date(state.profile.vip_expires_at) < new Date()) return showPaywall();
   const { error } = await sb.from('requests').insert({ sender_id: state.user.id, receiver_id: id });
@@ -531,18 +490,24 @@ async function loadChats() {
 
 async function startChat(id, name) {
   state.activeChatId = id;
-  $('chat-header-name').textContent = name;
+  $('chat-header-name').textContent = name || 'مستخدم';
+  $('chat-header-status').innerHTML = presenceBadge('available');
   $('chat-view').classList.remove('hidden');
   $('chat-messages').innerHTML = '';
-  
+  const { data: statusProfile, error: statusError } = await sb.from('profiles').select('availability_status').eq('id', id).maybeSingle();
+  if (!statusError && statusProfile) $('chat-header-status').innerHTML = presenceBadge(statusProfile.availability_status);
   await fetchMessages();
-  if(state.chatChannel) sb.removeChannel(state.chatChannel);
-  state.chatChannel = sb.channel('chat_room').on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages' }, payload => {
+  if (state.chatChannel) sb.removeChannel(state.chatChannel);
+  const channel = sb.channel('chat_room');
+  channel.on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages' }, payload => {
     const msg = payload.new;
-    if((msg.sender_id === state.user.id && msg.receiver_id === state.activeChatId) || (msg.sender_id === state.activeChatId && msg.receiver_id === state.user.id)) appendMessage(msg);
-  }).subscribe();
+    if ((msg.sender_id === state.user.id && msg.receiver_id === state.activeChatId) || (msg.sender_id === state.activeChatId && msg.receiver_id === state.user.id)) appendMessage(msg);
+  });
+  channel.on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'profiles', filter: 'id=eq.' + id }, payload => {
+    if (payload.new && payload.new.id === state.activeChatId) $('chat-header-status').innerHTML = presenceBadge(payload.new.availability_status);
+  });
+  state.chatChannel = channel.subscribe();
 }
-
 async function fetchMessages() {
   const { data } = await sb.from('messages').select('*').or(`and(sender_id.eq.${state.user.id},receiver_id.eq.${state.activeChatId}),and(sender_id.eq.${state.activeChatId},receiver_id.eq.${state.user.id})`).order('created_at');
   $('chat-messages').innerHTML = '';
@@ -714,11 +679,7 @@ function installNaseebEnhancements() {
     if (vipButton) vipButton.after(card); else profilePanel.appendChild(card);
   }
   const authEmail = $('auth-email');
-  if (authEmail && !$('auth-extra-fields')) {
-    const extra = document.createElement('div'); extra.id = 'auth-extra-fields'; extra.className = 'space-y-3';
-    // تم إزالة حقل رقم الهاتف من هنا
-    extra.innerHTML = '<input id="auth-display-name" type="text" placeholder="اسم العرض" class="w-full p-4 rounded-xl" /><input id="auth-birth-date" type="date" class="w-full p-4 rounded-xl" />';
-    authEmail.before(extra);
+  if (authEmail && !$('auth-terms-wrap')) {
     const submit = $('auth-submit');
     const terms = document.createElement('label'); terms.id = 'auth-terms-wrap'; terms.className = 'flex items-start gap-2 text-xs text-gray-500 leading-6';
     terms.innerHTML = '<input id="auth-terms" type="checkbox" class="mt-1" /><span>أوافق على الشروط وسياسة الخصوصية.</span>';
@@ -729,45 +690,132 @@ function installNaseebEnhancements() {
 function updateAuthUI() {
   $('auth-name-field').classList.toggle('hidden', !state.isRegister);
   $('auth-gender-field').classList.toggle('hidden', !state.isRegister);
-  if ($('auth-extra-fields')) $('auth-extra-fields').classList.toggle('hidden', !state.isRegister);
   if ($('auth-terms-wrap')) $('auth-terms-wrap').classList.toggle('hidden', !state.isRegister);
-  $('auth-title').textContent = state.isRegister ? 'إنشاء حساب' : 'تسجيل الدخول';
+  $('auth-title').textContent = state.isRegister ? 'إنشاء حساب جديد' : 'تسجيل الدخول';
   $('auth-submit').textContent = state.isRegister ? 'إنشاء الحساب' : 'دخول';
+  $('auth-password').autocomplete = state.isRegister ? 'new-password' : 'current-password';
   $('auth-switch-text').textContent = state.isRegister ? 'لديك حساب؟ سجل الدخول' : 'ليس لديك حساب؟ سجل الآن';
 }
+function showAuthMessage(message, isError) {
+  const box = $('auth-error');
+  if (!box) return;
+  box.textContent = message;
+  box.classList.remove('hidden', 'bg-red-500/10', 'text-red-500', 'bg-green-500/10', 'text-green-500');
+  box.classList.add(isError ? 'bg-red-500/10' : 'bg-green-500/10', isError ? 'text-red-500' : 'text-green-500');
+}
+function formatAuthError(error) {
+  const message = String(error && error.message || error || '').toLowerCase();
+  if (message.includes('invalid login credentials')) return 'البريد الإلكتروني أو كلمة المرور غير صحيحة.';
+  if (message.includes('email not confirmed')) return 'أكد بريدك الإلكتروني أولاً ثم سجّل الدخول.';
+  if (message.includes('user already registered') || message.includes('already been registered')) return 'هذا البريد مسجّل مسبقاً. سجّل الدخول بدلاً من إنشاء حساب جديد.';
+  if (message.includes('password') && (message.includes('least') || message.includes('short'))) return 'كلمة المرور قصيرة؛ استخدم 8 أحرف على الأقل.';
+  if (message.includes('database error saving new user')) return 'تعذر إنشاء ملف الحساب في قاعدة البيانات. طبّق إعداد قاعدة البيانات المرفق.';
+  if (message.includes('fetch') || message.includes('network') || message.includes('failed to')) return 'تعذر الاتصال بالخادم. تحقق من الإنترنت وإعدادات Supabase.';
+  if (message.includes('row-level security') || message.includes('permission denied') || message.includes('not allowed')) return 'قاعدة البيانات رفضت العملية. راجع صلاحيات وسياسات profiles في Supabase.';
+  return (error && error.message) ? error.message : 'حدث خطأ غير متوقع. حاول مرة أخرى.';
+}
 async function doAuth() {
-  if (!sb) return toast('إعداد اتصال الخادم غير مكتمل.', true);
+  if (!sb) return showAuthMessage('الاتصال بقاعدة البيانات غير مهيأ. شغّل الخادم واضبط متغيرات Supabase.', true);
   const email = $('auth-email').value.trim();
-  const pass = $('auth-password').value;
-  const errorBox = $('auth-error'); errorBox.classList.add('hidden');
-  if (!email || !pass) { errorBox.textContent = 'أدخل البريد الإلكتروني وكلمة المرور.'; errorBox.classList.remove('hidden'); return; }
+  const password = $('auth-password').value;
+  const errorBox = $('auth-error');
+  errorBox.classList.add('hidden');
+  const button = $('auth-submit');
+  if (!email || !password) return showAuthMessage('أدخل البريد الإلكتروني وكلمة المرور.', true);
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return showAuthMessage('اكتب بريدًا إلكترونيًا صحيحًا.', true);
   if (state.isRegister) {
     const name = $('auth-name').value.trim();
-    // تم إزالة شرط رقم الهاتف من هنا
-    const displayName = $('auth-display-name') ? $('auth-display-name').value.trim() : '';
-    const birthDate = $('auth-birth-date') ? $('auth-birth-date').value : '';
-    if (!name || !state.selectedGender || !$('auth-terms').checked) {
-      errorBox.textContent = 'أكمل الحقول المطلوبة واختر الجنس ووافق على الشروط.'; errorBox.classList.remove('hidden'); return;
-    }
-    if (pass.length < 8) { errorBox.textContent = 'يجب أن تكون كلمة المرور 8 أحرف على الأقل.'; errorBox.classList.remove('hidden'); return; }
-    const { data, error } = await sb.auth.signUp({ email: email, password: pass, options: { data: { full_name: name, display_name: displayName || name, birth_date: birthDate || null, gender: state.selectedGender, terms_accepted: true } } });
-    if (error) { errorBox.textContent = error.message; errorBox.classList.remove('hidden'); return; }
-    if (!data.session) { toast('تحقق من بريدك الإلكتروني لإكمال تفعيل الحساب.', false); showAuth('login'); return; }
-    await enterApp(); return;
+    const terms = $('auth-terms');
+    if (!name) return showAuthMessage('اكتب اسمك أولاً.', true);
+    if (!state.selectedGender) return showAuthMessage('اختر ذكرًا أو أنثى.', true);
+    if (password.length < 8) return showAuthMessage('كلمة المرور يجب أن تكون 8 أحرف على الأقل.', true);
+    if (!terms || !terms.checked) return showAuthMessage('وافق على الشروط وسياسة الخصوصية لإكمال التسجيل.', true);
   }
-  const { error } = await sb.auth.signInWithPassword({ email: email, password: pass });
-  if (error) { errorBox.textContent = error.message; errorBox.classList.remove('hidden'); return; }
-  await enterApp();
+  button.disabled = true;
+  button.textContent = state.isRegister ? 'جارٍ إنشاء الحساب...' : 'جارٍ تسجيل الدخول...';
+  try {
+    if (state.isRegister) {
+      const name = $('auth-name').value.trim();
+      const { data, error } = await sb.auth.signUp({ email: email, password: password, options: { data: { full_name: name, gender: state.selectedGender } } });
+      if (error) throw error;
+      if (!data || !data.user) throw new Error('لم يتم إنشاء الحساب. حاول مرة أخرى.');
+      if (!data.session) {
+        showAuth('login');
+        showAuthMessage('تم إنشاء الحساب. افتح رسالة التأكيد في بريدك ثم سجّل الدخول.', false);
+        return;
+      }
+      await enterApp();
+      return;
+    }
+    const { error } = await sb.auth.signInWithPassword({ email: email, password: password });
+    if (error) throw error;
+    await enterApp();
+  } catch (error) {
+    showAuthMessage(formatAuthError(error), true);
+  } finally {
+    button.disabled = false;
+    button.textContent = state.isRegister ? 'إنشاء الحساب' : 'دخول';
+  }
 }
 async function saveQuestionnaire() {
-  if (!sb || !state.user) return toast('تعذر الاتصال بالخادم.', true);
-  const data = { age: parseInt($('q-age').value, 10) || null, city: $('q-city').value.trim() || null, nationality: $('q-nationality').value.trim() || null, height: $('q-height').value.trim() || null, weight: $('q-weight').value.trim() || null, marital_status: $('q-marital').value || null, education: $('q-education').value || null, job: $('q-job').value.trim() || null, bio: $('q-bio').value.trim() || null };
-  if (!data.age || !data.city) return toast('أدخل العمر والمدينة على الأقل.', true);
-  const button = $('save-q-btn'); const oldText = button.textContent; button.disabled = true; button.textContent = 'جارٍ الحفظ...';
-  const { error } = await sb.from('profiles').update(data).eq('id', state.user.id);
-  button.disabled = false; button.textContent = oldText;
-  if (error) return toast('لم يتم حفظ الملف: ' + error.message, true);
-  await enterApp();
+  if (!sb || !state.user || !state.profile) return toast('تعذر الاتصال بالخادم أو ملف الحساب.', true);
+  const age = parseInt($('q-age').value, 10);
+  const city = $('q-city').value.trim();
+  if (!Number.isInteger(age) || age < 18 || age > 100) return toast('أدخل عمراً صحيحاً من 18 إلى 100 سنة.', true);
+  if (!city) return toast('أدخل المدينة لإكمال الملف.', true);
+  const data = { age: age, city: city, nationality: $('q-nationality').value.trim() || null, height: $('q-height').value.trim() || null, weight: $('q-weight').value.trim() || null, marital_status: $('q-marital').value || null, education: $('q-education').value || null, job: $('q-job').value.trim() || null, bio: $('q-bio').value.trim() || null };
+  const button = $('save-q-btn');
+  const oldText = button.textContent;
+  button.disabled = true;
+  button.textContent = 'جارٍ الحفظ...';
+  try {
+    const { data: saved, error } = await sb.from('profiles').update(data).eq('id', state.user.id).select('id').maybeSingle();
+    if (error) throw error;
+    if (!saved) throw new Error('لم يتم العثور على ملف الحساب في قاعدة البيانات.');
+    state.profile = Object.assign({}, state.profile, data);
+    toast('تم حفظ الملف بنجاح.');
+    await enterApp();
+  } catch (error) {
+    toast('لم يتم حفظ الملف: ' + (error.message || 'خطأ غير معروف'), true);
+  } finally {
+    button.disabled = false;
+    button.textContent = oldText;
+  }
+}
+function subscribePresenceUpdates() {
+  if (!sb || !state.user) return;
+  if (state.presenceChannel) sb.removeChannel(state.presenceChannel);
+  state.presenceChannel = sb.channel('naseeb-presence-' + state.user.id).on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'profiles' }, payload => {
+    const profile = payload.new;
+    if (!profile || !profile.id) return;
+    if (profile.id === state.user.id) {
+      state.profile = Object.assign({}, state.profile, { availability_status: profile.availability_status });
+      if ($('availability-status')) $('availability-status').value = profile.availability_status || 'available';
+    } else {
+      const searchTab = $('tab-search');
+      if (searchTab && !searchTab.classList.contains('hidden')) loadProfiles();
+      if (profile.id === state.activeChatId && $('chat-header-status')) $('chat-header-status').innerHTML = presenceBadge(profile.availability_status);
+    }
+  }).subscribe();
+}
+function presenceLabel(status) {
+  const labels = { online: 'متصل', available: 'متاح', busy: 'مشغول', offline: 'غير متصل' };
+  return labels[status] || labels.available;
+}
+function presenceBadge(status) {
+  const colors = { online: 'text-emerald-300', available: 'text-sky-300', busy: 'text-amber-300', offline: 'text-gray-300' };
+  const safeStatus = ['online', 'available', 'busy', 'offline'].includes(status) ? status : 'available';
+  return '<span class="text-[10px] font-bold ' + colors[safeStatus] + '">● ' + presenceLabel(safeStatus) + '</span>';
+}
+async function saveAvailabilityStatus(status) {
+  if (!sb || !state.user || !state.profile) return toast('سجّل الدخول أولاً.', true);
+  if (!['online', 'available', 'busy', 'offline'].includes(status)) return toast('حالة غير صالحة.', true);
+  const select = $('availability-status');
+  const previous = state.profile.availability_status || 'available';
+  const { data, error } = await sb.rpc('set_my_availability_status', { p_status: status });
+  if (error) { select.value = previous; return toast('تعذر حفظ الحالة: ' + error.message, true); }
+  state.profile.availability_status = data || status;
+  toast('تم تحديث حالتك.');
 }
 async function sendRequest(id) {
   if (!sb || !state.user || !state.profile) return toast('سجّل الدخول أولاً.', true);
@@ -803,14 +851,26 @@ async function fetchMessages() {
 }
 async function loadProfiles() {
   if (!sb || !state.profile || !state.user) return;
-  const grid = $('search-grid'); grid.innerHTML = '<div class="col-span-2 text-center py-8 text-gray-500">جاري التحميل...</div>';
-  const targetGender = state.profile.gender === 'male' ? 'female' : 'male';
-  const { data, error } = await sb.from('profiles').select('id,full_name,age,city').eq('gender', targetGender).neq('id', state.user.id).limit(20);
-  if (error) { grid.textContent = 'تعذر تحميل الترشيحات.'; return; }
-  if (!data || !data.length) { grid.textContent = 'لا توجد ترشيحات حالياً.'; return; }
-  grid.innerHTML = data.map(function (p) {
-    return '<div class="relative rounded-2xl overflow-hidden h-64 shadow-md border border-gray-200 dark:border-white/5 bg-gray-100 dark:bg-[#1E1B2E]"><div class="absolute inset-0 flex items-center justify-center"><i data-lucide="user" class="w-16 h-16 text-black/10 dark:text-white/10"></i></div><div class="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent"></div><div class="absolute bottom-0 left-0 w-full p-3 text-white"><div class="font-bold text-sm">' + escapeHTML(p.full_name) + '</div><div class="text-[10px] text-gray-300 mb-2">' + escapeHTML(p.age) + ' سنة • ' + escapeHTML(p.city) + '</div><button onclick="sendRequest(\'' + escapeHTML(p.id) + '\')" class="w-full py-1.5 rounded-lg bg-white/20 text-xs font-bold">طلب تواصل</button></div></div>';
-  }).join(''); initIcons();
+  const grid = $('search-grid');
+  grid.innerHTML = '<div class="col-span-2 text-center py-8 text-gray-500">جاري تحميل الترشيحات...</div>';
+  const targetGender = state.profile.gender === 'male' ? 'female' : state.profile.gender === 'female' ? 'male' : null;
+  if (!targetGender) { grid.textContent = 'تعذر تحديد نوع الحساب. سجّل الخروج ثم أعد التسجيل.'; return; }
+  const { data, error } = await sb.from('profiles').select('id,full_name,age,city,gender,availability_status').eq('gender', targetGender).neq('id', state.user.id).order('full_name', { ascending: true }).order('id', { ascending: true }).limit(20);
+  if (error) { grid.textContent = 'تعذر تحميل الترشيحات: ' + error.message; return; }
+  let profiles = (data || []).map(function (profile) { return Object.assign({}, profile, { demo: false }); });
+  if (window.NASEEB_CONFIG && window.NASEEB_CONFIG.demoMode) {
+    const { data: demos, error: demoError } = await sb.from('demo_profiles').select('id,display_name,gender,age,city,availability_status').eq('gender', targetGender).order('id', { ascending: true });
+    if (!demoError && demos) profiles = profiles.concat(demos.map(function (profile) { return { id: profile.id, full_name: profile.display_name, gender: profile.gender, age: profile.age, city: profile.city, availability_status: profile.availability_status, demo: true }; }));
+  }
+  profiles.sort(function (a, b) { return String(a.full_name || '').localeCompare(String(b.full_name || ''), 'ar') || String(a.id).localeCompare(String(b.id)); });
+  if (!profiles.length) { grid.innerHTML = '<div class="col-span-2 text-center text-gray-500 mt-10">لا توجد حسابات من الجنس الآخر حالياً.</div>'; return; }
+  grid.innerHTML = profiles.map(function (profile) {
+    const demoLabel = profile.demo ? '<div class="text-[10px] text-gold font-bold mb-1">حساب تجريبي — لا يمثل شخصاً حقيقياً</div>' : '';
+    const action = profile.demo ? '<button disabled class="w-full py-1.5 rounded-lg bg-white/10 text-xs font-bold opacity-70">للعرض فقط</button>' : '<button data-send-request data-profile-id="' + escapeHTML(profile.id) + '" class="w-full py-1.5 rounded-lg bg-white/20 text-xs font-bold">طلب تواصل</button>';
+    return '<div class="relative rounded-2xl overflow-hidden min-h-64 shadow-md border border-gray-200 dark:border-white/5 bg-gray-100 dark:bg-[#1E1B2E]"><div class="absolute inset-0 flex items-center justify-center"><i data-lucide="user" class="w-16 h-16 text-black/10 dark:text-white/10"></i></div><div class="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent"></div><div class="absolute bottom-0 left-0 w-full p-3 text-white"><div class="font-bold text-sm">' + escapeHTML(profile.full_name || 'مستخدم') + '</div>' + demoLabel + '<div class="text-[10px] text-gray-300 mb-1">' + escapeHTML(profile.age || '—') + ' سنة • ' + escapeHTML(profile.city || '—') + '</div><div class="mb-2">' + presenceBadge(profile.availability_status) + '</div>' + action + '</div></div>';
+  }).join('');
+  grid.querySelectorAll('[data-send-request]').forEach(function (button) { button.addEventListener('click', function () { sendRequest(button.dataset.profileId); }); });
+  initIcons();
 }
 function updateAdminUI() {
   if (isNaseebAdmin() && $('admin-btn')) $('admin-btn').classList.remove('hidden');
@@ -819,6 +879,43 @@ function updateAdminUI() {
 
 installNaseebEnhancements();
 if (!sb) setTimeout(() => toast('اتصال الخادم غير مهيأ لهذه النسخة.', true), 1200);
+</script>
+<script>
+(function () {
+  async function api(path, options) {
+    options = options || {}; const headers = { 'Content-Type': 'application/json' };
+    if (sb) { const sessionResult = await sb.auth.getSession(); const session = sessionResult.data && sessionResult.data.session; if (session && session.access_token) headers.Authorization = 'Bearer ' + session.access_token; }
+    const response = await fetch(path, { method: options.method || 'GET', headers: headers, body: options.body ? JSON.stringify(options.body) : undefined });
+    let result = {}; try { result = await response.json(); } catch (_) {}
+    if (!response.ok) throw new Error(result.error || 'تعذر تنفيذ الطلب.'); return result;
+  }
+  async function loadSubscriptionPlans() {
+    const panel = $('tab-subscription'); if (!panel) return;
+    try {
+      if (state.profile && state.profile.gender === 'female') { panel.innerHTML = '<h2 class="text-xl font-black mb-3">اشتراكك مجاني</h2><p class="text-gray-500">جميع المميزات متاحة لك مجانًا مدى الحياة.</p>'; return; }
+      const plans = await api('/api/subscription/plans');
+      panel.innerHTML = '<div class="flex items-center justify-between mb-3"><h2 class="text-xl font-black">باقات نصيب</h2><span id="subscription-current-status" class="text-xs text-gray-500"></span></div><div id="subscription-plans-list" class="space-y-3"></div><p class="naseeb-security-note">سيتم تحويلك إلى صفحة سلة الخاصة بالباقة. إتمام الدفع في سلة لا يفعّل الاشتراك تلقائيًا دون تحقق دفع من سلة.</p>';
+      const list = $('subscription-plans-list');
+      if (!plans || !plans.length) { list.textContent = 'لا توجد باقات مفعّلة حاليًا.'; return; }
+      list.innerHTML = plans.map(function (plan) { return '<article class="naseeb-plan"><div class="flex items-center justify-between"><strong>' + escapeHTML(plan.title) + '</strong><span class="naseeb-price">' + Number(plan.price_sar).toLocaleString('ar-SA') + ' ر.س</span></div><p class="naseeb-muted">مدة الاشتراك: ' + Number(plan.duration_days) + ' يومًا</p><button data-buy-plan="' + escapeHTML(plan.code) + '" class="btn-primary w-full py-3 rounded-xl font-bold mt-3">الشراء عبر سلة</button></article>'; }).join('');
+      list.querySelectorAll('[data-buy-plan]').forEach(function (button) { button.addEventListener('click', async function () { button.disabled = true; try { const result = await api('/api/salla/checkout-link', { method: 'POST', body: { plan_code: button.dataset.buyPlan } }); window.location.assign(result.checkout_url); } catch (error) { toast(error.message, true); button.disabled = false; } }); });
+    } catch (error) { panel.textContent = 'تعذر تحميل الباقات: ' + error.message; }
+  }
+  async function loadAdminPlans() {
+    const container = $('admin-content'); if (!container) return; container.textContent = 'جارٍ تحميل إعدادات الاشتراك...';
+    try {
+      const auth = await api('/api/admin/me'); if (!auth.is_admin) { container.textContent = 'غير مصرح بالدخول إلى إعدادات الاشتراك.'; return; }
+      const plans = await api('/api/admin/plans');
+      container.innerHTML = '<h3 class="font-black text-lg mb-3">روابط وأسعار الباقات</h3><p class="naseeb-muted mb-4">أدخل رابط صفحة سلة لكل باقة بصيغة HTTPS؛ زر الباقة سيحوّل المستخدم إلى الرابط المسجل.</p>' + plans.map(function (plan) { return '<article class="card rounded-xl p-4 mb-3 space-y-3"><strong>' + escapeHTML(plan.title) + '</strong><label class="block text-xs">اسم الباقة<input id="plan-title-' + escapeHTML(plan.code) + '" class="w-full p-2 rounded-lg mt-1" value="' + escapeHTML(plan.title) + '"></label><div class="grid grid-cols-2 gap-2"><label class="text-xs">السعر بالريال<input id="plan-price-' + escapeHTML(plan.code) + '" type="number" min="0" step="0.01" class="w-full p-2 rounded-lg mt-1" value="' + Number(plan.price_sar) + '"></label><label class="text-xs">المدة بالأيام<input id="plan-days-' + escapeHTML(plan.code) + '" type="number" min="1" max="3650" class="w-full p-2 rounded-lg mt-1" value="' + Number(plan.duration_days) + '"></label></div><label class="block text-xs">رابط سلة الكامل<input id="plan-url-' + escapeHTML(plan.code) + '" type="url" dir="ltr" placeholder="https://..." class="w-full p-2 rounded-lg mt-1" value="' + escapeHTML(plan.checkout_url || '') + '"></label><label class="flex items-center gap-2 text-sm"><input id="plan-active-' + escapeHTML(plan.code) + '" type="checkbox" ' + (plan.is_active ? 'checked' : '') + '>الباقة مفعّلة</label><button data-save-plan="' + escapeHTML(plan.code) + '" class="btn-primary px-4 py-2 rounded-lg text-sm">حفظ الباقة</button></article>'; }).join('');
+      container.querySelectorAll('[data-save-plan]').forEach(function (button) { button.addEventListener('click', async function () { const code = button.dataset.savePlan; button.disabled = true; try { await api('/api/admin/plans/' + encodeURIComponent(code), { method: 'PATCH', body: { title: $('plan-title-' + code).value, price_sar: Number($('plan-price-' + code).value), duration_days: Number($('plan-days-' + code).value), checkout_url: $('plan-url-' + code).value.trim(), is_active: $('plan-active-' + code).checked } }); toast('تم حفظ الباقة والرابط.'); await loadSubscriptionPlans(); } catch (error) { toast(error.message, true); } finally { button.disabled = false; } }); });
+    } catch (error) { container.textContent = 'تعذر تحميل إعدادات المدير: ' + error.message; }
+  }
+  const previousEnterApp = enterApp;
+  enterApp = async function () { await previousEnterApp(); if (state.user) { await loadSubscriptionPlans(); try { const admin = await api('/api/admin/me'); $('admin-btn').classList.toggle('hidden', !admin.is_admin); } catch (_) { $('admin-btn').classList.add('hidden'); } } };
+  loadAdmin = loadAdminPlans;
+  showVipModal = function () { switchTab('subscription'); };
+  window.NASEEB_LOAD_SUBSCRIPTION_PLANS = loadSubscriptionPlans;
+})();
 </script>
 </body>
 </html>
