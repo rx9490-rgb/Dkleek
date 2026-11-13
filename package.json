@@ -1,0 +1,12 @@
+{
+  "name": "naseeb-web",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Naseeb static frontend served with a small Node.js configuration server",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

@@ -14,7 +14,7 @@
   };
 </script>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.47.0"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.47.0" onerror="this.onerror=null;this.src='https://unpkg.com/@supabase/supabase-js@2.47.0/dist/umd/supabase.js'"></script>
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://unpkg.com/lucide@latest"></script>
 <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
@@ -818,7 +818,7 @@ function updateAdminUI() {
 }
 
 installNaseebEnhancements();
-if (!sb) setTimeout(() => toast('اتصال الخادم غير مهيأ لهذه النسخة.', true), 1200);
+if (!sb) setTimeout(() => toast('تعذر بدء الاتصال. تحقق من إعدادات الخادم أو اتصال الإنترنت.', true), 1200);
 </script>
 </body>
 </html>
