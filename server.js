@@ -4,15 +4,17 @@ const fs = require('node:fs');
 const path = require('node:path');
 const port = Number(process.env.PORT || 3000);
 const sourcePath = path.join(__dirname, 'index.html');
-const configPattern = /window\.NASEEB_CONFIG = window\.NASEEB_CONFIG \|\| \{\s*supabaseUrl: '',\s*supabaseAnonKey: ''\s*\};/;
+const configPattern = /window\.NASEEB_CONFIG = window\.NASEEB_CONFIG \|\| \{\s*supabaseUrl: '',\s*supabasePublishableKey: ''\s*\};/;
 const base = (process.env.SUPABASE_URL || '').replace(/\/$/, '');
+const publishableKey = process.env.SUPABASE_PUBLISHABLE_KEY || process.env.SUPABASE_ANON_KEY || '';
+const secretKey = process.env.SUPABASE_SECRET_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY || '';
 function send(res, status, type, body) { res.writeHead(status, { 'Content-Type': type, 'X-Content-Type-Options': 'nosniff', 'Referrer-Policy': 'strict-origin-when-cross-origin', 'X-Frame-Options': 'DENY' }); res.end(body); }
 function json(res, status, data) { send(res, status, 'application/json; charset=utf-8', JSON.stringify(data)); }
 async function bodyJson(req) { let raw = ''; for await (const chunk of req) { raw += chunk; if (raw.length > 65536) throw new Error('الطلب أكبر من المسموح.'); } return raw ? JSON.parse(raw) : {}; }
-function requireConfig() { if (!base || !process.env.SUPABASE_ANON_KEY || !process.env.SUPABASE_SERVICE_ROLE_KEY) throw new Error('إعداد Supabase غير مكتمل في الخادم.'); }
+function requireConfig() { if (!base || !publishableKey || !secretKey) throw new Error('إعداد Supabase غير مكتمل في الخادم.'); }
 async function db(pathname, method='GET', body=null) {
   requireConfig();
-  const response = await fetch(base + '/rest/v1/' + pathname, { method, headers: { apikey: process.env.SUPABASE_SERVICE_ROLE_KEY, Authorization: 'Bearer ' + process.env.SUPABASE_SERVICE_ROLE_KEY, 'Content-Type': 'application/json', Prefer: 'return=representation' }, body: body ? JSON.stringify(body) : undefined });
+  const response = await fetch(base + '/rest/v1/' + pathname, { method, headers: { apikey: secretKey, Authorization: 'Bearer ' + secretKey, 'Content-Type': 'application/json', Prefer: 'return=representation' }, body: body ? JSON.stringify(body) : undefined });
   const text = await response.text(); let payload; try { payload = text ? JSON.parse(text) : null; } catch { payload = { message: text }; }
   if (!response.ok) { const error = new Error(payload && (payload.message || payload.hint) || 'تعذر الوصول إلى قاعدة البيانات.'); error.status = response.status; throw error; }
   return payload;
@@ -21,7 +23,7 @@ async function userFromRequest(req) {
   requireConfig();
   const token = (req.headers.authorization || '').replace(/^Bearer\s+/i, '');
   if (!token) return null;
-  const response = await fetch(base + '/auth/v1/user', { headers: { apikey: process.env.SUPABASE_ANON_KEY, Authorization: 'Bearer ' + token } });
+  const response = await fetch(base + '/auth/v1/user', { headers: { apikey: publishableKey, Authorization: 'Bearer ' + token } });
   if (!response.ok) return null;
   return response.json();
 }
@@ -34,10 +36,10 @@ async function requireUser(req) { const user = await userFromRequest(req); if (!
 function validHttpsUrl(value) { if (!value) return ''; let parsed; try { parsed = new URL(value); } catch { throw new Error('أدخل رابطًا صحيحًا.'); } if (parsed.protocol !== 'https:') throw new Error('يجب أن يبدأ رابط سلة بـ https.'); return parsed.toString(); }
 async function handle(req, res) {
   const url = new URL(req.url, 'http://localhost');
-  if (req.method === 'GET' && url.pathname === '/health') return json(res, 200, { ok: true, supabaseConfigured: Boolean(base && process.env.SUPABASE_ANON_KEY && process.env.SUPABASE_SERVICE_ROLE_KEY) });
+  if (req.method === 'GET' && url.pathname === '/health') return json(res, 200, { ok: true, supabaseConfigured: Boolean(base && publishableKey && secretKey) });
   if (req.method === 'GET' && (url.pathname === '/' || url.pathname === '/index.html')) {
     let html; try { html = fs.readFileSync(sourcePath, 'utf8'); } catch { return send(res, 500, 'text/plain; charset=utf-8', 'ملف index.html غير موجود.'); }
-    const config = { supabaseUrl: process.env.SUPABASE_URL || '', supabaseAnonKey: process.env.SUPABASE_ANON_KEY || '' };
+    const config = { supabaseUrl: base, supabasePublishableKey: publishableKey };
     html = html.replace(configPattern, 'window.NASEEB_CONFIG = ' + JSON.stringify(config) + ';');
     return send(res, 200, 'text/html; charset=utf-8', html);
   }
