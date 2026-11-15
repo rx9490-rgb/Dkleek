@@ -3,7 +3,7 @@ const http = require('node:http');
 const fs = require('node:fs');
 const path = require('node:path');
 const port = Number(process.env.PORT || 3000);
-const sourcePath = path.join(__dirname, 'frontend.txt');
+const sourcePath = path.join(__dirname, 'index.html');
 const configPattern = /window\.NASEEB_CONFIG = window\.NASEEB_CONFIG \|\| \{\s*supabaseUrl: '',\s*supabaseAnonKey: ''\s*\};/;
 const base = (process.env.SUPABASE_URL || '').replace(/\/$/, '');
 function send(res, status, type, body) { res.writeHead(status, { 'Content-Type': type, 'X-Content-Type-Options': 'nosniff', 'Referrer-Policy': 'strict-origin-when-cross-origin', 'X-Frame-Options': 'DENY' }); res.end(body); }
@@ -36,7 +36,7 @@ async function handle(req, res) {
   const url = new URL(req.url, 'http://localhost');
   if (req.method === 'GET' && url.pathname === '/health') return json(res, 200, { ok: true, supabaseConfigured: Boolean(base && process.env.SUPABASE_ANON_KEY && process.env.SUPABASE_SERVICE_ROLE_KEY) });
   if (req.method === 'GET' && (url.pathname === '/' || url.pathname === '/index.html')) {
-    let html; try { html = fs.readFileSync(sourcePath, 'utf8'); } catch { return send(res, 500, 'text/plain; charset=utf-8', 'ملف frontend.txt غير موجود.'); }
+    let html; try { html = fs.readFileSync(sourcePath, 'utf8'); } catch { return send(res, 500, 'text/plain; charset=utf-8', 'ملف index.html غير موجود.'); }
     const config = { supabaseUrl: process.env.SUPABASE_URL || '', supabaseAnonKey: process.env.SUPABASE_ANON_KEY || '' };
     html = html.replace(configPattern, 'window.NASEEB_CONFIG = ' + JSON.stringify(config) + ';');
     return send(res, 200, 'text/html; charset=utf-8', html);
