@@ -8,7 +8,7 @@
 
 <!-- إعدادات الاتصال بقاعدة البيانات الخاصة بك -->
 <script>
-  window.NASEEB_CONFIG = window.NASEEB_CONFIG || { supabaseUrl: '', supabaseAnonKey: '' };
+  window.NASEEB_CONFIG = window.NASEEB_CONFIG || { supabaseUrl: '', supabasePublishableKey: '' };
 </script>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.47.0"></script>
@@ -259,8 +259,8 @@
 
 <script>
 const SUPABASE_URL = window.NASEEB_CONFIG && window.NASEEB_CONFIG.supabaseUrl || '';
-const SUPABASE_ANON_KEY = window.NASEEB_CONFIG && window.NASEEB_CONFIG.supabaseAnonKey || '';
-const sb = window.supabase && SUPABASE_URL && SUPABASE_ANON_KEY ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
+const SUPABASE_PUBLISHABLE_KEY = window.NASEEB_CONFIG && window.NASEEB_CONFIG.supabasePublishableKey || '';
+const sb = window.supabase && SUPABASE_URL && SUPABASE_PUBLISHABLE_KEY ? window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY) : null;
 
 const state = { user: null, profile: null, selectedGender: null, activeChatId: null, chatChannel: null, presenceChannel: null, isRegister: true, vipInterval: null };
 const $ = id => document.getElementById(id);
