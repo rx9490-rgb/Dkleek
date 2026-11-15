@@ -36,6 +36,13 @@
   .msg-them { background-color: #E5E7EB; border-radius: 16px 16px 16px 4px; color: #111827; }
   .dark .msg-them { background-color: #2D2A3E; color: white; }
   .spinner { animation: spin 1s linear infinite; }
+  .splash-brandmark { position: relative; width: 96px; height: 96px; display: grid; place-items: center; margin-bottom: 18px; }
+  .splash-ring { position: absolute; inset: 2px; border: 3px solid rgba(255,255,255,.12); border-top-color: #D4AF37; border-right-color: #7C3AED; border-radius: 50%; animation: spin 1.3s linear infinite; }
+  .splash-ring::after { content: ""; position: absolute; inset: 8px; border: 1px solid rgba(212,175,55,.28); border-radius: 50%; }
+  .splash-letter { position: relative; z-index: 1; color: #fff; font-size: 58px; font-weight: 900; line-height: 1; text-shadow: 0 0 22px rgba(124,58,237,.55); }
+  .splash-name { color: #fff; font-size: 28px; font-weight: 900; letter-spacing: .02em; }
+  .splash-tagline { color: #D4AF37; font-size: 14px; font-weight: 700; margin-top: 6px; }
+  .splash-caption { color: rgba(255,255,255,.6); font-size: 12px; margin-top: 5px; }
   @keyframes spin { 100% { transform: rotate(360deg); } }
 </style>
 </head>
@@ -43,7 +50,13 @@
 
 <!-- Splash -->
 <div id="splash" class="fixed inset-0 bg-[#0B0914] z-[100] flex flex-col items-center justify-center transition-opacity duration-500">
-  <svg viewBox="0 0 128 128" class="w-24 h-24 spinner"><path d="M 28 60 Q 28 90 64 90" stroke="#7C3AED" stroke-width="10" fill="none" stroke-linecap="round"/><path d="M 64 90 Q 100 90 100 60 L 100 52" stroke="#D4AF37" stroke-width="10" fill="none" stroke-linecap="round"/></svg>
+  <div class="splash-brandmark" role="img" aria-label="شعار نصيب">
+    <div class="splash-ring"></div>
+    <span class="splash-letter" lang="ar">ن</span>
+  </div>
+  <div class="splash-name">نصيب</div>
+  <div class="splash-tagline">للتعارف الجاد والزواج</div>
+  <div class="splash-caption">خطوة نحو شريك حياة مناسب</div>
 </div>
 
 <!-- Landing -->
@@ -280,6 +293,22 @@ function showAuth(mode) {
 }
 
 function toggleAuth() { state.isRegister = !state.isRegister; if (state.isRegister) state.selectedGender = null; updateAuthUI(); }
+function selectGender(gender) {
+  if (!state.isRegister || !['male', 'female'].includes(gender)) return;
+  state.selectedGender = gender;
+  [['male', $('btn-male')], ['female', $('btn-female')]].forEach(([value, button]) => {
+    if (!button) return;
+    const selected = value === gender;
+    button.classList.toggle('border-primary', selected);
+    button.classList.toggle('bg-primary/10', selected);
+    button.classList.toggle('text-primary', selected);
+    button.classList.toggle('border-gray-300', !selected);
+    button.classList.toggle('text-gray-500', !selected);
+    button.setAttribute('aria-pressed', String(selected));
+  });
+  const authError = $('auth-error');
+  if (authError) authError.classList.add('hidden');
+}
 async function logout() { await sb.auth.signOut(); location.reload(); }
 
 async function ensureProfile(user) {
